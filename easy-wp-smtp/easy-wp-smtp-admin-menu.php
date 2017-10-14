@@ -49,6 +49,8 @@ function swpsmtp_settings() {
         $smtp_password = stripslashes($_POST['swpsmtp_smtp_password']);
         $swpsmtp_options['smtp_settings']['password'] = base64_encode($smtp_password);
         $swpsmtp_options['smtp_settings']['enable_debug'] = isset($_POST['swpsmtp_enable_debug']) ? 1 : false;
+        $swpsmtp_options['enable_domain_check'] = isset($_POST['swpsmtp_enable_domain_check']) ? 1 : false;
+        $swpsmtp_options['allowed_domains'] = isset($_POST['swpsmtp_allowed_domains']) ? sanitize_text_field($_POST['swpsmtp_allowed_domains']) : (isset($swpsmtp_options['allowed_domains']) ? $swpsmtp_options['allowed_domains'] : '');
 
         /* Check value from "SMTP port" option */
         if (isset($_POST['swpsmtp_smtp_port'])) {
@@ -107,14 +109,14 @@ function swpsmtp_settings() {
     <div id="swpsmtp-settings-notice" class="updated fade" style="display:none">
         <p><strong><?php _e("Notice:", 'easy-wp-smtp'); ?></strong> <?php _e("The plugin's settings have been changed. In order to save them please don't forget to click the 'Save Changes' button.", 'easy-wp-smtp'); ?></p>
     </div>
+    <form id="swpsmtp_settings_form" method="post" action="">					
 
-    <div class="postbox">
-        <h3 class="hndle"><label for="title"><?php _e('SMTP Configuration Settings', 'easy-wp-smtp'); ?></label></h3>
-        <div class="inside">
+        <div class="postbox">
+            <h3 class="hndle"><label for="title"><?php _e('SMTP Configuration Settings', 'easy-wp-smtp'); ?></label></h3>
+            <div class="inside">
 
-            <p>You can request your hosting provider for the SMTP details of your site. Use the SMTP details provided by your hosting provider to configure the following settings.</p>
+                <p>You can request your hosting provider for the SMTP details of your site. Use the SMTP details provided by your hosting provider to configure the following settings.</p>
 
-            <form id="swpsmtp_settings_form" method="post" action="">					
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row"><?php _e("From Email Address", 'easy-wp-smtp'); ?></th>
@@ -181,60 +183,73 @@ function swpsmtp_settings() {
                             <input type='password' name='swpsmtp_smtp_password' value='<?php echo esc_attr(swpsmtp_get_password()); ?>' /><br />
                             <p class="description"><?php _e("The password to login to your mail server", 'easy-wp-smtp'); ?></p>
                         </td>
-                    </tr>
+                    </tr>	
                 </table>
                 <p class="submit">
                     <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e('Save Changes', 'easy-wp-smtp') ?>" />
                 </p>
-        </div><!-- end of inside -->
-    </div><!-- end of postbox -->
+            </div><!-- end of inside -->
+        </div><!-- end of postbox -->
 
-    <div class="postbox">
-        <h3 class="hndle"><label for="title"><?php _e('Debug Settings', 'easy-wp-smtp'); ?></label></h3>
-        <div class="inside">    		
-            <table class="form-table">
-                <tr valign="top">
-                    <th scope="row"><?php _e("Enable Debug Log", 'easy-wp-smtp'); ?></th>
-                    <td>
-                        <input type="checkbox" name="swpsmtp_enable_debug" value="1" <?php echo (isset($swpsmtp_options['smtp_settings']['enable_debug']) && ($swpsmtp_options['smtp_settings']['enable_debug'])) ? 'checked' : ''; ?>/><br />
-                        <p class="description"><?php _e("Check this box to enable mail debug log", 'easy-wp-smtp'); ?></p>
-                        <a href="<?php echo admin_url(); ?>?swpsmtp_action=view_log" target="_blank"><?php _e('View Log', 'easy-wp-smtp'); ?></a> | <a style="color: red;" id="swpsmtp_clear_log_btn" href="#0"><?php _e('Clear Log', 'easy-wp-smtp'); ?></a>
-                    </td>
-                </tr>	
-            </table>
-            <p class="submit">
-                <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e('Save Changes', 'easy-wp-smtp') ?>" />
-                <input type="hidden" name="swpsmtp_form_submit" value="submit" />
-                <?php wp_nonce_field(plugin_basename(__FILE__), 'swpsmtp_nonce_name'); ?>
-            </p>				
-            </form>
-            <script>
-                jQuery(function ($) {
-                    $('#swpsmtp_clear_log_btn').click(function (e) {
-                        e.preventDefault();
-                        if (confirm("<?php _e('Are you sure want to clear log?', 'easy-wp-smtp'); ?>")) {
-                            var req = jQuery.ajax({
-                                url: ajaxurl,
-                                type: "post",
-                                data: {action: "swpsmtp_clear_log"}
-                            });
-                            req.done(function (data) {
-                                if (data === '1') {
-                                    alert("<?php _e('Log cleared.', 'easy-wp-smtp'); ?>");
-                                }
-                            });
-                        }
+        <div class="postbox">
+            <h3 class="hndle"><label for="title"><?php _e('Additional Settings', 'easy-wp-smtp'); ?></label></h3>
+            <div class="inside">    		
+                <table class="form-table">
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Enable Domain Check", 'easy-wp-smtp'); ?></th>
+                        <td>
+                            <input type="checkbox" id="swpsmtp_enable_domain_check" name="swpsmtp_enable_domain_check" value="1"<?php echo (isset($swpsmtp_options['enable_domain_check']) && ($swpsmtp_options['enable_domain_check'])) ? ' checked' : ''; ?>/>
+                            <p class="description"><?php _e("If enabled, SMTP settings will be used only if the site is running on following domain(s):", 'easy-wp-smtp'); ?></p>
+                            <input type="text" name="swpsmtp_allowed_domains" value="<?php echo $swpsmtp_options['allowed_domains']; ?>"<?php echo (isset($swpsmtp_options['enable_domain_check']) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/>
+                            <p class="description"><?php _e("Coma-separated domains list. Example: domain1.com, domain2.com", 'easy-wp-smtp'); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Enable Debug Log", 'easy-wp-smtp'); ?></th>
+                        <td>
+                            <input type="checkbox" name="swpsmtp_enable_debug" value="1" <?php echo (isset($swpsmtp_options['smtp_settings']['enable_debug']) && ($swpsmtp_options['smtp_settings']['enable_debug'])) ? 'checked' : ''; ?>/>
+                            <p class="description"><?php _e("Check this box to enable mail debug log", 'easy-wp-smtp'); ?></p>
+                            <a href="<?php echo admin_url(); ?>?swpsmtp_action=view_log" target="_blank"><?php _e('View Log', 'easy-wp-smtp'); ?></a> | <a style="color: red;" id="swpsmtp_clear_log_btn" href="#0"><?php _e('Clear Log', 'easy-wp-smtp'); ?></a>
+                        </td>
+                    </tr>	
+                </table>
+                <p class="submit">
+                    <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e('Save Changes', 'easy-wp-smtp') ?>" />
+                    <input type="hidden" name="swpsmtp_form_submit" value="submit" />
+                    <?php wp_nonce_field(plugin_basename(__FILE__), 'swpsmtp_nonce_name'); ?>
+                </p>				
+
+                <script>
+                    jQuery(function ($) {
+                        $('#swpsmtp_enable_domain_check').change(function () {
+                            $('input[name="swpsmtp_allowed_domains"]').prop('disabled', !$(this).is(':checked'));
+                        });
+                        $('#swpsmtp_clear_log_btn').click(function (e) {
+                            e.preventDefault();
+                            if (confirm("<?php _e('Are you sure want to clear log?', 'easy-wp-smtp'); ?>")) {
+                                var req = jQuery.ajax({
+                                    url: ajaxurl,
+                                    type: "post",
+                                    data: {action: "swpsmtp_clear_log"}
+                                });
+                                req.done(function (data) {
+                                    if (data === '1') {
+                                        alert("<?php _e('Log cleared.', 'easy-wp-smtp'); ?>");
+                                    }
+                                });
+                            }
+                        });
                     });
-                });
-            </script>
-        </div><!-- end of inside -->
-    </div><!-- end of postbox -->
-
+                </script>
+            </div><!-- end of inside -->
+        </div><!-- end of postbox -->
+    </form>
     <div class="postbox">
         <h3 class="hndle"><label for="title"><?php _e('Test Email', 'easy-wp-smtp'); ?></label></h3>
         <div class="inside">    
 
             <p>You can use this section to send an email from your server using the above configured SMTP details to see if the email gets delivered.</p>
+            <p><b>Note</b>: debug log for this test email will be automatically displayed right after you send it. Test email also ignores "Enable Domain Check" option.</p>
 
             <form id="swpsmtp_settings_form" method="post" action="">					
                 <table class="form-table">

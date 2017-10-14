@@ -114,6 +114,35 @@ if (!function_exists('swpsmtp_init_smtp')) {
             return;
         }
         $swpsmtp_options = get_option('swpsmtp_options');
+        //check if Domain Check enabled
+        if (isset($swpsmtp_options['enable_domain_check']) && $swpsmtp_options['enable_domain_check']) {
+            //check if allowed domains list is not blank
+            if (isset($swpsmtp_options['allowed_domains']) && !empty($swpsmtp_options['allowed_domains'])) {
+                //let's see if we have one domain or coma-separated domains
+                $domains_arr = explode(', ', $swpsmtp_options['allowed_domains']);
+                if (is_array($domains_arr) && !empty($domains_arr)) {
+                    //we have coma-separated list
+                } else {
+                    //it's singe domain
+                    $domains_arr = array($swpsmtp_options['allowed_domains']);
+                }
+                $site_domain = parse_url(get_site_url(), PHP_URL_HOST);
+                $match_found = false;
+                foreach ($domains_arr as $domain) {
+                    if (strtolower(trim($domain)) === strtolower(trim($site_domain))) {
+                        $match_found = true;
+                        break;
+                    }
+                }
+                if (!$match_found) {
+                    swpsmtp_write_to_log(
+                            "\r\n\r\n-------------------------------------------------------------------------------------------------------\r\n" .
+                            "Domain check failed: website domain (" . $site_domain . ") is not in allowed domains list.\r\n" .
+                            "-------------------------------------------------------------------------------------------------------\r\n\r\n");
+                    return;
+                }
+            }
+        }
         /* Set the mailer type as per config above, this overrides the already called isMail method */
         $phpmailer->IsSMTP();
         $from_name = $swpsmtp_options['from_name_field'];
@@ -305,6 +334,18 @@ if (!function_exists('swpsmtp_send_uninstall')) {
 
 }
 
+function swpsmtp_activate() {
+    $swpsmtp_options = get_option('swpsmtp_options');
+    //add current domain to allowed domains list
+    if (!isset($swpsmtp_options['allowed_domains'])) {
+        $domain = parse_url(get_site_url(), PHP_URL_HOST);
+        if ($domain) {
+            $swpsmtp_options['allowed_domains'] = $domain;
+            update_option('swpsmtp_options', $swpsmtp_options);
+        }
+    }
+}
+
 /**
  * Add all hooks
  */
@@ -320,4 +361,5 @@ add_action('admin_init', 'swpsmtp_admin_init');
 add_action('admin_enqueue_scripts', 'swpsmtp_admin_head');
 add_action('admin_notices', 'swpsmtp_admin_notice');
 
+register_activation_hook(__FILE__, 'swpsmtp_activate');
 register_uninstall_hook(plugin_basename(__FILE__), 'swpsmtp_send_uninstall');

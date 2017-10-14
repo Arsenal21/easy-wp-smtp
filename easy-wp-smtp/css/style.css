@@ -3,7 +3,9 @@
  */
 #swpsmtp_settings_form input[type='text'],
 #swpsmtp_settings_form input[type='password'],
-#swpsmtp_settings_form input[type='email'] {
+#swpsmtp_settings_form input[type='email'],
+#swpsmtp_settings_form input:disabled
+{
     width: 350px;
 }
 textarea#swpsmtp_message{
