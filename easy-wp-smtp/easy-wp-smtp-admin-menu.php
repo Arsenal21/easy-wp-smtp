@@ -36,6 +36,11 @@ function swpsmtp_settings() {
                 $error .= " " . __("Please enter a valid email address in the 'FROM' field.", 'easy-wp-smtp');
             }
         }
+        if (isset($_POST['swpsmtp_reply_to_email'])) {
+            if (!empty($_POST['swpsmtp_reply_to_email'])) {
+                $swpsmtp_options['reply_to_email'] = sanitize_email($_POST['swpsmtp_reply_to_email']);
+            }
+        }
 
         $swpsmtp_options['smtp_settings']['host'] = sanitize_text_field($_POST['swpsmtp_smtp_host']);
         $swpsmtp_options['smtp_settings']['type_encryption'] = ( isset($_POST['swpsmtp_smtp_type_encryption']) ) ? sanitize_text_field($_POST['swpsmtp_smtp_type_encryption']) : 'none';
@@ -125,6 +130,13 @@ function swpsmtp_settings() {
                             <p class="description"><?php _e("This text will be used in the 'FROM' field", 'easy-wp-smtp'); ?></p>
                         </td>
                     </tr>			
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Reply-To Email Address", 'easy-wp-smtp'); ?></th>
+                        <td>
+                            <input type="email" name="swpsmtp_reply_to_email" value="<?php echo isset($swpsmtp_options['reply_to_email']) ? esc_attr($swpsmtp_options['reply_to_email']) : ''; ?>"/><br />
+                            <p class="description"><?php _e("Optional. This email address will be used in the 'Reply-To' field. Leave it blank to use 'From' email instead.", 'easy-wp-smtp'); ?></p>
+                        </td>
+                    </tr>
                     <tr class="ad_opt swpsmtp_smtp_options">
                         <th><?php _e('SMTP Host', 'easy-wp-smtp'); ?></th>
                         <td>
@@ -186,7 +198,7 @@ function swpsmtp_settings() {
                     <td>
                         <input type="checkbox" name="swpsmtp_enable_debug" value="1" <?php echo (isset($swpsmtp_options['smtp_settings']['enable_debug']) && ($swpsmtp_options['smtp_settings']['enable_debug'])) ? 'checked' : ''; ?>/><br />
                         <p class="description"><?php _e("Check this box to enable mail debug log", 'easy-wp-smtp'); ?></p>
-                        <a href="<?php echo admin_url(); ?>?swpsmtp_action=view_log" target="_blank"><?php _e('View Log','easy-wp-smtp');?></a> | <a style="color: red;" id="swpsmtp_clear_log_btn" href="#0"><?php _e('Clear Log','easy-wp-smtp');?></a>
+                        <a href="<?php echo admin_url(); ?>?swpsmtp_action=view_log" target="_blank"><?php _e('View Log', 'easy-wp-smtp'); ?></a> | <a style="color: red;" id="swpsmtp_clear_log_btn" href="#0"><?php _e('Clear Log', 'easy-wp-smtp'); ?></a>
                     </td>
                 </tr>	
             </table>

@@ -116,10 +116,15 @@ if (!function_exists('swpsmtp_init_smtp')) {
         $swpsmtp_options = get_option('swpsmtp_options');
         /* Set the mailer type as per config above, this overrides the already called isMail method */
         $phpmailer->IsSMTP();
-        $from_email = $swpsmtp_options['from_email_field'];
-        $phpmailer->From = $from_email;
         $from_name = $swpsmtp_options['from_name_field'];
         $phpmailer->FromName = $from_name;
+        //set ReplyTo option if needed
+        //this should be set before SetFrom, otherwise might be ignored
+        if (!empty($swpsmtp_options['reply_to_email'])) {
+            $phpmailer->AddReplyTo($swpsmtp_options['reply_to_email'], $from_name);
+        }
+        $from_email = $swpsmtp_options['from_email_field'];
+        $phpmailer->From = $from_email;
         $phpmailer->SetFrom($phpmailer->From, $phpmailer->FromName);
         /* Set the SMTPSecure value */
         if ($swpsmtp_options['smtp_settings']['type_encryption'] !== 'none') {
@@ -191,6 +196,9 @@ if (!function_exists('swpsmtp_test_mail')) {
         /* Set the other options */
         $mail->Host = $swpsmtp_options['smtp_settings']['host'];
         $mail->Port = $swpsmtp_options['smtp_settings']['port'];
+        if (!empty($swpsmtp_options['reply_to_email'])) {
+            $mail->AddReplyTo($swpsmtp_options['reply_to_email'], $from_name);
+        }
         $mail->SetFrom($from_email, $from_name);
         $mail->isHTML(true);
         $mail->Subject = $subject;

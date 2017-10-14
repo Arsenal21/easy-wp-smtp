@@ -1,7 +1,9 @@
 /**
  * Settings page
  */
-#swpsmtp_settings_form input[type='text'], input[type='password']{
+#swpsmtp_settings_form input[type='text'],
+#swpsmtp_settings_form input[type='password'],
+#swpsmtp_settings_form input[type='email'] {
     width: 350px;
 }
 textarea#swpsmtp_message{
