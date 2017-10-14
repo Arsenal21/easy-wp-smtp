@@ -119,11 +119,12 @@ if (!function_exists('swpsmtp_init_smtp')) {
             //check if allowed domains list is not blank
             if (isset($swpsmtp_options['allowed_domains']) && !empty($swpsmtp_options['allowed_domains'])) {
                 //let's see if we have one domain or coma-separated domains
-                $domains_arr = explode(', ', $swpsmtp_options['allowed_domains']);
+                $domains_arr = explode(',', $swpsmtp_options['allowed_domains']);
                 if (is_array($domains_arr) && !empty($domains_arr)) {
                     //we have coma-separated list
                 } else {
                     //it's singe domain
+                    unset($domains_arr);
                     $domains_arr = array($swpsmtp_options['allowed_domains']);
                 }
                 $site_domain = parse_url(get_site_url(), PHP_URL_HOST);
@@ -136,7 +137,7 @@ if (!function_exists('swpsmtp_init_smtp')) {
                 }
                 if (!$match_found) {
                     swpsmtp_write_to_log(
-                            "\r\n\r\n-------------------------------------------------------------------------------------------------------\r\n" .
+                            "\r\n-------------------------------------------------------------------------------------------------------\r\n" .
                             "Domain check failed: website domain (" . $site_domain . ") is not in allowed domains list.\r\n" .
                             "-------------------------------------------------------------------------------------------------------\r\n\r\n");
                     return;
