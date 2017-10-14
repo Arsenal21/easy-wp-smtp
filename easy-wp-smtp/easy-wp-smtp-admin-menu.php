@@ -22,8 +22,8 @@ function swpsmtp_settings() {
 
     $swpsmtp_options = get_option('swpsmtp_options');
     $smtp_test_mail = get_option('smtp_test_mail');
-    if(empty($smtp_test_mail)){
-        $smtp_test_mail = array('swpsmtp_to' => '', 'swpsmtp_subject' => '', 'swpsmtp_message' => '', );
+    if (empty($smtp_test_mail)) {
+        $smtp_test_mail = array('swpsmtp_to' => '', 'swpsmtp_subject' => '', 'swpsmtp_message' => '',);
     }
 
     if (isset($_POST['swpsmtp_form_submit']) && check_admin_referer(plugin_basename(__FILE__), 'swpsmtp_nonce_name')) {
@@ -43,6 +43,7 @@ function swpsmtp_settings() {
         $swpsmtp_options['smtp_settings']['username'] = sanitize_text_field($_POST['swpsmtp_smtp_username']);
         $smtp_password = stripslashes($_POST['swpsmtp_smtp_password']);
         $swpsmtp_options['smtp_settings']['password'] = base64_encode($smtp_password);
+        $swpsmtp_options['smtp_settings']['enable_debug'] = isset($_POST['swpsmtp_enable_debug']) ? 1 : false;
 
         /* Check value from "SMTP port" option */
         if (isset($_POST['swpsmtp_smtp_port'])) {
@@ -76,13 +77,13 @@ function swpsmtp_settings() {
         }
         $swpsmtp_subject = isset($_POST['swpsmtp_subject']) ? sanitize_text_field($_POST['swpsmtp_subject']) : '';
         $swpsmtp_message = isset($_POST['swpsmtp_message']) ? sanitize_text_field($_POST['swpsmtp_message']) : '';
-        
+
         //Save the test mail details so it doesn't need to be filled in everytime.
         $smtp_test_mail['swpsmtp_to'] = $swpsmtp_to;
         $smtp_test_mail['swpsmtp_subject'] = $swpsmtp_subject;
         $smtp_test_mail['swpsmtp_message'] = $swpsmtp_message;
         update_option('smtp_test_mail', $smtp_test_mail);
-        
+
         if (!empty($swpsmtp_to)) {
             $result = swpsmtp_test_mail($swpsmtp_to, $swpsmtp_subject, $swpsmtp_message);
         }
@@ -107,7 +108,7 @@ function swpsmtp_settings() {
         <div class="inside">
 
             <p>You can request your hosting provider for the SMTP details of your site. Use the SMTP details provided by your hosting provider to configure the following settings.</p>
-            
+
             <form id="swpsmtp_settings_form" method="post" action="">					
                 <table class="form-table">
                     <tr valign="top">
@@ -172,23 +173,57 @@ function swpsmtp_settings() {
                 </table>
                 <p class="submit">
                     <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e('Save Changes', 'easy-wp-smtp') ?>" />
-                    <input type="hidden" name="swpsmtp_form_submit" value="submit" />
-                    <?php wp_nonce_field(plugin_basename(__FILE__), 'swpsmtp_nonce_name'); ?>
-                </p>				
-            </form>
+                </p>
         </div><!-- end of inside -->
     </div><!-- end of postbox -->
 
-    <div class="updated fade" <?php if (empty($result)) echo "style=\"display:none\""; ?>>
-        <p><strong><?php echo $result; ?></strong></p><!-- shows the result from the test email send function -->
-    </div>
+    <div class="postbox">
+        <h3 class="hndle"><label for="title"><?php _e('Debug Settings', 'easy-wp-smtp'); ?></label></h3>
+        <div class="inside">    		
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row"><?php _e("Enable Debug Log", 'easy-wp-smtp'); ?></th>
+                    <td>
+                        <input type="checkbox" name="swpsmtp_enable_debug" value="1" <?php echo (isset($swpsmtp_options['smtp_settings']['enable_debug']) && ($swpsmtp_options['smtp_settings']['enable_debug'])) ? 'checked' : ''; ?>/><br />
+                        <p class="description"><?php _e("Check this box to enable mail debug log", 'easy-wp-smtp'); ?></p>
+                        <a href="<?php echo admin_url(); ?>?swpsmtp_action=view_log" target="_blank"><?php _e('View Log','easy-wp-smtp');?></a> | <a style="color: red;" id="swpsmtp_clear_log_btn" href="#0"><?php _e('Clear Log','easy-wp-smtp');?></a>
+                    </td>
+                </tr>	
+            </table>
+            <p class="submit">
+                <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e('Save Changes', 'easy-wp-smtp') ?>" />
+                <input type="hidden" name="swpsmtp_form_submit" value="submit" />
+                <?php wp_nonce_field(plugin_basename(__FILE__), 'swpsmtp_nonce_name'); ?>
+            </p>				
+            </form>
+            <script>
+                jQuery(function ($) {
+                    $('#swpsmtp_clear_log_btn').click(function (e) {
+                        e.preventDefault();
+                        if (confirm("<?php _e('Are you sure want to clear log?', 'easy-wp-smtp'); ?>")) {
+                            var req = jQuery.ajax({
+                                url: ajaxurl,
+                                type: "post",
+                                data: {action: "swpsmtp_clear_log"}
+                            });
+                            req.done(function (data) {
+                                if (data === '1') {
+                                    alert("<?php _e('Log cleared.', 'easy-wp-smtp'); ?>");
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
+        </div><!-- end of inside -->
+    </div><!-- end of postbox -->
 
     <div class="postbox">
-        <h3 class="hndle"><label for="title"><?php _e('Testing And Debugging Settings', 'easy-wp-smtp'); ?></label></h3>
+        <h3 class="hndle"><label for="title"><?php _e('Test Email', 'easy-wp-smtp'); ?></label></h3>
         <div class="inside">    
 
             <p>You can use this section to send an email from your server using the above configured SMTP details to see if the email gets delivered.</p>
-            
+
             <form id="swpsmtp_settings_form" method="post" action="">					
                 <table class="form-table">
                     <tr valign="top">
@@ -238,6 +273,24 @@ function swpsmtp_admin_init() {
     if (isset($_REQUEST['page']) && 'swpsmtp_settings' == $_REQUEST['page']) {
         /* register plugin settings */
         swpsmtp_register_settings();
+    }
+    add_action('wp_ajax_swpsmtp_clear_log', 'swpsmtp_clear_log');
+    //view log file
+    if (isset($_GET['swpsmtp_action'])) {
+        if ($_GET['swpsmtp_action'] === 'view_log') {
+            $swpsmtp_options = get_option('swpsmtp_options');
+            $log_file_name = $swpsmtp_options['smtp_settings']['log_file_name'];
+            if (!file_exists(plugin_dir_path(__FILE__) . $log_file_name)) {
+                swpsmtp_write_to_log("Easy WP SMTP debug log file\r\n\r\n");
+            }
+            $logfile = fopen(plugin_dir_path(__FILE__) . $log_file_name, 'rb');
+            if (!$logfile) {
+                wp_die('Can\'t open log file.');
+            }
+            header('Content-Type: text/plain');
+            fpassthru($logfile);
+            die;
+        }
     }
 }
 

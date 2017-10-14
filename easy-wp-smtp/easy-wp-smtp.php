@@ -1,14 +1,14 @@
 <?php
 /*
-Plugin Name: Easy WP SMTP
-Version: 1.2.7
-Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
-Author: wpecommerce
-Author URI: https://wp-ecommerce.net/
-Description: Send email via SMTP from your WordPress Blog
-Text Domain: easy-wp-smtp
-Domain Path: /languages
-*/
+  Plugin Name: Easy WP SMTP
+  Version: 1.2.7
+  Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
+  Author: wpecommerce
+  Author URI: https://wp-ecommerce.net/
+  Description: Send email via SMTP from your WordPress Blog
+  Text Domain: easy-wp-smtp
+  Domain Path: /languages
+ */
 
 //Prefix/Slug - swpsmtp
 
@@ -81,6 +81,27 @@ if (!function_exists('swpsmtp_admin_head')) {
 
 }
 
+function swpsmtp_clear_log() {
+    swpsmtp_write_to_log("Easy WP SMTP debug log file\r\n\r\n", true);
+    echo '1';
+    die;
+}
+
+function swpsmtp_write_to_log($str, $overwrite = false) {
+    $swpsmtp_options = get_option('swpsmtp_options');
+    if (isset($swpsmtp_options['smtp_settings']['log_file_name'])) {
+        $log_file_name = $swpsmtp_options['smtp_settings']['log_file_name'];
+    } else {
+        // let's generate log file name
+        $log_file_name = uniqid() . '_debug_log.txt';
+        if (file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n")) {
+            $swpsmtp_options['smtp_settings']['log_file_name'] = $log_file_name;
+            update_option('swpsmtp_options', $swpsmtp_options);
+        }
+    }
+    file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, $str, (!$overwrite ? FILE_APPEND : 0));
+}
+
 /**
  * Function to add smtp options in the phpmailer_init
  * @return void
@@ -117,6 +138,12 @@ if (!function_exists('swpsmtp_init_smtp')) {
         }
         //PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
         $phpmailer->SMTPAutoTLS = false;
+        if (isset($swpsmtp_options['smtp_settings']['enable_debug']) && $swpsmtp_options['smtp_settings']['enable_debug']) {
+            $phpmailer->Debugoutput = function($str, $level) {
+                swpsmtp_write_to_log($str);
+            };
+            $phpmailer->SMTPDebug = 1;
+        }
     }
 
 }
@@ -170,8 +197,11 @@ if (!function_exists('swpsmtp_test_mail')) {
         $mail->MsgHTML($message);
         $mail->AddAddress($to_email);
         global $debugMSG;
-        $debugMSG='';
-        $mail->Debugoutput=function($str, $level) {global $debugMSG; $debugMSG.=$str;};
+        $debugMSG = '';
+        $mail->Debugoutput = function($str, $level) {
+            global $debugMSG;
+            $debugMSG .= $str;
+        };
         $mail->SMTPDebug = 1;
 
         /* Send mail and return result */
@@ -182,7 +212,7 @@ if (!function_exists('swpsmtp_test_mail')) {
         $mail->ClearAllRecipients();
 
         echo '<div class="swpsmtp-yellow-box"><h3>Debug Info</h3>';
-        echo '<textarea rows="20" style="width: 100%;">'.$debugMSG.'</textarea>';
+        echo '<textarea rows="20" style="width: 100%;">' . $debugMSG . '</textarea>';
         echo '</div>';
 
         if (!empty($errors)) {
@@ -260,7 +290,7 @@ if (!function_exists('swpsmtp_send_uninstall')) {
 
     function swpsmtp_send_uninstall() {
         /* Don't delete plugin options. It is better to retain the options so if someone accidentally deactivates, the configuration is not lost. */
-        
+
         //delete_site_option('swpsmtp_options');
         //delete_option('swpsmtp_options');
     }
