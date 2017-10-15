@@ -136,7 +136,7 @@ function swpsmtp_settings() {
                         <th scope="row"><?php _e("Reply-To Email Address", 'easy-wp-smtp'); ?></th>
                         <td>
                             <input type="email" name="swpsmtp_reply_to_email" value="<?php echo isset($swpsmtp_options['reply_to_email']) ? esc_attr($swpsmtp_options['reply_to_email']) : ''; ?>"/><br />
-                            <p class="description"><?php _e("Optional. This email address will be used in the 'Reply-To' field. Leave it blank to use 'From' email instead.", 'easy-wp-smtp'); ?></p>
+                            <p class="description"><?php _e("Optional. This email address will be used in the 'Reply-To' field of the email. Leave it blank to use 'From' email as the reply-to value.", 'easy-wp-smtp'); ?></p>
                         </td>
                     </tr>
                     <tr class="ad_opt swpsmtp_smtp_options">
@@ -199,7 +199,7 @@ function swpsmtp_settings() {
                         <th scope="row"><?php _e("Enable Domain Check", 'easy-wp-smtp'); ?></th>
                         <td>
                             <input type="checkbox" id="swpsmtp_enable_domain_check" name="swpsmtp_enable_domain_check" value="1"<?php echo (isset($swpsmtp_options['enable_domain_check']) && ($swpsmtp_options['enable_domain_check'])) ? ' checked' : ''; ?>/>
-                            <p class="description"><?php _e("If enabled, SMTP settings will be used only if the site is running on following domain(s):", 'easy-wp-smtp'); ?></p>
+                            <p class="description"><?php _e("This option is usually used by developers only. SMTP settings will be used only if the site is running on following domain(s):", 'easy-wp-smtp'); ?></p>
                             <input type="text" name="swpsmtp_allowed_domains" value="<?php echo $swpsmtp_options['allowed_domains']; ?>"<?php echo (isset($swpsmtp_options['enable_domain_check']) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/>
                             <p class="description"><?php _e("Coma-separated domains list. Example: domain1.com, domain2.com", 'easy-wp-smtp'); ?></p>
                         </td>

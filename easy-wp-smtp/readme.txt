@@ -4,7 +4,7 @@ Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
 Tested up to: 4.8
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,8 @@ Easy WP SMTP allows you to configure and send all outgoing emails via a SMTP ser
 * You can use Gmail, Yahoo, Hotmail's SMTP server if you have an account with them.
 * Seamlessly connect your WordPress blog with a mail server to handle all outgoing emails (it's as if the email has been composed inside your mail account).
 * Securely deliver emails to your recipients.
+* Option to enable debug logging to see if the emails are getting sent out successfully or not.
+* Ability to specify a Reply-to email address.
 
 = Easy WP SMTP Plugin Usage =
 
@@ -74,6 +76,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= 1.2.8 =
+* New settings option to specify a reply-to email address.
+* There is a new settings option to enable debug logging.
 
 = 1.2.7 =
 * Added extra debug info (when test email function is used). This debug info will show more details if anything fails. This will be helpful to debug SMTP connection failure on your server.
