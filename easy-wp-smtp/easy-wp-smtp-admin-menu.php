@@ -37,9 +37,7 @@ function swpsmtp_settings() {
             }
         }
         if (isset($_POST['swpsmtp_reply_to_email'])) {
-            if (!empty($_POST['swpsmtp_reply_to_email'])) {
-                $swpsmtp_options['reply_to_email'] = sanitize_email($_POST['swpsmtp_reply_to_email']);
-            }
+            $swpsmtp_options['reply_to_email'] = sanitize_email($_POST['swpsmtp_reply_to_email']);
         }
 
         $swpsmtp_options['smtp_settings']['host'] = sanitize_text_field($_POST['swpsmtp_smtp_host']);
