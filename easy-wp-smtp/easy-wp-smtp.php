@@ -378,7 +378,7 @@ add_filter('plugin_action_links', 'swpsmtp_plugin_action_links', 10, 2);
 add_action('plugins_loaded', 'swpsmtp_plugins_loaded_handler');
 add_filter('plugin_row_meta', 'swpsmtp_register_plugin_links', 10, 2);
 
-add_action('phpmailer_init', 'swpsmtp_init_smtp');
+add_action('phpmailer_init', 'swpsmtp_init_smtp', 999);
 
 add_action('admin_menu', 'swpsmtp_admin_default_setup');
 
