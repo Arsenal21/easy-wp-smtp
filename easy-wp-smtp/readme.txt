@@ -77,6 +77,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= 1.2.9 RC =
+* Added additional setting to deal with email aliases (thanks to bradclarke365).
+* Fixed "Reply-To" option wasn't saving if it is blank.
+
 = 1.2.8 =
 * New settings option to specify a reply-to email address.
 * There is a new settings option to enable debug logging.
