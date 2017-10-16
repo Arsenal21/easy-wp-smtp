@@ -146,15 +146,39 @@ if (!function_exists('swpsmtp_init_smtp')) {
         }
         /* Set the mailer type as per config above, this overrides the already called isMail method */
         $phpmailer->IsSMTP();
-        $from_name = $swpsmtp_options['from_name_field'];
-        $phpmailer->FromName = $from_name;
         //set ReplyTo option if needed
         //this should be set before SetFrom, otherwise might be ignored
         if (!empty($swpsmtp_options['reply_to_email'])) {
             $phpmailer->AddReplyTo($swpsmtp_options['reply_to_email'], $from_name);
         }
+        $from_name = $swpsmtp_options['from_name_field'];
         $from_email = $swpsmtp_options['from_email_field'];
+        // let's see if we have email ignore list populated
+        if (isset($swpsmtp_options['email_ignore_list']) && !empty($swpsmtp_options['email_ignore_list'])) {
+            $emails_arr = explode(',', $swpsmtp_options['email_ignore_list']);
+            if (is_array($emails_arr) && !empty($emails_arr)) {
+                //we have coma-separated list
+            } else {
+                //it's singe email
+                unset($emails_arr);
+                $emails_arr = array($swpsmtp_options['email_ignore_list']);
+            }
+            $from = $phpmailer->From;
+            $match_found = false;
+            foreach ($emails_arr as $email) {
+                if (strtolower(trim($email)) === strtolower(trim($from))) {
+                    $match_found = true;
+                    break;
+                }
+            }
+            if ($match_found) {
+                //we should not override From and Fromname
+                $from_email = $phpmailer->From;
+                $from_name = $phpmailer->FromName;
+            }
+        }
         $phpmailer->From = $from_email;
+        $phpmailer->FromName = $from_name;
         $phpmailer->SetFrom($phpmailer->From, $phpmailer->FromName);
         /* Set the SMTPSecure value */
         if ($swpsmtp_options['smtp_settings']['type_encryption'] !== 'none') {

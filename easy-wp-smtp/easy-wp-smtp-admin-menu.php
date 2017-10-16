@@ -40,6 +40,10 @@ function swpsmtp_settings() {
             $swpsmtp_options['reply_to_email'] = sanitize_email($_POST['swpsmtp_reply_to_email']);
         }
 
+        if (isset($_POST['swpsmtp_email_ignore_list'])) {
+            $swpsmtp_options['email_ignore_list'] = sanitize_text_field($_POST['swpsmtp_email_ignore_list']);
+        }
+
         $swpsmtp_options['smtp_settings']['host'] = sanitize_text_field($_POST['swpsmtp_smtp_host']);
         $swpsmtp_options['smtp_settings']['type_encryption'] = ( isset($_POST['swpsmtp_smtp_type_encryption']) ) ? sanitize_text_field($_POST['swpsmtp_smtp_type_encryption']) : 'none';
         $swpsmtp_options['smtp_settings']['autentication'] = ( isset($_POST['swpsmtp_smtp_autentication']) ) ? sanitize_text_field($_POST['swpsmtp_smtp_autentication']) : 'yes';
@@ -193,6 +197,14 @@ function swpsmtp_settings() {
             <h3 class="hndle"><label for="title"><?php _e('Additional Settings', 'easy-wp-smtp'); ?></label></h3>
             <div class="inside">    		
                 <table class="form-table">
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Don't Replace \"From\" Field For Following Emails:", 'easy-wp-smtp'); ?></th>
+                        <td>
+                            <input type="text" name="swpsmtp_email_ignore_list" value="<?php echo isset($swpsmtp_options['email_ignore_list']) ? esc_attr($swpsmtp_options['email_ignore_list']) : ''; ?>"/><br />
+                            <p class="description"><?php _e("Coma-separated emails list. Example: email1@domain.com, email2@domain.com", "easy-wp-smtp"); ?></p>
+                            <p class="description"><?php _e("This option is useful when you are using several email aliases on your SMTP server. If you don't want your aliases to be replaced by the address specified in \"From\" field, enter them in this field.", 'easy-wp-smtp'); ?></p>
+                        </td>
+                    </tr>
                     <tr valign="top">
                         <th scope="row"><?php _e("Enable Domain Check", 'easy-wp-smtp'); ?></th>
                         <td>
