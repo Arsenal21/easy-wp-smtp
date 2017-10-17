@@ -194,14 +194,14 @@ function swpsmtp_settings() {
         </div><!-- end of postbox -->
 
         <div class="postbox">
-            <h3 class="hndle"><label for="title"><?php _e('Additional Settings', 'easy-wp-smtp'); ?></label></h3>
+            <h3 class="hndle"><label for="title"><?php _e('Additional Settings (Optional)', 'easy-wp-smtp'); ?></label></h3>
             <div class="inside">    		
                 <table class="form-table">
                     <tr valign="top">
-                        <th scope="row"><?php _e("Don't Replace \"From\" Field For Following Emails:", 'easy-wp-smtp'); ?></th>
+                        <th scope="row"><?php _e("Don't Replace \"From\" Field", 'easy-wp-smtp'); ?></th>
                         <td>
                             <input type="text" name="swpsmtp_email_ignore_list" value="<?php echo isset($swpsmtp_options['email_ignore_list']) ? esc_attr($swpsmtp_options['email_ignore_list']) : ''; ?>"/><br />
-                            <p class="description"><?php _e("Coma-separated emails list. Example: email1@domain.com, email2@domain.com", "easy-wp-smtp"); ?></p>
+                            <p class="description"><?php _e("Comma separated emails list. Example value: email1@domain.com, email2@domain.com", "easy-wp-smtp"); ?></p>
                             <p class="description"><?php _e("This option is useful when you are using several email aliases on your SMTP server. If you don't want your aliases to be replaced by the address specified in \"From\" field, enter them in this field.", 'easy-wp-smtp'); ?></p>
                         </td>
                     </tr>
@@ -294,6 +294,10 @@ function swpsmtp_settings() {
         </div><!-- end of inside -->
     </div><!-- end of postbox -->
 
+    <div class="swpsmtp-yellow-box">
+        Visit the <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a> plugin's documentation page to learn how to use this plugin.
+    </div>
+    
     <?php
     echo '</div></div>'; //<!-- end of #poststuff and #post-body -->
     echo '</div>'; //<!--  end of .wrap #swpsmtp-mail .swpsmtp-mail -->
