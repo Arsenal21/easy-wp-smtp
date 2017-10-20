@@ -146,20 +146,20 @@ if (!function_exists('swpsmtp_init_smtp')) {
         }
         /* Set the mailer type as per config above, this overrides the already called isMail method */
         $phpmailer->IsSMTP();
+        $from_name = $swpsmtp_options['from_name_field'];
+        $from_email = $swpsmtp_options['from_email_field'];
         //set ReplyTo option if needed
         //this should be set before SetFrom, otherwise might be ignored
         if (!empty($swpsmtp_options['reply_to_email'])) {
             $phpmailer->AddReplyTo($swpsmtp_options['reply_to_email'], $from_name);
         }
-        $from_name = $swpsmtp_options['from_name_field'];
-        $from_email = $swpsmtp_options['from_email_field'];
         // let's see if we have email ignore list populated
         if (isset($swpsmtp_options['email_ignore_list']) && !empty($swpsmtp_options['email_ignore_list'])) {
             $emails_arr = explode(',', $swpsmtp_options['email_ignore_list']);
             if (is_array($emails_arr) && !empty($emails_arr)) {
                 //we have coma-separated list
             } else {
-                //it's singe email
+                //it's single email
                 unset($emails_arr);
                 $emails_arr = array($swpsmtp_options['email_ignore_list']);
             }

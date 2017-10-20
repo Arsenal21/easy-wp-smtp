@@ -1,0 +1,243 @@
+Easy WP SMTP debug log file
+
+SMTP ERROR: Failed to connect to server: php_network_getaddresses: getaddrinfo failed: Name or service not known (0)SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/TroubleshootingCLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Thu, 19 Oct 2017 20:54:16 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Subject: Notification of product sale
+CLIENT -> SERVER: Message-ID: <2bc4fb337290031556298894faa8f6b9@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Dear Seller
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This mail is to notify you of a product sale.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test product x 1 - $14.88
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: The sale was made to test buyer (eminemwalsh-buyer@gmail.com)
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Thanks{"wp_cart_id":"47","ip":"192.168.0.140"}
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Thu, 19 Oct 2017 20:55:11 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Subject: Notification of product sale
+CLIENT -> SERVER: Message-ID: <e53cc185d804a24b282e2920efbf18bc@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Dear Seller
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This mail is to notify you of a product sale.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test product x 1 - $14.88
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: The sale was made to test buyer (eminemwalsh-buyer@gmail.com)
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Thanks{"wp_cart_id":"49","ip":"192.168.0.140"}
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Thu, 19 Oct 2017 21:06:22 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Subject: Notification of product sale
+CLIENT -> SERVER: Message-ID: <b991c6a4367cd498d9953eaf865f08f9@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Dear Seller
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This mail is to notify you of a product sale.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test product x 1 - $14.88
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: The sale was made to test buyer (eminemwalsh-buyer@gmail.com)
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Thanks
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Fri, 20 Oct 2017 09:48:26 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Subject: Notification of product sale
+CLIENT -> SERVER: Message-ID: <5894a3ee36ad215223165f88e54d6e56@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Dear Seller
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This mail is to notify you of a product sale.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test product x 1 - $14.88
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: The sale was made to test buyer (eminemwalsh-buyer@gmail.com)
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Custom Fields
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test 1: 123
+CLIENT -> SERVER: Test 2: 
+CLIENT -> SERVER: 222: 222
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Thanks
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Fri, 20 Oct 2017 09:55:08 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Subject: Notification of product sale
+CLIENT -> SERVER: Message-ID: <edd5e54e58728078c21ab99215d936aa@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Dear Seller
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This mail is to notify you of a product sale.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test product x 1 - $14.88
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: The sale was made to test buyer (eminemwalsh-buyer@gmail.com)
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Custom Fields
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test 1: test1
+CLIENT -> SERVER: Test 2: 
+CLIENT -> SERVER: 222: 222
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Thanks
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Fri, 20 Oct 2017 09:57:04 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Subject: Notification of product sale
+CLIENT -> SERVER: Message-ID: <9d3935fd3f47b702b12fb01cf45b58c2@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Dear Seller
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This mail is to notify you of a product sale.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test product x 1 - $14.88
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: The sale was made to test buyer (eminemwalsh-buyer@gmail.com)
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Custom Fields
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Test 1: 333
+CLIENT -> SERVER: Test 2: 444
+CLIENT -> SERVER: 222: 222
+CLIENT -> SERVER: 
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Thanks
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: STARTTLS
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: ZW1pbmVtd2Fsc2hAZ21haWwuY29t
+CLIENT -> SERVER: ZnVja3lvdTkxMQ==
+CLIENT -> SERVER: MAIL FROM:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Fri, 20 Oct 2017 20:35:18 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <eminemwalsh@gmail.com>
+CLIENT -> SERVER: Reply-To: alexanderfoxc@gmail.com
+CLIENT -> SERVER: Subject: [CleanWP] Notice of Password Change
+CLIENT -> SERVER: Message-ID: <aa0a1d5151a7af02315fab9e7309de54@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Hi cleanwp,
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This notice confirms that your password was changed on CleanWP.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: If you did not change your password, please contact the Site Administrator at
+CLIENT -> SERVER: eminemwalsh@gmail.com
+CLIENT -> SERVER: 
+CLIENT -> SERVER: This email has been sent to eminemwalsh@gmail.com
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Regards,
+CLIENT -> SERVER: All at CleanWP
+CLIENT -> SERVER: https://desertfox.me/miniserv/cleanwp
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
