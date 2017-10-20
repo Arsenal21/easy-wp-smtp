@@ -252,6 +252,8 @@ function swpsmtp_settings() {
                                 req.done(function (data) {
                                     if (data === '1') {
                                         alert("<?php _e('Log cleared.', 'easy-wp-smtp'); ?>");
+                                    } else {
+                                        alert("Error occured: " + data);
                                     }
                                 });
                             }
@@ -329,7 +331,9 @@ function swpsmtp_admin_init() {
             $swpsmtp_options = get_option('swpsmtp_options');
             $log_file_name = $swpsmtp_options['smtp_settings']['log_file_name'];
             if (!file_exists(plugin_dir_path(__FILE__) . $log_file_name)) {
-                swpsmtp_write_to_log("Easy WP SMTP debug log file\r\n\r\n");
+                if (swpsmtp_write_to_log("Easy WP SMTP debug log file\r\n\r\n") === false) {
+                    wp_die('Can\'t write to log file. Check if plugin directory  (' . plugin_dir_path(__FILE__) . ') is writeable.');
+                };
             }
             $logfile = fopen(plugin_dir_path(__FILE__) . $log_file_name, 'rb');
             if (!$logfile) {

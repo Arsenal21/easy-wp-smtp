@@ -82,9 +82,12 @@ if (!function_exists('swpsmtp_admin_head')) {
 }
 
 function swpsmtp_clear_log() {
-    swpsmtp_write_to_log("Easy WP SMTP debug log file\r\n\r\n", true);
-    echo '1';
-    die;
+    if (swpsmtp_write_to_log("Easy WP SMTP debug log file\r\n\r\n", true) !== false) {
+        echo '1';
+    } else {
+        echo 'Can\'t clear log - log file is not writeable.';
+    }
+    wp_die();
 }
 
 function swpsmtp_write_to_log($str, $overwrite = false) {
@@ -94,12 +97,11 @@ function swpsmtp_write_to_log($str, $overwrite = false) {
     } else {
         // let's generate log file name
         $log_file_name = uniqid() . '_debug_log.txt';
-        if (file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n")) {
-            $swpsmtp_options['smtp_settings']['log_file_name'] = $log_file_name;
-            update_option('swpsmtp_options', $swpsmtp_options);
-        }
+        $swpsmtp_options['smtp_settings']['log_file_name'] = $log_file_name;
+        update_option('swpsmtp_options', $swpsmtp_options);
+        file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n");
     }
-    file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, $str, (!$overwrite ? FILE_APPEND : 0));
+    return(file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, $str, (!$overwrite ? FILE_APPEND : 0)));
 }
 
 function base64_decode_maybe($str) {
