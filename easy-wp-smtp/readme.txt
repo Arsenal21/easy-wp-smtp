@@ -78,6 +78,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.0 RC =
+* Actual SMTP password is replaced by a gag on the settings page (protects it from being seen in page source code). 
 * Fixed minor bug in Reply-To option handling (thanks to arildur).
 * Some improvements in developers-related options (thanks to erikmolenaar).
 

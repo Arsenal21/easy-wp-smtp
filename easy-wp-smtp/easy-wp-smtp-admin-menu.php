@@ -22,6 +22,7 @@ function swpsmtp_settings() {
 
     $swpsmtp_options = get_option('swpsmtp_options');
     $smtp_test_mail = get_option('smtp_test_mail');
+    $gag_password = '#easywpsmtpgagpass#';
     if (empty($smtp_test_mail)) {
         $smtp_test_mail = array('swpsmtp_to' => '', 'swpsmtp_subject' => '', 'swpsmtp_message' => '',);
     }
@@ -48,8 +49,10 @@ function swpsmtp_settings() {
         $swpsmtp_options['smtp_settings']['type_encryption'] = ( isset($_POST['swpsmtp_smtp_type_encryption']) ) ? sanitize_text_field($_POST['swpsmtp_smtp_type_encryption']) : 'none';
         $swpsmtp_options['smtp_settings']['autentication'] = ( isset($_POST['swpsmtp_smtp_autentication']) ) ? sanitize_text_field($_POST['swpsmtp_smtp_autentication']) : 'yes';
         $swpsmtp_options['smtp_settings']['username'] = sanitize_text_field($_POST['swpsmtp_smtp_username']);
-        $smtp_password = stripslashes($_POST['swpsmtp_smtp_password']);
-        $swpsmtp_options['smtp_settings']['password'] = base64_encode($smtp_password);
+        $smtp_password = $_POST['swpsmtp_smtp_password'];
+        if ($smtp_password !== $gag_password) {
+            $swpsmtp_options['smtp_settings']['password'] = base64_encode($smtp_password);
+        }
         $swpsmtp_options['smtp_settings']['enable_debug'] = isset($_POST['swpsmtp_enable_debug']) ? 1 : false;
         $swpsmtp_options['enable_domain_check'] = isset($_POST['swpsmtp_enable_domain_check']) ? 1 : false;
         if (isset($_POST['swpsmtp_allowed_domains'])) {
@@ -186,7 +189,7 @@ function swpsmtp_settings() {
                     <tr class="ad_opt swpsmtp_smtp_options">
                         <th><?php _e('SMTP Password', 'easy-wp-smtp'); ?></th>
                         <td>
-                            <input type='password' name='swpsmtp_smtp_password' value='<?php echo esc_attr(swpsmtp_get_password()); ?>' /><br />
+                            <input type='password' name='swpsmtp_smtp_password' value='<?php echo (!empty(swpsmtp_get_password()) ? $gag_password : ''); ?>' /><br />
                             <p class="description"><?php _e("The password to login to your mail server", 'easy-wp-smtp'); ?></p>
                         </td>
                     </tr>	
