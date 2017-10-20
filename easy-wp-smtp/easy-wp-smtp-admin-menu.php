@@ -189,7 +189,7 @@ function swpsmtp_settings() {
                     <tr class="ad_opt swpsmtp_smtp_options">
                         <th><?php _e('SMTP Password', 'easy-wp-smtp'); ?></th>
                         <td>
-                            <input type='password' name='swpsmtp_smtp_password' value='<?php echo (!empty(swpsmtp_get_password()) ? $gag_password : ''); ?>' /><br />
+                            <input type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' /><br />
                             <p class="description"><?php _e("The password to login to your mail server", 'easy-wp-smtp'); ?></p>
                         </td>
                     </tr>	
