@@ -102,6 +102,13 @@ function swpsmtp_write_to_log($str, $overwrite = false) {
     file_put_contents(plugin_dir_path(__FILE__) . $log_file_name, $str, (!$overwrite ? FILE_APPEND : 0));
 }
 
+function base64_decode_maybe($str) {
+    if (mb_detect_encoding($str) === mb_detect_encoding(base64_decode(base64_encode(base64_decode($str))))) {
+        $str = base64_decode($str);
+    }
+    return $str;
+}
+
 /**
  * Function to add smtp options in the phpmailer_init
  * @return void
@@ -118,12 +125,13 @@ if (!function_exists('swpsmtp_init_smtp')) {
         if (isset($swpsmtp_options['enable_domain_check']) && $swpsmtp_options['enable_domain_check']) {
             //check if allowed domains list is not blank
             if (isset($swpsmtp_options['allowed_domains']) && !empty($swpsmtp_options['allowed_domains'])) {
+                $swpsmtp_options['allowed_domains'] = base64_decode_maybe($swpsmtp_options['allowed_domains']);
                 //let's see if we have one domain or coma-separated domains
                 $domains_arr = explode(',', $swpsmtp_options['allowed_domains']);
                 if (is_array($domains_arr) && !empty($domains_arr)) {
                     //we have coma-separated list
                 } else {
-                    //it's singe domain
+                    //it's single domain
                     unset($domains_arr);
                     $domains_arr = array($swpsmtp_options['allowed_domains']);
                 }

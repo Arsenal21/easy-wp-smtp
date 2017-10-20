@@ -78,7 +78,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.0 RC =
-* Fixed minor bug in Reply-To option handling (thanks to arildur for reporting).
+* Fixed minor bug in Reply-To option handling (thanks to arildur).
+* Some improvements in developers-related options (thanks to erikmolenaar).
 
 = 1.2.9 =
 * Added additional setting option to deal with email aliases (thanks to bradclarke365).
