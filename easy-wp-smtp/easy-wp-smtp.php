@@ -373,8 +373,15 @@ function swpsmtp_activate() {
     if (!isset($swpsmtp_options['allowed_domains'])) {
         $domain = parse_url(get_site_url(), PHP_URL_HOST);
         if ($domain) {
-            $swpsmtp_options['allowed_domains'] = $domain;
+            $swpsmtp_options['allowed_domains'] = base64_encode($domain);
             update_option('swpsmtp_options', $swpsmtp_options);
+        }
+    } else { // let's check if existing value should be base64 encoded
+        if (!empty($swpsmtp_options['allowed_domains'])) {
+            if (base64_decode_maybe($swpsmtp_options['allowed_domains']) === $swpsmtp_options['allowed_domains']) {
+                $swpsmtp_options['allowed_domains'] = base64_encode($swpsmtp_options['allowed_domains']);
+                update_option('swpsmtp_options', $swpsmtp_options);
+            }
         }
     }
 }
