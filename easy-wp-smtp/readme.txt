@@ -4,7 +4,7 @@ Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
 Tested up to: 4.8
-Stable tag: 1.2.9
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,9 +77,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= 1.3.0 RC =
+= 1.3.0 =
 * Plugin will display an error message if log file is not writeable when "Clear Log" is clicked.
-* Actual SMTP password is replaced by a gag on the settings page (protects it from being seen in page source code). 
+* Actual SMTP password is replaced by a gag on the settings page. 
 * Fixed minor bug in Reply-To option handling (thanks to arildur).
 * Some improvements in developers-related options (thanks to erikmolenaar).
 
