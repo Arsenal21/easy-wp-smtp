@@ -77,7 +77,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= TODO 1.3.1 =
+= 1.3.1-testing =
 * Plugin will now attempt to block ALL emails if Domain Check option enabled and domain check fails.
 
 = 1.3.0 =
