@@ -4,7 +4,7 @@ Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
 Tested up to: 4.8
-Stable tag: 1.3.0
+Stable tag: 1.3.1-testing
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= TODO 1.3.1 =
+* Plugin will now attempt to block ALL emails if Domain Check option enabled and domain check fails.
 
 = 1.3.0 =
 * Plugin will display an error message if log file is not writeable when "Clear Log" is clicked.

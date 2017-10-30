@@ -1,7 +1,7 @@
 <?php
 /*
-  Plugin Name: Easy WP SMTP
-  Version: 1.3.0
+  Plugin Name: Easy WP SMTP [testing build - not for distribution]
+  Version: 1.3.1-testing
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -117,42 +117,16 @@ function base64_decode_maybe($str) {
  */
 if (!function_exists('swpsmtp_init_smtp')) {
 
-    function swpsmtp_init_smtp($phpmailer) {
+    function swpsmtp_init_smtp(&$phpmailer) {
         //check if SMTP credentials have been configured.
         if (!swpsmtp_credentials_configured()) {
             return;
         }
         $swpsmtp_options = get_option('swpsmtp_options');
         //check if Domain Check enabled
-        if (isset($swpsmtp_options['enable_domain_check']) && $swpsmtp_options['enable_domain_check']) {
-            //check if allowed domains list is not blank
-            if (isset($swpsmtp_options['allowed_domains']) && !empty($swpsmtp_options['allowed_domains'])) {
-                $swpsmtp_options['allowed_domains'] = base64_decode_maybe($swpsmtp_options['allowed_domains']);
-                //let's see if we have one domain or coma-separated domains
-                $domains_arr = explode(',', $swpsmtp_options['allowed_domains']);
-                if (is_array($domains_arr) && !empty($domains_arr)) {
-                    //we have coma-separated list
-                } else {
-                    //it's single domain
-                    unset($domains_arr);
-                    $domains_arr = array($swpsmtp_options['allowed_domains']);
-                }
-                $site_domain = parse_url(get_site_url(), PHP_URL_HOST);
-                $match_found = false;
-                foreach ($domains_arr as $domain) {
-                    if (strtolower(trim($domain)) === strtolower(trim($site_domain))) {
-                        $match_found = true;
-                        break;
-                    }
-                }
-                if (!$match_found) {
-                    swpsmtp_write_to_log(
-                            "\r\n-------------------------------------------------------------------------------------------------------\r\n" .
-                            "Domain check failed: website domain (" . $site_domain . ") is not in allowed domains list.\r\n" .
-                            "-------------------------------------------------------------------------------------------------------\r\n\r\n");
-                    return;
-                }
-            }
+        if (swpsmtp_is_domain_blocked() !== false) {
+            $phpmailer = new swpsmtp_gag_mailer();
+            return;
         }
         /* Set the mailer type as per config above, this overrides the already called isMail method */
         $phpmailer->IsSMTP();
@@ -205,7 +179,7 @@ if (!function_exists('swpsmtp_init_smtp')) {
             $phpmailer->Username = $swpsmtp_options['smtp_settings']['username'];
             $phpmailer->Password = swpsmtp_get_password();
         }
-        //PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
+//PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
         $phpmailer->SMTPAutoTLS = false;
         if (isset($swpsmtp_options['smtp_settings']['enable_debug']) && $swpsmtp_options['smtp_settings']['enable_debug']) {
             $phpmailer->Debugoutput = function($str, $level) {
@@ -363,8 +337,8 @@ if (!function_exists('swpsmtp_send_uninstall')) {
     function swpsmtp_send_uninstall() {
         /* Don't delete plugin options. It is better to retain the options so if someone accidentally deactivates, the configuration is not lost. */
 
-        //delete_site_option('swpsmtp_options');
-        //delete_option('swpsmtp_options');
+//delete_site_option('swpsmtp_options');
+//delete_option('swpsmtp_options');
     }
 
 }
@@ -388,12 +362,65 @@ function swpsmtp_activate() {
     }
 }
 
+function swpsmtp_is_domain_blocked() {
+    $swpsmtp_options = get_option('swpsmtp_options');
+    //check if Domain Check enabled
+    if (isset($swpsmtp_options['enable_domain_check']) && $swpsmtp_options['enable_domain_check']) {
+        //check if allowed domains list is not blank
+        if (isset($swpsmtp_options['allowed_domains']) && !empty($swpsmtp_options['allowed_domains'])) {
+            $swpsmtp_options['allowed_domains'] = base64_decode_maybe($swpsmtp_options['allowed_domains']);
+            //let's see if we have one domain or coma-separated domains
+            $domains_arr = explode(',', $swpsmtp_options['allowed_domains']);
+            if (is_array($domains_arr) && !empty($domains_arr)) {
+                //we have coma-separated list
+            } else {
+                //it's single domain
+                unset($domains_arr);
+                $domains_arr = array($swpsmtp_options['allowed_domains']);
+            }
+            $site_domain = parse_url(get_site_url(), PHP_URL_HOST);
+            $match_found = false;
+            foreach ($domains_arr as $domain) {
+                if (strtolower(trim($domain)) === strtolower(trim($site_domain))) {
+                    $match_found = true;
+                    break;
+                }
+            }
+            if (!$match_found) {
+                return $site_domain;
+            }
+        }
+    }
+    return false;
+}
+
+function swpsmtp_wp_mail($args) {
+    $domain = swpsmtp_is_domain_blocked();
+    if ($domain !== false) {
+        swpsmtp_write_to_log(
+                "\r\n------------------------------------------------------------------------------------------------------\r\n" .
+                "Following email not sent. Domain check failed: website domain (" . $domain . ") is not in allowed domains list.\r\n" .
+                "To: " . $args['to'] . "; Subject: " . $args['subject'] . "\r\n" .
+                "------------------------------------------------------------------------------------------------------\r\n\r\n");
+    }
+    return $args;
+}
+
+class swpsmtp_gag_mailer extends stdClass {
+
+    public function Send() {
+        return true;
+    }
+
+}
+
 /**
  * Add all hooks
  */
 add_filter('plugin_action_links', 'swpsmtp_plugin_action_links', 10, 2);
 add_action('plugins_loaded', 'swpsmtp_plugins_loaded_handler');
 add_filter('plugin_row_meta', 'swpsmtp_register_plugin_links', 10, 2);
+add_filter('wp_mail', 'swpsmtp_wp_mail', 2147483647);
 
 add_action('phpmailer_init', 'swpsmtp_init_smtp', 999);
 
