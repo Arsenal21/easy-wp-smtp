@@ -82,7 +82,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 = 1.3.0 =
 * Plugin will display an error message if log file is not writeable when "Clear Log" is clicked.
-* Actual SMTP password is replaced by a gag on the settings page. 
+* Actual SMTP password is replaced by a gag on the settings page.
 * Fixed minor bug in Reply-To option handling (thanks to arildur).
 * Some improvements in developers-related options (thanks to erikmolenaar).
 
