@@ -92,7 +92,7 @@ function swpsmtp_settings() {
 			}
 		}
 		$swpsmtp_subject = isset( $_POST['swpsmtp_subject'] ) ? sanitize_text_field( $_POST['swpsmtp_subject'] ) : '';
-		$swpsmtp_message = isset( $_POST['swpsmtp_message'] ) ? sanitize_text_field( $_POST['swpsmtp_message'] ) : '';
+		$swpsmtp_message = isset( $_POST['swpsmtp_message'] ) ? sanitize_textarea_field( $_POST['swpsmtp_message'] ) : '';
 
 		//Save the test mail details so it doesn't need to be filled in everytime.
 		$smtp_test_mail['swpsmtp_to'] = $swpsmtp_to;
@@ -289,7 +289,7 @@ function swpsmtp_settings() {
 					<tr valign="top">
 						<th scope="row"><?php _e( "Message", 'easy-wp-smtp' ); ?>:</th>
 						<td>
-							<textarea name="swpsmtp_message" id="swpsmtp_message" rows="5"><?php echo esc_textarea( $smtp_test_mail['swpsmtp_message'] ); ?></textarea><br />
+							<textarea name="swpsmtp_message" id="swpsmtp_message" rows="5"><?php echo stripslashes( esc_textarea( $smtp_test_mail['swpsmtp_message'] ) ); ?></textarea><br />
 							<p class="description"><?php _e( "Write your email message", 'easy-wp-smtp' ); ?></p>
 						</td>
 					</tr>

@@ -78,6 +78,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.1-testing =
+* Test email message body is no longer having excess slashes inserted (thanks to tdcsforeveryone).
 * Plugin will now attempt to block ALL emails if Domain Check option enabled and domain check fails.
 
 = 1.3.0 =
