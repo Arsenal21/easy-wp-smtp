@@ -274,7 +274,10 @@ if ( !function_exists( 'swpsmtp_get_password' ) ) {
 
 	function swpsmtp_get_password() {
 		$swpsmtp_options = get_option( 'swpsmtp_options' );
-		$temp_password = $swpsmtp_options['smtp_settings']['password'];
+		$temp_password = isset( $swpsmtp_options['smtp_settings']['password'] ) ? $swpsmtp_options['smtp_settings']['password'] : '';
+		if ( $temp_password == '' ) {
+			return '';
+		}
 		$password = "";
 		$decoded_pass = base64_decode( $temp_password );
 		/* no additional checks for servers that aren't configured with mbstring enabled */
