@@ -56,6 +56,7 @@ function swpsmtp_settings() {
 		$swpsmtp_options['smtp_settings']['enable_debug'] = isset( $_POST['swpsmtp_enable_debug'] ) ? 1 : false;
 		$swpsmtp_options['enable_domain_check'] = isset( $_POST['swpsmtp_enable_domain_check'] ) ? 1 : false;
 		if ( isset( $_POST['swpsmtp_allowed_domains'] ) ) {
+			$swpsmtp_options['block_all_emails'] = isset( $_POST['swpsmtp_block_all_emails'] ) ? 1 : false;
 			$swpsmtp_options['allowed_domains'] = base64_encode( sanitize_text_field( $_POST['swpsmtp_allowed_domains'] ) );
 		} else if ( !isset( $swpsmtp_options['allowed_domains'] ) ) {
 			$swpsmtp_options['allowed_domains'] = '';
@@ -219,6 +220,10 @@ function swpsmtp_settings() {
 							<p class="description"><?php _e( "This option is usually used by developers only. SMTP settings will be used only if the site is running on following domain(s):", 'easy-wp-smtp' ); ?></p>
 							<input type="text" name="swpsmtp_allowed_domains" value="<?php echo base64_decode_maybe( $swpsmtp_options['allowed_domains'] ); ?>"<?php echo (isset( $swpsmtp_options['enable_domain_check'] ) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/>
 							<p class="description"><?php _e( "Coma-separated domains list. Example: domain1.com, domain2.com", 'easy-wp-smtp' ); ?></p>
+							<p>
+								<label><input type="checkbox" id="swpsmtp_block_all_emails" name="swpsmtp_block_all_emails" value="1"<?php echo (isset( $swpsmtp_options['block_all_emails'] ) && ($swpsmtp_options['block_all_emails'])) ? ' checked' : ''; ?><?php echo (isset( $swpsmtp_options['enable_domain_check'] ) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/> Block all emails</label>
+							</p>
+							<p class="description"><?php _e( "When enabled, plugin attempts to block ALL emails from being sent out if domain mismtach." ); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -240,6 +245,7 @@ function swpsmtp_settings() {
 					jQuery(function ($) {
 						$('#swpsmtp_enable_domain_check').change(function () {
 							$('input[name="swpsmtp_allowed_domains"]').prop('disabled', !$(this).is(':checked'));
+							$('input[name="swpsmtp_block_all_emails"]').prop('disabled', !$(this).is(':checked'));
 						});
 						$('#swpsmtp_clear_log_btn').click(function (e) {
 							e.preventDefault();

@@ -124,8 +124,21 @@ if ( !function_exists( 'swpsmtp_init_smtp' ) ) {
 		}
 		$swpsmtp_options = get_option( 'swpsmtp_options' );
 		//check if Domain Check enabled
-		if ( swpsmtp_is_domain_blocked() !== false ) {
-			$phpmailer = new swpsmtp_gag_mailer();
+		$domain = swpsmtp_is_domain_blocked();
+		if ( $domain !== false ) {
+			//domain check failed
+			//let's check if we have block all emails option enabled
+			if ( isset( $swpsmtp_options['block_all_emails'] ) && $swpsmtp_options['block_all_emails'] === 1 ) {
+				// it's enabled. Let's use gag mailer class that would prevent emails from being sent out.
+				$phpmailer = new swpsmtp_gag_mailer();
+			} else {
+				// it's disabled. Let's write some info to the log
+				swpsmtp_write_to_log(
+						"\r\n------------------------------------------------------------------------------------------------------\r\n" .
+						"Domain check failed: website domain (" . $domain . ") is not in allowed domains list.\r\n" .
+						"SMTP settings won't be used.\r\n" .
+						"------------------------------------------------------------------------------------------------------\r\n\r\n" );
+			}
 			return;
 		}
 		/* Set the mailer type as per config above, this overrides the already called isMail method */
@@ -294,7 +307,7 @@ if ( !function_exists( 'swpsmtp_get_password' ) ) {
 		} else { //not encoded
 			$password = $temp_password;
 		}
-		return stripslashes($password);
+		return stripslashes( $password );
 	}
 
 }
@@ -398,11 +411,13 @@ function swpsmtp_is_domain_blocked() {
 }
 
 function swpsmtp_wp_mail( $args ) {
+	$swpsmtp_options = get_option( 'swpsmtp_options' );
 	$domain = swpsmtp_is_domain_blocked();
-	if ( $domain !== false ) {
+	if ( $domain !== false && (isset( $swpsmtp_options['block_all_emails'] ) && $swpsmtp_options['block_all_emails'] === 1) ) {
 		swpsmtp_write_to_log(
 				"\r\n------------------------------------------------------------------------------------------------------\r\n" .
-				"Following email not sent. Domain check failed: website domain (" . $domain . ") is not in allowed domains list.\r\n" .
+				"Domain check failed: website domain (" . $domain . ") is not in allowed domains list.\r\n" .
+				"Following email not sent (block all emails option is enabled):\r\n" .
 				"To: " . $args['to'] . "; Subject: " . $args['subject'] . "\r\n" .
 				"------------------------------------------------------------------------------------------------------\r\n\r\n" );
 	}

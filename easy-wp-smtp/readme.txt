@@ -81,7 +81,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 * Fixed potential issue with passwords that had special characters.
 * Check if variables are set before interacting with them (removes PHP notices when WP debug mode is enabled) (thanks to rubas and matward).
 * Test email message body is no longer having excess slashes inserted (thanks to tdcsforeveryone).
-* Plugin will now attempt to block ALL emails if Domain Check option enabled and domain check fails.
+* Added option for plugin to block ALL emails if Domain Check option enabled and domain check fails (thanks to erikmolenaar).
 
 = 1.3.0 =
 * Plugin will display an error message if log file is not writeable when "Clear Log" is clicked.
