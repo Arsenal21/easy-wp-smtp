@@ -3,8 +3,8 @@ Contributors: wpecommerce, wp.insider, alexanderfoxc
 Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
-Tested up to: 4.8
-Stable tag: 1.3.0
+Tested up to: 4.9
+Stable tag: 1.3.1-testing2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,9 +77,15 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= 1.3.1-testing2 =
+* Fixed potential issue with passwords that had special characters.
+* Check if variables are set before interacting with them (removes PHP notices when WP debug mode is enabled) (thanks to rubas and matward).
+* Test email message body is no longer having excess slashes inserted (thanks to tdcsforeveryone).
+* Added option for plugin to block ALL emails if Domain Check option enabled and domain check fails (thanks to erikmolenaar).
+
 = 1.3.0 =
 * Plugin will display an error message if log file is not writeable when "Clear Log" is clicked.
-* Actual SMTP password is replaced by a gag on the settings page. 
+* Actual SMTP password is replaced by a gag on the settings page.
 * Fixed minor bug in Reply-To option handling (thanks to arildur).
 * Some improvements in developers-related options (thanks to erikmolenaar).
 
