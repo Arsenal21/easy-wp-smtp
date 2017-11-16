@@ -294,7 +294,7 @@ if ( !function_exists( 'swpsmtp_get_password' ) ) {
 		} else { //not encoded
 			$password = $temp_password;
 		}
-		return $password;
+		return stripslashes($password);
 	}
 
 }
