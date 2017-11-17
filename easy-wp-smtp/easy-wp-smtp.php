@@ -1,6 +1,6 @@
 <?php
 /*
-  Plugin Name: Easy WP SMTP [testing build - not for distribution]
+  Plugin Name: Easy WP SMTP
   Version: 1.3.1
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
