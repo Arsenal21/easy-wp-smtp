@@ -107,7 +107,7 @@ function swpsmtp_settings() {
 	}
 	?>
 	<div class="swpsmtp-yellow-box">
-		Please visit the <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a> plugin's documentation page for usage instructions.
+		<?php _ex(sprintf("Please visit the %s plugin's documentation page to learn how to use this plugin.",'<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>'),'%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp');?>
 	</div>
 
 	<div class="updated fade" <?php if ( empty( $message ) ) echo "style=\"display:none\""; ?>>
@@ -125,7 +125,7 @@ function swpsmtp_settings() {
 			<h3 class="hndle"><label for="title"><?php _e( 'SMTP Configuration Settings', 'easy-wp-smtp' ); ?></label></h3>
 			<div class="inside">
 
-				<p>You can request your hosting provider for the SMTP details of your site. Use the SMTP details provided by your hosting provider to configure the following settings.</p>
+				<p><?php _e('You can request your hosting provider for the SMTP details of your site. Use the SMTP details provided by your hosting provider to configure the following settings.','easy-wp-smtp')?></p>
 
 				<table class="form-table">
 					<tr valign="top">
@@ -221,7 +221,7 @@ function swpsmtp_settings() {
 							<input type="text" name="swpsmtp_allowed_domains" value="<?php echo base64_decode_maybe( $swpsmtp_options['allowed_domains'] ); ?>"<?php echo (isset( $swpsmtp_options['enable_domain_check'] ) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/>
 							<p class="description"><?php _e( "Coma-separated domains list. Example: domain1.com, domain2.com", 'easy-wp-smtp' ); ?></p>
 							<p>
-								<label><input type="checkbox" id="swpsmtp_block_all_emails" name="swpsmtp_block_all_emails" value="1"<?php echo (isset( $swpsmtp_options['block_all_emails'] ) && ($swpsmtp_options['block_all_emails'])) ? ' checked' : ''; ?><?php echo (isset( $swpsmtp_options['enable_domain_check'] ) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/> Block all emails</label>
+								<label><input type="checkbox" id="swpsmtp_block_all_emails" name="swpsmtp_block_all_emails" value="1"<?php echo (isset( $swpsmtp_options['block_all_emails'] ) && ($swpsmtp_options['block_all_emails'])) ? ' checked' : ''; ?><?php echo (isset( $swpsmtp_options['enable_domain_check'] ) && ($swpsmtp_options['enable_domain_check'])) ? '' : ' disabled'; ?>/> <?php _e('Block all emails','easy-wp-smtp');?></label>
 							</p>
 							<p class="description"><?php _e( "When enabled, plugin attempts to block ALL emails from being sent out if domain mismtach." ); ?></p>
 						</td>
@@ -273,8 +273,8 @@ function swpsmtp_settings() {
 		<h3 class="hndle"><label for="title"><?php _e( 'Test Email', 'easy-wp-smtp' ); ?></label></h3>
 		<div class="inside">
 
-			<p>You can use this section to send an email from your server using the above configured SMTP details to see if the email gets delivered.</p>
-			<p><b>Note</b>: debug log for this test email will be automatically displayed right after you send it. Test email also ignores "Enable Domain Check" option.</p>
+			<p><?php _e('You can use this section to send an email from your server using the above configured SMTP details to see if the email gets delivered.','easy-wp-smtp');?></p>
+			<p><b><?php _ex('Note:','"Note" as in "Note: keep this in mind"','easy-wp-smtp');?></b> <?php _e('debug log for this test email will be automatically displayed right after you send it. Test email also ignores "Enable Domain Check" option.','easy-wp-smtp');?></p>
 
 			<form id="swpsmtp_settings_form" method="post" action="">
 				<table class="form-table">
@@ -310,7 +310,7 @@ function swpsmtp_settings() {
 	</div><!-- end of postbox -->
 
 	<div class="swpsmtp-yellow-box">
-		Visit the <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a> plugin's documentation page to learn how to use this plugin.
+		<?php _ex(sprintf("Please visit the %s plugin's documentation page to learn how to use this plugin.",'<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>'),'%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp');?>
 	</div>
 
 	<?php
