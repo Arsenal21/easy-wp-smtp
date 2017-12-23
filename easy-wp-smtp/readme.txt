@@ -79,6 +79,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 = 1.3.2 =
 * Hopefully fixed inability for plugin to save settings in some circumstances (thanks to all who kept reporting this issue).
+* The plugin is no longer failing if PHP mbstring extension is not installed on the server.
 * Settings page is using tabs now.
 * Fixed default settings were not set upon plugin activation.
 * Fixed some lines that couldn't be translated to other languages (thanks to jranavas).
