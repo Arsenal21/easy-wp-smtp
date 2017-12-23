@@ -78,7 +78,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.2 =
-* Fixed some lines that couldn't be translated to other languages (thanks to jranavas). 
+* Hopefully fixed inability for plugin to save settings in some circumstances (thanks to all who kept reporting this issue).
+* Settings page is using tabs now.
+* Fixed default settings were not set upon plugin activation.
+* Fixed some lines that couldn't be translated to other languages (thanks to jranavas).
 
 = 1.3.1 =
 * Fixed potential issue with passwords that had special characters.

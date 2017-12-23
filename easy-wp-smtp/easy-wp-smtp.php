@@ -73,10 +73,6 @@ if ( !function_exists( 'swpsmtp_admin_head' ) ) {
 
 	function swpsmtp_admin_head() {
 		wp_enqueue_style( 'swpsmtp_stylesheet', plugins_url( 'css/style.css', __FILE__ ) );
-
-		if ( isset( $_REQUEST['page'] ) && 'swpsmtp_settings' == $_REQUEST['page'] ) {
-			wp_enqueue_script( 'swpsmtp_script', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ) );
-		}
 	}
 
 }
@@ -360,6 +356,23 @@ if ( !function_exists( 'swpsmtp_send_uninstall' ) ) {
 }
 
 function swpsmtp_activate() {
+    	$swpsmtp_options_default = array(
+		'from_email_field' => '',
+		'from_name_field' => '',
+		'smtp_settings' => array(
+			'host' => 'smtp.example.com',
+			'type_encryption' => 'none',
+			'port' => 25,
+			'autentication' => 'yes',
+			'username' => 'yourusername',
+			'password' => 'yourpassword'
+		)
+	);
+
+	/* install the default plugin options if needed */
+	if ( !get_option( 'swpsmtp_options' ) ) {
+		add_option( 'swpsmtp_options', $swpsmtp_options_default, '', 'yes' );
+	}
 	$swpsmtp_options = get_option( 'swpsmtp_options' );
 	//add current domain to allowed domains list
 	if ( !isset( $swpsmtp_options['allowed_domains'] ) ) {
