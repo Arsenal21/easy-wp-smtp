@@ -27,7 +27,11 @@ function swpsmtp_settings() {
 	$smtp_test_mail = array( 'swpsmtp_to' => '', 'swpsmtp_subject' => '', 'swpsmtp_message' => '', );
     }
 
-    if ( isset( $_POST[ 'swpsmtp_form_submit' ] ) && check_admin_referer( plugin_basename( __FILE__ ), 'swpsmtp_nonce_name' ) ) {
+    if ( isset( $_POST[ 'swpsmtp_form_submit' ] )) {
+	// check nounce
+	if (!check_admin_referer( plugin_basename( __FILE__ ), 'swpsmtp_nonce_name' )) {
+	    $error .= " " . __( "Nonce check failed.", 'easy-wp-smtp' );
+	}
 	/* Update settings */
 	$swpsmtp_options[ 'from_name_field' ] = isset( $_POST[ 'swpsmtp_from_name' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'swpsmtp_from_name' ] ) ) : '';
 	if ( isset( $_POST[ 'swpsmtp_from_email' ] ) ) {
