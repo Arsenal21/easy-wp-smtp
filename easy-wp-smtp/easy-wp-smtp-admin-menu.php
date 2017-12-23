@@ -115,9 +115,10 @@ function swpsmtp_settings() {
     	padding: 10px 0;
         }
         #swpsmtp-save-settings-notice span {
-    	background-color: yellow;
-    	padding: 5px;
+    	background-color: #ffff76;
+    	padding: 7px;
     	border: 1px dashed red;
+	display: block;
         }
     </style>
     <div class="updated fade" <?php if ( empty( $message ) ) echo "style=\"display:none\""; ?>>
@@ -125,9 +126,6 @@ function swpsmtp_settings() {
     </div>
     <div class="error" <?php if ( empty( $error ) ) echo "style=\"display:none\""; ?>>
         <p><strong><?php echo $error; ?></strong></p>
-    </div>
-    <div id="swpsmtp-settings-notice" class="updated fade" style="display:none">
-        <p><strong><?php _e( "Notice:", 'easy-wp-smtp' ); ?></strong> <?php _e( "The plugin's settings have been changed. In order to save them please don't forget to click the 'Save Changes' button.", 'easy-wp-smtp' ); ?></p>
     </div>
 
     <div class="nav-tab-wrapper">
