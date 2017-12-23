@@ -4,7 +4,7 @@ Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
 Tested up to: 4.9
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,13 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= 1.3.2 =
+* Hopefully fixed inability for plugin to save settings in some circumstances (thanks to all who kept reporting this issue).
+* The plugin is no longer failing if PHP mbstring extension is not installed on the server.
+* Settings page is using tabs now.
+* Fixed default settings were not set upon plugin activation.
+* Fixed some lines that couldn't be translated to other languages (thanks to jranavas).
 
 = 1.3.1 =
 * Fixed potential issue with passwords that had special characters.
