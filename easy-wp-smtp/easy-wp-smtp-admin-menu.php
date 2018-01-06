@@ -94,6 +94,7 @@ function swpsmtp_settings() {
 	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = base64_encode( $smtp_password );
 	}
 	$swpsmtp_options[ 'smtp_settings' ][ 'enable_debug' ]	 = isset( $_POST[ 'swpsmtp_enable_debug' ] ) ? 1 : false;
+	$swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ]	 = isset( $_POST[ 'swpsmtp_insecure_ssl' ] ) ? 1 : false;
 	$swpsmtp_options[ 'enable_domain_check' ]		 = isset( $_POST[ 'swpsmtp_enable_domain_check' ] ) ? 1 : false;
 	if ( isset( $_POST[ 'swpsmtp_allowed_domains' ] ) ) {
 	    $swpsmtp_options[ 'block_all_emails' ]	 = isset( $_POST[ 'swpsmtp_block_all_emails' ] ) ? 1 : false;
@@ -242,7 +243,7 @@ function swpsmtp_settings() {
     			</td>
     		    </tr>
     		    <tr class="ad_opt swpsmtp_smtp_options">
-    			<th><?php _e( 'SMTP username', 'easy-wp-smtp' ); ?></th>
+    			<th><?php _e( 'SMTP Username', 'easy-wp-smtp' ); ?></th>
     			<td>
     			    <input type='text' name='swpsmtp_smtp_username' value='<?php echo isset( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) ? esc_attr( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) : ''; ?>' /><br />
     			    <p class="description"><?php _e( "The username to login to your mail server", 'easy-wp-smtp' ); ?></p>
@@ -289,6 +290,13 @@ function swpsmtp_settings() {
     				<label><input type="checkbox" id="swpsmtp_block_all_emails" name="swpsmtp_block_all_emails" value="1"<?php echo (isset( $swpsmtp_options[ 'block_all_emails' ] ) && ($swpsmtp_options[ 'block_all_emails' ])) ? ' checked' : ''; ?><?php echo (isset( $swpsmtp_options[ 'enable_domain_check' ] ) && ($swpsmtp_options[ 'enable_domain_check' ])) ? '' : ' disabled'; ?>/> <?php _e( 'Block all emails', 'easy-wp-smtp' ); ?></label>
     			    </p>
     			    <p class="description"><?php _e( "When enabled, plugin attempts to block ALL emails from being sent out if domain mismtach." ); ?></p>
+    			</td>
+    		    </tr>
+    		    <tr valign="top">
+    			<th scope="row"><?php _e( "Allow Insecure SSL Certificates", 'easy-wp-smtp' ); ?></th>
+    			<td>
+    			    <input type="checkbox" name="swpsmtp_insecure_ssl" value="1" <?php echo (isset( $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] ) && ($swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ])) ? 'checked' : ''; ?>/>
+    			    <p class="description"><?php _e( "Allows insecure and self-signed SSL certificates on SMTP server. It's highly recommended to keep this option disabled.", 'easy-wp-smtp' ); ?></p>
     			</td>
     		    </tr>
     		    <tr valign="top">

@@ -78,7 +78,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.3 =
-* Plugin is compatible again with WP version 4.3+ (thanks to lucrus for reporting). 
+* Plugin is compatible again with WP version 4.3+ (thanks to lucrus for reporting).
+* Added option to allow insecure SSL certificate usage on SMTP server (thanks to ravipatel and bradclarke365).
 
 = 1.3.2 =
 * Hopefully fixed inability for plugin to save settings in some circumstances (thanks to all who kept reporting this issue).
