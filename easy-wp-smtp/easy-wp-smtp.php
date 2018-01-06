@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.2
+  Version: 1.3.3_testing
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -228,6 +228,10 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 
 	$mail->IsSMTP();
 
+	// send plain text test email
+	$mail->ContentType = 'text/plain';
+	$mail->IsHTML( false );
+
 	/* If using smtp auth, set the username & password */
 	if ( 'yes' == $swpsmtp_options[ 'smtp_settings' ][ 'autentication' ] ) {
 	    $mail->SMTPAuth	 = true;
@@ -250,9 +254,8 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 	    $mail->AddReplyTo( $swpsmtp_options[ 'reply_to_email' ], $from_name );
 	}
 	$mail->SetFrom( $from_email, $from_name );
-	$mail->isHTML( true );
 	$mail->Subject		 = $subject;
-	$mail->MsgHTML( $message );
+	$mail->Body		 = $message;
 	$mail->AddAddress( $to_email );
 	global $debugMSG;
 	$debugMSG		 = '';
