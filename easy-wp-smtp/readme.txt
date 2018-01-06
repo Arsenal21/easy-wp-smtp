@@ -78,8 +78,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.3 =
-* Plugin is compatible again with WP version 4.3+ (thanks to lucrus for reporting).
 * Added option to allow insecure SSL certificate usage on SMTP server (thanks to ravipatel and bradclarke365).
+* Plugin is compatible again with WP version 4.3+ (thanks to lucrus for reporting).
+* Changing fields on Test Email tab is no longer shows "you have unsaved settings" notice.
 
 = 1.3.2 =
 * Hopefully fixed inability for plugin to save settings in some circumstances (thanks to all who kept reporting this issue).

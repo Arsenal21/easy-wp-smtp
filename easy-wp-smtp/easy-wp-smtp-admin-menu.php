@@ -332,14 +332,14 @@ function swpsmtp_settings() {
     		    <tr valign="top">
     			<th scope="row"><?php _e( "To", 'easy-wp-smtp' ); ?>:</th>
     			<td>
-    			    <input type="text" name="swpsmtp_to" value="<?php echo esc_html( $smtp_test_mail[ 'swpsmtp_to' ] ); ?>" /><br />
+    			    <input type="text" class="ignore-change" name="swpsmtp_to" value="<?php echo esc_html( $smtp_test_mail[ 'swpsmtp_to' ] ); ?>" /><br />
     			    <p class="description"><?php _e( "Enter the recipient's email address", 'easy-wp-smtp' ); ?></p>
     			</td>
     		    </tr>
     		    <tr valign="top">
     			<th scope="row"><?php _e( "Subject", 'easy-wp-smtp' ); ?>:</th>
     			<td>
-    			    <input type="text" name="swpsmtp_subject" value="<?php echo esc_html( $smtp_test_mail[ 'swpsmtp_subject' ] ); ?>" /><br />
+    			    <input type="text" class="ignore-change" name="swpsmtp_subject" value="<?php echo esc_html( $smtp_test_mail[ 'swpsmtp_subject' ] ); ?>" /><br />
     			    <p class="description"><?php _e( "Enter a subject for your message", 'easy-wp-smtp' ); ?></p>
     			</td>
     		    </tr>
@@ -390,7 +390,7 @@ function swpsmtp_settings() {
         });
 
         jQuery(function ($) {
-    	$('#swpsmtp-mail input').change(function () {
+    	$('#swpsmtp-mail input').not('.ignore-change').change(function () {
     	    $('#swpsmtp-save-settings-notice').show();
     	    ;
     	});
