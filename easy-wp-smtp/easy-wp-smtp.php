@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.2
+  Version: 1.3.3
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -176,6 +176,8 @@ if ( ! function_exists( 'swpsmtp_init_smtp' ) ) {
 	$phpmailer->From	 = $from_email;
 	$phpmailer->FromName	 = $from_name;
 	$phpmailer->SetFrom( $phpmailer->From, $phpmailer->FromName );
+	//This should set Return-Path header for servers that are not properly handling it, but needs testing first
+	//$phpmailer->Sender	 = $phpmailer->From;
 	/* Set the SMTPSecure value */
 	if ( $swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ] !== 'none' ) {
 	    $phpmailer->SMTPSecure = $swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ];
@@ -193,6 +195,17 @@ if ( ! function_exists( 'swpsmtp_init_smtp' ) ) {
 	}
 //PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
 	$phpmailer->SMTPAutoTLS = false;
+
+	if ( isset( $swpsmtp_options[ 'insecure_ssl' ] ) && $swpsmtp_options[ 'insecure_ssl' ] !== false ) {
+	    // Insecure SSL option enabled
+	    $phpmailer->SMTPOptions = array(
+		'ssl' => array(
+		    'verify_peer'		 => false,
+		    'verify_peer_name'	 => false,
+		    'allow_self_signed'	 => true
+		) );
+	}
+
 	if ( isset( $swpsmtp_options[ 'smtp_settings' ][ 'enable_debug' ] ) && $swpsmtp_options[ 'smtp_settings' ][ 'enable_debug' ] ) {
 	    $phpmailer->Debugoutput = function($str, $level) {
 		swpsmtp_write_to_log( $str );
@@ -228,6 +241,10 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 
 	$mail->IsSMTP();
 
+	// send plain text test email
+	$mail->ContentType = 'text/plain';
+	$mail->IsHTML( false );
+
 	/* If using smtp auth, set the username & password */
 	if ( 'yes' == $swpsmtp_options[ 'smtp_settings' ][ 'autentication' ] ) {
 	    $mail->SMTPAuth	 = true;
@@ -243,6 +260,16 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 	/* PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate. */
 	$mail->SMTPAutoTLS = false;
 
+	if ( isset( $swpsmtp_options[ 'insecure_ssl' ] ) && $swpsmtp_options[ 'insecure_ssl' ] !== false ) {
+	    // Insecure SSL option enabled
+	    $mail->SMTPOptions = array(
+		'ssl' => array(
+		    'verify_peer'		 => false,
+		    'verify_peer_name'	 => false,
+		    'allow_self_signed'	 => true
+		) );
+	}
+
 	/* Set the other options */
 	$mail->Host	 = $swpsmtp_options[ 'smtp_settings' ][ 'host' ];
 	$mail->Port	 = $swpsmtp_options[ 'smtp_settings' ][ 'port' ];
@@ -250,9 +277,10 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 	    $mail->AddReplyTo( $swpsmtp_options[ 'reply_to_email' ], $from_name );
 	}
 	$mail->SetFrom( $from_email, $from_name );
-	$mail->isHTML( true );
+	//This should set Return-Path header for servers that are not properly handling it, but needs testing first
+	//$mail->Sender		 = $mail->From;
 	$mail->Subject		 = $subject;
-	$mail->MsgHTML( $message );
+	$mail->Body		 = $message;
 	$mail->AddAddress( $to_email );
 	global $debugMSG;
 	$debugMSG		 = '';
