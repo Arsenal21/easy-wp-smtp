@@ -79,6 +79,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 = 1.3.4 =
 * Fixed "Allow Insecure SSL Certificates" option was ignored (thanks to bogesman).
+* Added Support Forum and Rate Us links to Settings page.
+* Some minor improvements to Settings page.
 
 = 1.3.3 =
 * Added option to allow insecure SSL certificate usage on SMTP server (thanks to ravipatel and bradclarke365).
