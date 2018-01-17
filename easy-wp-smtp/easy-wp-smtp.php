@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.3
+  Version: 1.3.4
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -196,7 +196,7 @@ if ( ! function_exists( 'swpsmtp_init_smtp' ) ) {
 //PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
 	$phpmailer->SMTPAutoTLS = false;
 
-	if ( isset( $swpsmtp_options[ 'insecure_ssl' ] ) && $swpsmtp_options[ 'insecure_ssl' ] !== false ) {
+	if ( isset( $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] ) && $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] !== false ) {
 	    // Insecure SSL option enabled
 	    $phpmailer->SMTPOptions = array(
 		'ssl' => array(
@@ -260,7 +260,7 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 	/* PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate. */
 	$mail->SMTPAutoTLS = false;
 
-	if ( isset( $swpsmtp_options[ 'insecure_ssl' ] ) && $swpsmtp_options[ 'insecure_ssl' ] !== false ) {
+	if ( isset( $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] ) && $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] !== false ) {
 	    // Insecure SSL option enabled
 	    $mail->SMTPOptions = array(
 		'ssl' => array(
