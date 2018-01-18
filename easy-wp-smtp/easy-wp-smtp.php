@@ -142,6 +142,9 @@ if ( ! function_exists( 'swpsmtp_init_smtp' ) ) {
 	}
 	/* Set the mailer type as per config above, this overrides the already called isMail method */
 	$phpmailer->IsSMTP();
+	if ( empty( $phpmailer->FromName ) && isset( $swpsmtp_options[ 'fromname_empty' ] ) && ( $swpsmtp_options[ 'fromname_empty' ] ) ) {
+	    $from_name = $swpsmtp_options[ 'from_name_field' ];
+	}
 	$from_name	 = $swpsmtp_options[ 'from_name_field' ];
 	$from_email	 = $swpsmtp_options[ 'from_email_field' ];
 	//set ReplyTo option if needed

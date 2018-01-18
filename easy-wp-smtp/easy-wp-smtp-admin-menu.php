@@ -69,7 +69,9 @@ function swpsmtp_settings() {
 	    $error .= " " . __( "Nonce check failed.", 'easy-wp-smtp' );
 	}
 	/* Update settings */
-	$swpsmtp_options[ 'from_name_field' ] = isset( $_POST[ 'swpsmtp_from_name' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'swpsmtp_from_name' ] ) ) : '';
+	$swpsmtp_options[ 'from_name_field' ]		 = isset( $_POST[ 'swpsmtp_from_name' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'swpsmtp_from_name' ] ) ) : '';
+	$swpsmtp_options[ 'fromname_empty' ]	 = isset( $_POST[ 'swpsmtp_fromname_empty' ] ) ? 1 : false;
+
 	if ( isset( $_POST[ 'swpsmtp_from_email' ] ) ) {
 	    if ( is_email( $_POST[ 'swpsmtp_from_email' ] ) ) {
 		$swpsmtp_options[ 'from_email_field' ] = sanitize_email( $_POST[ 'swpsmtp_from_email' ] );
@@ -232,6 +234,10 @@ function swpsmtp_settings() {
     				<td>
     				    <input id="swpsmtp_from_name" type="text" name="swpsmtp_from_name" value="<?php echo isset( $swpsmtp_options[ 'from_name_field' ] ) ? esc_attr( $swpsmtp_options[ 'from_name_field' ] ) : ''; ?>"/><br />
     				    <p class="description"><?php _e( "This text will be used in the 'FROM' field", 'easy-wp-smtp' ); ?></p>
+    				    <p>
+    					<label><input type="checkbox" id="swpsmtp_fromname_empty" name="swpsmtp_fromname_empty" value="1"<?php echo (isset( $swpsmtp_options[ 'fromname_empty' ] ) && ($swpsmtp_options[ 'fromname_empty' ])) ? ' checked' : ''; ?>/> <?php _e( "Use this value only if email's From Name is empty", 'easy-wp-smtp' ); ?></label>
+    				    </p>
+    				    <p class="description"><?php _e( "When enabled, the plugin will set the above From Name only if email has no this field set. This option is useful if you're using contact form plugins. It prevents the plugin from replacing form submitter's name when contact email is sent.", 'easy-wp-smtp' ); ?></p>
     				</td>
     			    </tr>
     			    <tr valign="top">
