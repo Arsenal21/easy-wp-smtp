@@ -78,7 +78,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.5 =
-* Added option to replace From Name only if it's empty (thanks to daymobrew).
+* Added configurable option to force replace From Name. The plugin was force-replacing it regardless before, now you can configure this (thanks to daymobrew).
 
 = 1.3.4 =
 * Fixed "Allow Insecure SSL Certificates" option was ignored (thanks to bogesman).

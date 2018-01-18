@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.4
+  Version: 1.3.5
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -142,11 +142,12 @@ if ( ! function_exists( 'swpsmtp_init_smtp' ) ) {
 	}
 	/* Set the mailer type as per config above, this overrides the already called isMail method */
 	$phpmailer->IsSMTP();
-	if ( empty( $phpmailer->FromName ) && isset( $swpsmtp_options[ 'fromname_empty' ] ) && ( $swpsmtp_options[ 'fromname_empty' ] ) ) {
+	if ( isset( $swpsmtp_options[ 'force_from_name_replace' ] ) && $swpsmtp_options[ 'force_from_name_replace' ] === 1 ) {
 	    $from_name = $swpsmtp_options[ 'from_name_field' ];
+	} else {
+	    $from_name = ! empty( $phpmailer->FromName ) ? $phpmailer->FromName : $swpsmtp_options[ 'from_name_field' ];
 	}
-	$from_name	 = $swpsmtp_options[ 'from_name_field' ];
-	$from_email	 = $swpsmtp_options[ 'from_email_field' ];
+	$from_email = $swpsmtp_options[ 'from_email_field' ];
 	//set ReplyTo option if needed
 	//this should be set before SetFrom, otherwise might be ignored
 	if ( ! empty( $swpsmtp_options[ 'reply_to_email' ] ) ) {
@@ -391,9 +392,10 @@ if ( ! function_exists( 'swpsmtp_send_uninstall' ) ) {
 
 function swpsmtp_activate() {
     $swpsmtp_options_default = array(
-	'from_email_field'	 => '',
-	'from_name_field'	 => '',
-	'smtp_settings'		 => array(
+	'from_email_field'		 => '',
+	'from_name_field'		 => '',
+	'force_from_name_replace'	 => 1,
+	'smtp_settings'			 => array(
 	    'host'			 => 'smtp.example.com',
 	    'type_encryption'	 => 'none',
 	    'port'			 => 25,
@@ -404,10 +406,12 @@ function swpsmtp_activate() {
     );
 
     /* install the default plugin options if needed */
-    if ( ! get_option( 'swpsmtp_options' ) ) {
-	add_option( 'swpsmtp_options', $swpsmtp_options_default, '', 'yes' );
-    }
     $swpsmtp_options = get_option( 'swpsmtp_options' );
+    if ( ! $swpsmtp_options ) {
+	$swpsmtp_options = array();
+    }
+    $swpsmtp_options = array_merge( $swpsmtp_options_default, $swpsmtp_options );
+    update_option( 'swpsmtp_options', $swpsmtp_options, 'yes' );
     //add current domain to allowed domains list
     if ( ! isset( $swpsmtp_options[ 'allowed_domains' ] ) ) {
 	$domain = parse_url( get_site_url(), PHP_URL_HOST );
