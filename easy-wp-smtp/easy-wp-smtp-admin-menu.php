@@ -397,13 +397,13 @@ function swpsmtp_settings() {
     	<div class="postbox" style="min-width: inherit;">
     	    <h3 class="hndle"><label for="title"><?php _e( "Support", 'easy-wp-smtp' ); ?></label></h3>
     	    <div class="inside">
-		    <?php echo sprintf( _x( "Having issues or difficulties? You don't have to face them alone! Post your issue at %s and we'll be there to help.", '%s is replaced by "Support Forum" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/easy-wp-smtp/" target="_blank">%s</a>', __( 'Support Forum', 'easy-wp-smtp' ) ) ); ?>
+		    <?php echo sprintf( _x( "Having issues or difficulties? You can post your issue on the %s", '%s is replaced by "Support Forum" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/easy-wp-smtp/" target="_blank">%s</a>', __( 'Support Forum', 'easy-wp-smtp' ) ) ); ?>
     	    </div>
     	</div>
     	<div class="postbox" style="min-width: inherit;">
     	    <h3 class="hndle"><label for="title"><?php _e( "Rate Us", 'easy-wp-smtp' ); ?></label></h3>
     	    <div class="inside">
-		    <?php echo sprintf( _x( 'Like the plugin? Please %s and help us become even better!', '%s is replaced by "Rate Us" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/easy-wp-smtp/reviews/#new-post" target="_blank">%s</a>', __( 'Rate Us', 'easy-wp-smtp' ) ) ); ?>
+		    <?php echo sprintf( _x( 'Like the plugin? Please give us a %s', '%s is replaced by "rating" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/easy-wp-smtp/reviews/#new-post" target="_blank">%s</a>', __( 'rating', 'easy-wp-smtp' ) ) ); ?>
     		<div class="swpsmtp-stars-container">
     		    <a href="https://wordpress.org/support/plugin/easy-wp-smtp/reviews/#new-post" target="_blank"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
     		    </a>
