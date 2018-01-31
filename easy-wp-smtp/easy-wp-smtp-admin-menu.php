@@ -284,14 +284,14 @@ function swpsmtp_settings() {
     			    <tr class="ad_opt swpsmtp_smtp_options">
     				<th><?php _e( 'SMTP Username', 'easy-wp-smtp' ); ?></th>
     				<td>
-    				    <input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) ? esc_attr( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) : ''; ?>' /><br />
+				    <input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) ? esc_attr( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) : ''; ?>' autocomplete="off"/><br />
     				    <p class="description"><?php _e( "The username to login to your mail server", 'easy-wp-smtp' ); ?></p>
     				</td>
     			    </tr>
     			    <tr class="ad_opt swpsmtp_smtp_options">
     				<th><?php _e( 'SMTP Password', 'easy-wp-smtp' ); ?></th>
     				<td>
-    				    <input id = 'swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' /><br />
+    				    <input id = 'swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' autocomplete="off" /><br />
     				    <p class="description"><?php _e( "The password to login to your mail server", 'easy-wp-smtp' ); ?></p>
     				    <p class="description"><b><?php _e( 'Note', 'easy-wp-smtp' ); ?></b>: <?php _e( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ); ?></p>
     				</td>
