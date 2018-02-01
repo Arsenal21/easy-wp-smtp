@@ -126,7 +126,7 @@ function swpsmtp_settings() {
 
     /* Send test letter */
     $swpsmtp_to = '';
-    if ( isset( $_POST[ 'swpsmtp_test_submit' ] ) && check_admin_referer( plugin_basename( __FILE__ ), 'swpsmtp_nonce_name' ) ) {
+    if ( isset( $_POST[ 'swpsmtp_test_submit' ] ) && check_admin_referer( plugin_basename( __FILE__ ), 'swpsmtp_test_nonce_name' ) ) {
 	if ( isset( $_POST[ 'swpsmtp_to' ] ) ) {
 	    $to_email = sanitize_text_field( $_POST[ 'swpsmtp_to' ] );
 	    if ( is_email( $to_email ) ) {
@@ -284,7 +284,7 @@ function swpsmtp_settings() {
     			    <tr class="ad_opt swpsmtp_smtp_options">
     				<th><?php _e( 'SMTP Username', 'easy-wp-smtp' ); ?></th>
     				<td>
-				    <input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) ? esc_attr( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) : ''; ?>'/><br />
+    				    <input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) ? esc_attr( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) : ''; ?>'/><br />
     				    <p class="description"><?php _e( "The username to login to your mail server", 'easy-wp-smtp' ); ?></p>
     				</td>
     			    </tr>
@@ -349,9 +349,7 @@ function swpsmtp_settings() {
     			    </tr>
     			</table>
     			<p class="submit">
-    			    <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e( 'Save Changes', 'easy-wp-smtp' ) ?>" />
-    			    <input type="hidden" name="swpsmtp_form_submit" value="submit" />
-				<?php wp_nonce_field( plugin_basename( __FILE__ ), 'swpsmtp_nonce_name' ); ?>
+    			    <input type="submit" id="additional-settings-form-submit" class="button-primary" value="<?php _e( 'Save Changes', 'easy-wp-smtp' ) ?>" />
     			</p>
 
     		    </div><!-- end of inside -->
@@ -367,7 +365,7 @@ function swpsmtp_settings() {
     		    <p><?php _e( 'You can use this section to send an email from your server using the above configured SMTP details to see if the email gets delivered.', 'easy-wp-smtp' ); ?></p>
     		    <p><b><?php _ex( 'Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp' ); ?></b> <?php _e( 'debug log for this test email will be automatically displayed right after you send it. Test email also ignores "Enable Domain Check" option.', 'easy-wp-smtp' ); ?></p>
 
-    		    <form id="swpsmtp_settings_form" method="post" action="">
+    		    <form id="swpsmtp_settings_test_email_form" method="post" action="">
     			<table class="form-table">
     			    <tr valign="top">
     				<th scope="row"><?php _e( "To", 'easy-wp-smtp' ); ?>:</th>
@@ -392,9 +390,9 @@ function swpsmtp_settings() {
     			    </tr>
     			</table>
     			<p class="submit">
-    			    <input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e( 'Send Test Email', 'easy-wp-smtp' ) ?>" />
+    			    <input type="submit" id="test-email-form-submit" class="button-primary" value="<?php _e( 'Send Test Email', 'easy-wp-smtp' ) ?>" />
     			    <input type="hidden" name="swpsmtp_test_submit" value="submit" />
-				<?php wp_nonce_field( plugin_basename( __FILE__ ), 'swpsmtp_nonce_name' ); ?>
+				<?php wp_nonce_field( plugin_basename( __FILE__ ), 'swpsmtp_test_nonce_name' ); ?>
     			</p>
     		    </form>
     		</div><!-- end of inside -->
@@ -432,7 +430,6 @@ function swpsmtp_settings() {
     	var hashObj = [];
 
     	hash.split('&').forEach(function (q) {
-    	    console.log(q);
     	    if (typeof q !== 'undefined') {
     		hashObj.push(q);
     	    }

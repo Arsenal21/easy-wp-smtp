@@ -79,6 +79,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 = 1.3.6 =
 * Disabled autocomplete for username and password fields to prevent them from being replaced by WP login username and password (if those were saved in browser).
+* Removed duplicate items IDs from settings page to comply with HTML standards.
 
 = 1.3.5 =
 * Added configurable option to force replace From Name. The plugin was force-replacing it regardless before, now you can configure this (thanks to daymobrew).
