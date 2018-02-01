@@ -1,0 +1,50 @@
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: YWxleGFuZGVyZm94Y0BnbWFpbC5jb20=
+CLIENT -> SERVER: UmtUTzhGXC8nXDhSUjVDZw==
+CLIENT -> SERVER: MAIL FROM:<alexanderfoxc@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Thu, 1 Feb 2018 05:39:00 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <alexanderfoxc@gmail.com>
+CLIENT -> SERVER: Subject: Stripe Payments Error
+CLIENT -> SERVER: Message-ID: <9710ef2531b4d5c31e2f631e19bd90d5@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Following error occured during payment processing:
+CLIENT -> SERVER: 
+CLIENT -> SERVER: reCaptcha: missing user response data.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Debug data:
+CLIENT -> SERVER: {"stripeToken":"tok_1BqamkAVyA9aofFmI4O5G6Bb","stripeTokenType":"card","stripeEmail":"forwella@ukr.net","stripeButtonKey":"0666c1d3df4ed2f410d647ee23790c39","stripeItemPrice":"3990","asp_action":"process_ipn","item_name":"Lord Vader","item_quantity":"1","currency_code":"CAD","item_url":"asp-sd-process","thankyou_page_url":"","charge_description":"Your own Sith Lord!","_wpnonce":"0d3280181e","_wp_http_referer":"\/miniserv\/cleanwp\/stripe-payments-product\/"}
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
+CLIENT -> SERVER: EHLO desertfox.me
+CLIENT -> SERVER: AUTH LOGIN
+CLIENT -> SERVER: YWxleGFuZGVyZm94Y0BnbWFpbC5jb20=
+CLIENT -> SERVER: UmtUTzhGXC8nXDhSUjVDZw==
+CLIENT -> SERVER: MAIL FROM:<alexanderfoxc@gmail.com>
+CLIENT -> SERVER: RCPT TO:<eminemwalsh@gmail.com>
+CLIENT -> SERVER: DATA
+CLIENT -> SERVER: Date: Thu, 1 Feb 2018 05:39:57 +0000
+CLIENT -> SERVER: To: eminemwalsh@gmail.com
+CLIENT -> SERVER: From: Me <alexanderfoxc@gmail.com>
+CLIENT -> SERVER: Subject: Stripe Payments Error
+CLIENT -> SERVER: Message-ID: <2cddee7196da25b02021ee993903fc10@desertfox.me>
+CLIENT -> SERVER: X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+CLIENT -> SERVER: MIME-Version: 1.0
+CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Following error occured during payment processing:
+CLIENT -> SERVER: 
+CLIENT -> SERVER: reCaptcha: missing user response data.
+CLIENT -> SERVER: 
+CLIENT -> SERVER: Debug data:
+CLIENT -> SERVER: {"stripeToken":"tok_1BqanfAVyA9aofFmzUE4Hsmt","stripeTokenType":"card","stripeEmail":"forwella@ukr.net","stripeButtonKey":"0666c1d3df4ed2f410d647ee23790c39","stripeItemPrice":"3990","asp_action":"process_ipn","item_name":"Lord Vader","item_quantity":"1","currency_code":"CAD","item_url":"asp-sd-process","thankyou_page_url":"","charge_description":"Your own Sith Lord!","_wpnonce":"0d3280181e","_wp_http_referer":"\/miniserv\/cleanwp\/stripe-payments-product\/"}
+CLIENT -> SERVER: 
+CLIENT -> SERVER: .
+CLIENT -> SERVER: QUIT
