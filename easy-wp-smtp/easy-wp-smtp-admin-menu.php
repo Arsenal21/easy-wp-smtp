@@ -210,7 +210,10 @@ function swpsmtp_settings() {
     <div class="swpsmtp-settings-container">
         <div class="swpsmtp-settings-grid swpsmtp-settings-main-cont">
 
-    	<form id="swpsmtp_settings_form" method="post" action="">
+    	<form autocomplete="off" id="swpsmtp_settings_form" method="post" action="">
+    	    <!-- Hidden decoy inputs to prevent some browsers like Safari from replacing current username and password with autofill -->
+    	    <input style="height: 0px !important; width: 1px !important; padding:0px !important; margin: 0px !important; border: 0px !important; position: absolute;" id="swpsmpt-fake-username" class="ignore-change" type="text" value="">
+    	    <input style="height: 0px !important; width: 1px !important; padding:0px !important; margin: 0px !important; border: 0px !important; position: absolute;" id="swpsmpt-fake-password" class="ignore-change" type="password" value="">
 
     	    <input type="hidden" id="swpsmtp-urlHash" name="swpsmtp-urlHash" value="">
 
@@ -291,7 +294,7 @@ function swpsmtp_settings() {
     			    <tr class="ad_opt swpsmtp_smtp_options">
     				<th><?php _e( 'SMTP Password', 'easy-wp-smtp' ); ?></th>
     				<td>
-    				    <input id = 'swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' autocomplete="new-password" /><br />
+    				    <input id = 'swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' autocomplete="new-password"/><br />
     				    <p class="description"><?php _e( "The password to login to your mail server", 'easy-wp-smtp' ); ?></p>
     				    <p class="description"><b><?php _e( 'Note', 'easy-wp-smtp' ); ?></b>: <?php _e( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ); ?></p>
     				</td>
