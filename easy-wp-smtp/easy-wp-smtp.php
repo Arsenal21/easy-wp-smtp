@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.6_testing2
+  Version: 1.3.6_testing3
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -227,89 +227,86 @@ if ( ! function_exists( 'swpsmtp_init_smtp' ) ) {
 if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 
     function swpsmtp_test_mail( $to_email, $subject, $message ) {
+	$ret = array();
 	if ( ! swpsmtp_credentials_configured() ) {
-	    return;
+	    return false;
 	}
-	$errors = '';
 
 	$swpsmtp_options = get_option( 'swpsmtp_options' );
 
 	require_once( ABSPATH . WPINC . '/class-phpmailer.php' );
-	$mail = new PHPMailer();
+	$mail = new PHPMailer( true );
 
-	$charset	 = get_bloginfo( 'charset' );
-	$mail->CharSet	 = $charset;
+	try {
 
-	$from_name	 = $swpsmtp_options[ 'from_name_field' ];
-	$from_email	 = $swpsmtp_options[ 'from_email_field' ];
+	    $charset	 = get_bloginfo( 'charset' );
+	    $mail->CharSet	 = $charset;
 
-	$mail->IsSMTP();
+	    $from_name	 = $swpsmtp_options[ 'from_name_field' ];
+	    $from_email	 = $swpsmtp_options[ 'from_email_field' ];
 
-	// send plain text test email
-	$mail->ContentType = 'text/plain';
-	$mail->IsHTML( false );
+	    $mail->IsSMTP();
 
-	/* If using smtp auth, set the username & password */
-	if ( 'yes' == $swpsmtp_options[ 'smtp_settings' ][ 'autentication' ] ) {
-	    $mail->SMTPAuth	 = true;
-	    $mail->Username	 = $swpsmtp_options[ 'smtp_settings' ][ 'username' ];
-	    $mail->Password	 = swpsmtp_get_password();
-	}
+	    // send plain text test email
+	    $mail->ContentType = 'text/plain';
+	    $mail->IsHTML( false );
 
-	/* Set the SMTPSecure value, if set to none, leave this blank */
-	if ( $swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ] !== 'none' ) {
-	    $mail->SMTPSecure = $swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ];
-	}
+	    /* If using smtp auth, set the username & password */
+	    if ( 'yes' == $swpsmtp_options[ 'smtp_settings' ][ 'autentication' ] ) {
+		$mail->SMTPAuth	 = true;
+		$mail->Username	 = $swpsmtp_options[ 'smtp_settings' ][ 'username' ];
+		$mail->Password	 = swpsmtp_get_password();
+	    }
 
-	/* PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate. */
-	$mail->SMTPAutoTLS = false;
+	    /* Set the SMTPSecure value, if set to none, leave this blank */
+	    if ( $swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ] !== 'none' ) {
+		$mail->SMTPSecure = $swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ];
+	    }
 
-	if ( isset( $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] ) && $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] !== false ) {
-	    // Insecure SSL option enabled
-	    $mail->SMTPOptions = array(
-		'ssl' => array(
-		    'verify_peer'		 => false,
-		    'verify_peer_name'	 => false,
-		    'allow_self_signed'	 => true
-		) );
-	}
+	    /* PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate. */
+	    $mail->SMTPAutoTLS = false;
 
-	/* Set the other options */
-	$mail->Host	 = $swpsmtp_options[ 'smtp_settings' ][ 'host' ];
-	$mail->Port	 = $swpsmtp_options[ 'smtp_settings' ][ 'port' ];
-	if ( ! empty( $swpsmtp_options[ 'reply_to_email' ] ) ) {
-	    $mail->AddReplyTo( $swpsmtp_options[ 'reply_to_email' ], $from_name );
-	}
-	$mail->SetFrom( $from_email, $from_name );
-	//This should set Return-Path header for servers that are not properly handling it, but needs testing first
-	//$mail->Sender		 = $mail->From;
-	$mail->Subject		 = $subject;
-	$mail->Body		 = $message;
-	$mail->AddAddress( $to_email );
-	global $debugMSG;
-	$debugMSG		 = '';
-	$mail->Debugoutput	 = function($str, $level) {
+	    if ( isset( $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] ) && $swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ] !== false ) {
+		// Insecure SSL option enabled
+		$mail->SMTPOptions = array(
+		    'ssl' => array(
+			'verify_peer'		 => false,
+			'verify_peer_name'	 => false,
+			'allow_self_signed'	 => true
+		    ) );
+	    }
+
+	    /* Set the other options */
+	    $mail->Host	 = $swpsmtp_options[ 'smtp_settings' ][ 'host' ];
+	    $mail->Port	 = $swpsmtp_options[ 'smtp_settings' ][ 'port' ];
+	    if ( ! empty( $swpsmtp_options[ 'reply_to_email' ] ) ) {
+		$mail->AddReplyTo( $swpsmtp_options[ 'reply_to_email' ], $from_name );
+	    }
+	    $mail->SetFrom( $from_email, $from_name );
+	    //This should set Return-Path header for servers that are not properly handling it, but needs testing first
+	    //$mail->Sender		 = $mail->From;
+	    $mail->Subject		 = $subject;
+	    $mail->Body		 = $message;
+	    $mail->AddAddress( $to_email );
 	    global $debugMSG;
-	    $debugMSG .= $str;
-	};
-	$mail->SMTPDebug = 1;
+	    $debugMSG		 = '';
+	    $mail->Debugoutput	 = function($str, $level) {
+		global $debugMSG;
+		$debugMSG .= $str;
+	    };
+	    $mail->SMTPDebug = 1;
 
-	/* Send mail and return result */
-	if ( ! $mail->Send() )
-	    $errors = $mail->ErrorInfo;
-
-	$mail->ClearAddresses();
-	$mail->ClearAllRecipients();
-
-	echo '<div class="swpsmtp-yellow-box"><h3>Debug Info</h3>';
-	echo '<textarea rows="20" style="width: 100%;">' . $debugMSG . '</textarea>';
-	echo '</div>';
-
-	if ( ! empty( $errors ) ) {
-	    return $errors;
-	} else {
-	    return 'Test mail was sent';
+	    /* Send mail and return result */
+	    $mail->Send();
+	    $mail->ClearAddresses();
+	    $mail->ClearAllRecipients();
+	} catch ( Exception $e ) {
+	    $ret[ 'error' ] = $mail->ErrorInfo;
 	}
+
+	$ret[ 'debug_log' ] = $debugMSG;
+
+	return $ret;
     }
 
 }

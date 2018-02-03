@@ -145,22 +145,18 @@ function swpsmtp_settings() {
 	update_option( 'smtp_test_mail', $smtp_test_mail );
 
 	if ( ! empty( $swpsmtp_to ) ) {
-	    $result = swpsmtp_test_mail( $swpsmtp_to, $swpsmtp_subject, $swpsmtp_message );
+	    $test_res = swpsmtp_test_mail( $swpsmtp_to, $swpsmtp_subject, $swpsmtp_message );
+	    if ( is_array( $test_res ) ) {
+		
+	    } else {
+		
+	    }
 	}
     }
     ?>
     <style>
         div.swpsmtp-tab-container, #swpsmtp-save-settings-notice {
     	display: none;
-        }
-        #swpsmtp-save-settings-notice {
-    	padding: 10px 0;
-        }
-        #swpsmtp-save-settings-notice span {
-    	background-color: #ffff76;
-    	padding: 7px;
-    	border: 1px dashed red;
-    	display: block;
         }
         .swpsmtp-stars-container {
     	text-align: center;
@@ -183,6 +179,25 @@ function swpsmtp_settings() {
     	width: 19%;
     	float: right;
         }
+
+        div.swpsmtp-msg-cont {
+    	clear: both;
+    	margin-bottom: 10px;
+    	padding: 5px 10px;
+    	border-radius: 2px;
+    	background-color: #ffffe0;
+        }
+        div.swpsmtp-msg-cont.msg-error {
+    	border-left: 5px solid red;
+        }
+        div.swpsmtp-msg-cont.msg-success {
+    	border-left: 5px solid green;
+        }
+
+        #swpsmtp-debug-log-cont {
+    	display: none;
+        }
+
         @media (max-width: 782px) {
     	.swpsmtp-settings-grid {
     	    display: block;
@@ -364,7 +379,55 @@ function swpsmtp_settings() {
     	    <div class="postbox">
     		<h3 class="hndle"><label for="title"><?php _e( 'Test Email', 'easy-wp-smtp' ); ?></label></h3>
     		<div class="inside">
-    		    <div id="swpsmtp-save-settings-notice"><span><b><?php _e( 'Notice:', 'easy-wp-smtp' ); ?></b> <?php _e( 'You have unsaved settings. In order to send a test email, you need to go back to previous tab and click "Save Changes" button first.', 'easy-wp-smtp' ); ?></span></div>
+    		    <div id="swpsmtp-save-settings-notice" class="swpsmtp-msg-cont msg-error"><b><?php _e( 'Notice:', 'easy-wp-smtp' ); ?></b> <?php _e( 'You have unsaved settings. In order to send a test email, you need to go back to previous tab and click "Save Changes" button first.', 'easy-wp-smtp' ); ?></div>
+
+			<?php
+			if ( isset( $test_res ) && is_array( $test_res ) ) {
+			    if ( isset( $test_res[ 'error' ] ) ) {
+				$errmsg_class	 = ' msg-error';
+				$errmsg_text	 = '<b>' . __( 'Following error occured when attempting to send test email:', 'easy-wp-smtp' ) . '</b><br />' . $test_res[ 'error' ];
+			    } else {
+				$errmsg_class	 = ' msg-success';
+				$errmsg_text	 = '<b>' . __( 'Test email was successfully sent. No errors occured during the process.', 'easy-wp-smtp' ) . '</b>';
+			    }
+			    ?>
+
+			    <div class="swpsmtp-msg-cont<?php echo $errmsg_class; ?>">
+				<?php echo $errmsg_text; ?>
+
+				<?php
+				if ( isset( $test_res[ 'debug_log' ] ) ) {
+				    ?>
+	    			<br /><br />
+	    			<a id="swpsmtp-show-hide-log-btn" href="#0"><?php _e( 'Show Debug Log', 'easy-wp-smtp' ); ?></a>
+	    			<p id="swpsmtp-debug-log-cont"><textarea rows="20" style="width: 100%;"><?php echo $test_res[ 'debug_log' ]; ?></textarea></p>
+	    			<script>
+	    			    jQuery(function ($) {
+	    				$('#swpsmtp-show-hide-log-btn').click(function (e) {
+	    				    e.preventDefault();
+	    				    var logCont = $('#swpsmtp-debug-log-cont');
+	    				    if (logCont.is(':visible')) {
+	    					$(this).html('<?php echo esc_attr( __( 'Show Debug Log', 'easy-wp-smtp' ) ); ?>');
+	    				    } else {
+	    					$(this).html('<?php echo esc_attr( __( 'Hide Debug Log', 'easy-wp-smtp' ) ); ?>');
+	    				    }
+	    				    logCont.toggle();
+	    				});
+	    <?php if ( isset( $test_res[ 'error' ] ) ) {
+		?>
+						$('#swpsmtp-show-hide-log-btn').click();
+	    <?php }
+	    ?>
+	    			    });
+	    			</script>
+				    <?php
+				}
+				?>
+			    </div>
+			    <?php
+			}
+			?>
+
     		    <p><?php _e( 'You can use this section to send an email from your server using the above configured SMTP details to see if the email gets delivered.', 'easy-wp-smtp' ); ?></p>
     		    <p><b><?php _ex( 'Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp' ); ?></b> <?php _e( 'debug log for this test email will be automatically displayed right after you send it. Test email also ignores "Enable Domain Check" option.', 'easy-wp-smtp' ); ?></p>
 
