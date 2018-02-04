@@ -462,7 +462,7 @@ function swpsmtp_activate() {
     if ( ! get_option( 'swpsmtp_pass_encrypted' ) ) {
 	if ( extension_loaded( 'openssl' ) ) {
 	    if ( $swpsmtp_options[ 'smtp_settings' ][ 'password' ] !== '' ) {
-		$swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( $swpsmtp_options[ 'smtp_settings' ][ 'password' ] );
+		$swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( swpsmtp_get_password() );
 		update_option( 'swpsmtp_options', $swpsmtp_options );
 	    }
 	}
