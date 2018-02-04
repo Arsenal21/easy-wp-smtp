@@ -296,17 +296,12 @@ function swpsmtp_settings() {
     				<td>
     				    <input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) ? esc_attr( $swpsmtp_options[ 'smtp_settings' ][ 'username' ] ) : ''; ?>'/><br />
     				    <p class="description"><?php _e( "The username to login to your mail server", 'easy-wp-smtp' ); ?></p>
-    				    <!-- Hidden decoy username input to prevent some browsers like Safari from replacing current username and password with autofill -->
-    				    <input style="height: 0px !important; width: 1px !important; padding:0px !important; margin: 0px !important; border: 0px !important; position: absolute;" id="swpsmpt-fake-username" class="ignore-change" tabindex="-1" type="text" value="">
     				</td>
     			    </tr>
     			    <tr class="ad_opt swpsmtp_smtp_options">
     				<th><?php _e( 'SMTP Password', 'easy-wp-smtp' ); ?></th>
     				<td>
-    				    <!-- Hidden decoy password input to prevent some browsers like Safari from replacing current username and password with autofill -->
-    				    <input style="height: 0px !important; width: 1px !important; padding:0px !important; margin: 0px !important; border: 0px !important; position: absolute;" id="swpsmpt-fake-password" class="ignore-change" tabindex="-1" type="password" value="">
-
-    				    <input id = 'swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
+    				    <input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
     				    <p class="description"><?php _e( "The password to login to your mail server", 'easy-wp-smtp' ); ?></p>
     				    <p class="description"><b><?php _e( 'Note', 'easy-wp-smtp' ); ?></b>: <?php _e( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ); ?></p>
     				</td>
