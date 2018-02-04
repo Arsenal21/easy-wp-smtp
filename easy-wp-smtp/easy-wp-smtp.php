@@ -425,7 +425,7 @@ function swpsmtp_activate() {
     $swpsmtp_options_default = array(
 	'from_email_field'		 => '',
 	'from_name_field'		 => '',
-	'force_from_name_replace'	 => 1,
+	'force_from_name_replace'	 => 0,
 	'smtp_settings'			 => array(
 	    'host'			 => 'smtp.example.com',
 	    'type_encryption'	 => 'none',
