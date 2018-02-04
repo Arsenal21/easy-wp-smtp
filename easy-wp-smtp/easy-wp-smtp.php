@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.6_testing3
+  Version: 1.3.6_testing4
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce
   Author URI: https://wp-ecommerce.net/
@@ -12,7 +12,11 @@
 
 //Prefix/Slug - swpsmtp
 
+use ioncube\phpOpensslCryptor\Cryptor;
+
 include_once('easy-wp-smtp-admin-menu.php');
+
+require_once('inc/Cryptor.php');
 
 /**
  * Add action links on plugin page in to Plugin Name block
@@ -311,14 +315,44 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 
 }
 
+function swpsmtp_encrypt_password( $pass ) {
+    if ( $pass === '' ) {
+	return '';
+    }
+
+    if ( ! extension_loaded( 'openssl' ) ) {
+	// no openssl extension loaded - we can't encrypt the password
+	$password = base64_encode( $pass );
+
+	update_option( 'swpsmtp_pass_encrypted', false );
+    } else {
+	// let's encrypt password
+	$key		 = wp_salt();
+	$password	 = Cryptor::Encrypt( $pass, $key );
+
+	update_option( 'swpsmtp_pass_encrypted', true );
+    }
+    return $password;
+}
+
 if ( ! function_exists( 'swpsmtp_get_password' ) ) {
 
     function swpsmtp_get_password() {
 	$swpsmtp_options = get_option( 'swpsmtp_options' );
-	$temp_password	 = isset( $swpsmtp_options[ 'smtp_settings' ][ 'password' ] ) ? $swpsmtp_options[ 'smtp_settings' ][ 'password' ] : '';
+
+	$temp_password = isset( $swpsmtp_options[ 'smtp_settings' ][ 'password' ] ) ? $swpsmtp_options[ 'smtp_settings' ][ 'password' ] : '';
 	if ( $temp_password == '' ) {
 	    return '';
 	}
+
+	if ( get_option( 'swpsmtp_pass_encrypted' ) ) {
+	    //this is encrypted password
+	    $key		 = wp_salt();
+	    $decrypted	 = Cryptor::Decrypt( $temp_password, $key );
+
+	    return stripslashes( $decrypted );
+	}
+
 	$password	 = "";
 	$decoded_pass	 = base64_decode( $temp_password );
 	/* no additional checks for servers that aren't configured with mbstring enabled */
@@ -420,6 +454,15 @@ function swpsmtp_activate() {
 	if ( ! empty( $swpsmtp_options[ 'allowed_domains' ] ) ) {
 	    if ( base64_decode_maybe( $swpsmtp_options[ 'allowed_domains' ] ) === $swpsmtp_options[ 'allowed_domains' ] ) {
 		$swpsmtp_options[ 'allowed_domains' ] = base64_encode( $swpsmtp_options[ 'allowed_domains' ] );
+		update_option( 'swpsmtp_options', $swpsmtp_options );
+	    }
+	}
+    }
+    // Encrypt password if needed
+    if ( ! get_option( 'swpsmtp_pass_encrypted' ) ) {
+	if ( extension_loaded( 'openssl' ) ) {
+	    if ( $swpsmtp_options[ 'smtp_settings' ][ 'password' ] !== '' ) {
+		$swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( $swpsmtp_options[ 'smtp_settings' ][ 'password' ] );
 		update_option( 'swpsmtp_options', $swpsmtp_options );
 	    }
 	}

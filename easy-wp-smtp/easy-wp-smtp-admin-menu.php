@@ -93,7 +93,7 @@ function swpsmtp_settings() {
 	$swpsmtp_options[ 'smtp_settings' ][ 'username' ]	 = sanitize_text_field( $_POST[ 'swpsmtp_smtp_username' ] );
 	$smtp_password						 = $_POST[ 'swpsmtp_smtp_password' ];
 	if ( $smtp_password !== $gag_password ) {
-	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = base64_encode( $smtp_password );
+	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( $smtp_password );
 	}
 	$swpsmtp_options[ 'smtp_settings' ][ 'enable_debug' ]	 = isset( $_POST[ 'swpsmtp_enable_debug' ] ) ? 1 : false;
 	$swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ]	 = isset( $_POST[ 'swpsmtp_insecure_ssl' ] ) ? 1 : false;
@@ -146,11 +146,6 @@ function swpsmtp_settings() {
 
 	if ( ! empty( $swpsmtp_to ) ) {
 	    $test_res = swpsmtp_test_mail( $swpsmtp_to, $swpsmtp_subject, $swpsmtp_message );
-	    if ( is_array( $test_res ) ) {
-		
-	    } else {
-		
-	    }
 	}
     }
     ?>

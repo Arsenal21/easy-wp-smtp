@@ -4,7 +4,7 @@ Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
 Tested up to: 4.9
-Stable tag: 1.3.6_testing3
+Stable tag: 1.3.6_testing4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.6 =
+* Password is now ecrypted using AES-256 encryption. This requires OpenSSL PHP extension to be enabled on the server.
 * Added clear message to indicate if test email was successfully sent or not. Now you don't have to figure this out from debug log :-)
 * Disabled browser autocomplete for username and password fields to prevent them from being replaced by WP login credentials (if those were saved in browser).
 * Removed duplicate items IDs from settings page to comply with HTML standards.
