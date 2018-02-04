@@ -431,15 +431,15 @@ function swpsmtp_activate() {
 	    'type_encryption'	 => 'none',
 	    'port'			 => 25,
 	    'autentication'		 => 'yes',
-	    'username'		 => 'yourusername',
-	    'password'		 => 'yourpassword'
+	    'username'		 => '',
+	    'password'		 => ''
 	)
     );
 
     /* install the default plugin options if needed */
     $swpsmtp_options = get_option( 'swpsmtp_options' );
     if ( ! $swpsmtp_options ) {
-	$swpsmtp_options = array();
+	$swpsmtp_options = $swpsmtp_options_default;
     }
     $swpsmtp_options = array_merge( $swpsmtp_options_default, $swpsmtp_options );
     update_option( 'swpsmtp_options', $swpsmtp_options, 'yes' );
