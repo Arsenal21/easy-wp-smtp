@@ -399,7 +399,6 @@ if ( ! function_exists( 'swpsmtp_credentials_configured' ) ) {
 	}
 	if ( ! isset( $swpsmtp_options[ 'from_name_field' ] ) || empty( $swpsmtp_options[ 'from_name_field' ] ) ) {
 	    $credentials_configured = false;
-	    ;
 	}
 	return $credentials_configured;
     }
@@ -407,7 +406,7 @@ if ( ! function_exists( 'swpsmtp_credentials_configured' ) ) {
 }
 
 /**
- * Performed at uninstal.
+ * Performed at uninstall.
  * @return void
  */
 if ( ! function_exists( 'swpsmtp_send_uninstall' ) ) {
