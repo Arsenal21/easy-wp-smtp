@@ -87,10 +87,10 @@ function swpsmtp_settings() {
 	    $swpsmtp_options[ 'email_ignore_list' ] = sanitize_text_field( $_POST[ 'swpsmtp_email_ignore_list' ] );
 	}
 
-	$swpsmtp_options[ 'smtp_settings' ][ 'host' ]		 = sanitize_text_field( $_POST[ 'swpsmtp_smtp_host' ] );
+	$swpsmtp_options[ 'smtp_settings' ][ 'host' ]		 = stripslashes( $_POST[ 'swpsmtp_smtp_host' ] );
 	$swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ] = ( isset( $_POST[ 'swpsmtp_smtp_type_encryption' ] ) ) ? sanitize_text_field( $_POST[ 'swpsmtp_smtp_type_encryption' ] ) : 'none';
 	$swpsmtp_options[ 'smtp_settings' ][ 'autentication' ]	 = ( isset( $_POST[ 'swpsmtp_smtp_autentication' ] ) ) ? sanitize_text_field( $_POST[ 'swpsmtp_smtp_autentication' ] ) : 'yes';
-	$swpsmtp_options[ 'smtp_settings' ][ 'username' ]	 = sanitize_text_field( $_POST[ 'swpsmtp_smtp_username' ] );
+	$swpsmtp_options[ 'smtp_settings' ][ 'username' ]	 = stripslashes( $_POST[ 'swpsmtp_smtp_username' ] );
 	$smtp_password						 = $_POST[ 'swpsmtp_smtp_password' ];
 	if ( $smtp_password !== $gag_password ) {
 	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( $smtp_password );
