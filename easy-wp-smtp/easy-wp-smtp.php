@@ -1,9 +1,9 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.6t5
+  Version: 1.3.6
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
-  Author: wpecommerce
+  Author: wpecommerce, alexanderfoxc
   Author URI: https://wp-ecommerce.net/
   Description: Send email via SMTP from your WordPress Blog
   Text Domain: easy-wp-smtp
@@ -315,6 +315,15 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 
 }
 
+function swpsmtp_get_key() {
+    $key = get_option( 'swpsmtp_enc_key', false );
+    if ( empty( $key ) ) {
+	$key = wp_salt();
+	update_option( 'swpsmtp_enc_key', $key );
+    }
+    return $key;
+}
+
 function swpsmtp_encrypt_password( $pass ) {
     if ( $pass === '' ) {
 	return '';
@@ -327,7 +336,7 @@ function swpsmtp_encrypt_password( $pass ) {
 	update_option( 'swpsmtp_pass_encrypted', false );
     } else {
 	// let's encrypt password
-	$key		 = wp_salt();
+	$key		 = swpsmtp_get_key();
 	$password	 = Cryptor::Encrypt( $pass, $key );
 
 	update_option( 'swpsmtp_pass_encrypted', true );
@@ -347,7 +356,7 @@ if ( ! function_exists( 'swpsmtp_get_password' ) ) {
 
 	if ( get_option( 'swpsmtp_pass_encrypted' ) ) {
 	    //this is encrypted password
-	    $key		 = wp_salt();
+	    $key		 = swpsmtp_get_key();
 	    $decrypted	 = Cryptor::Decrypt( $temp_password, $key );
 
 	    return stripslashes( $decrypted );

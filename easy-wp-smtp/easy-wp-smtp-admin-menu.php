@@ -10,7 +10,7 @@ function swpsmtp_admin_default_setup() {
 }
 
 /**
- * Sanitizes textarea. Tries to use wp sanitize_textarea_field() function. If that's now available, uses its own methods
+ * Sanitizes textarea. Tries to use wp sanitize_textarea_field() function. If that's not available, uses its own methods
  * @return string
  */
 function swpsmtp_sanitize_textarea( $str ) {
@@ -50,6 +50,12 @@ function swpsmtp_sanitize_textarea( $str ) {
  * @return void
  */
 function swpsmtp_settings() {
+    //check if OpenSSL PHP extension is loaded and display warning if it's not
+    if ( ! extension_loaded( 'openssl' ) ) {
+	$class	 = 'notice notice-warning';
+	$message = __( "PHP OpenSSL extension is not installed on the server. It's required by Easy WP SMTP plugin to operate properly. Please contact your server administrator or hosting provider and ask them to install it.", 'easy-wp-smtp' );
+	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+    }
     echo '<div class="wrap" id="swpsmtp-mail">';
     echo '<h2>' . __( "Easy WP SMTP Settings", 'easy-wp-smtp' ) . '</h2>';
     echo '<div id="poststuff"><div id="post-body">';
