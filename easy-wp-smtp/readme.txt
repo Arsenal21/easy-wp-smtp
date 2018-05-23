@@ -78,8 +78,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.6 =
-* Password is now ecrypted using AES-256 encryption. This requires OpenSSL PHP extension to be enabled on the server.
 * SMTP Username and SMTP Host fields are no longer multiplying slashes (thanks to jstepak for reporting).
+* Added option to encrypt password using AES-256 encryption. This requires PHP 5.3+ and OpenSSL PHP extension to be enabled on the server.
 * Added clear message to indicate if test email was successfully sent or not. Now you don't have to figure this out from debug log :-)
 * Disabled browser autocomplete for username and password fields to prevent them from being replaced by WP login credentials (if those were saved in browser).
 * Removed duplicate items IDs from settings page to comply with HTML standards.

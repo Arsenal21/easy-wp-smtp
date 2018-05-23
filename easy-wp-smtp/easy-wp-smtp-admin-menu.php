@@ -97,13 +97,25 @@ function swpsmtp_settings() {
 	$swpsmtp_options[ 'smtp_settings' ][ 'type_encryption' ] = ( isset( $_POST[ 'swpsmtp_smtp_type_encryption' ] ) ) ? sanitize_text_field( $_POST[ 'swpsmtp_smtp_type_encryption' ] ) : 'none';
 	$swpsmtp_options[ 'smtp_settings' ][ 'autentication' ]	 = ( isset( $_POST[ 'swpsmtp_smtp_autentication' ] ) ) ? sanitize_text_field( $_POST[ 'swpsmtp_smtp_autentication' ] ) : 'yes';
 	$swpsmtp_options[ 'smtp_settings' ][ 'username' ]	 = stripslashes( $_POST[ 'swpsmtp_smtp_username' ] );
-	$smtp_password						 = $_POST[ 'swpsmtp_smtp_password' ];
+
+	$swpsmtp_options[ 'smtp_settings' ][ 'enable_debug' ]	 = isset( $_POST[ 'swpsmtp_enable_debug' ] ) ? 1 : false;
+	$swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ]	 = isset( $_POST[ 'swpsmtp_insecure_ssl' ] ) ? 1 : false;
+	$swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ]	 = isset( $_POST[ 'swpsmtp_encrypt_pass' ] ) ? 1 : false;
+
+	$smtp_password = $_POST[ 'swpsmtp_smtp_password' ];
 	if ( $smtp_password !== $gag_password ) {
 	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( $smtp_password );
 	}
-	$swpsmtp_options[ 'smtp_settings' ][ 'enable_debug' ]	 = isset( $_POST[ 'swpsmtp_enable_debug' ] ) ? 1 : false;
-	$swpsmtp_options[ 'smtp_settings' ][ 'insecure_ssl' ]	 = isset( $_POST[ 'swpsmtp_insecure_ssl' ] ) ? 1 : false;
-	$swpsmtp_options[ 'enable_domain_check' ]		 = isset( $_POST[ 'swpsmtp_enable_domain_check' ] ) ? 1 : false;
+
+	if ( $swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ] && ! get_option( 'swpsmtp_pass_encrypted', false ) ) {
+	    update_option( 'swpsmtp_options', $swpsmtp_options );
+	    $pass							 = swpsmtp_get_password();
+	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ]	 = swpsmtp_encrypt_password( $pass );
+	    update_option( 'swpsmtp_options', $swpsmtp_options );
+	}
+
+
+	$swpsmtp_options[ 'enable_domain_check' ] = isset( $_POST[ 'swpsmtp_enable_domain_check' ] ) ? 1 : false;
 	if ( isset( $_POST[ 'swpsmtp_allowed_domains' ] ) ) {
 	    $swpsmtp_options[ 'block_all_emails' ]	 = isset( $_POST[ 'swpsmtp_block_all_emails' ] ) ? 1 : false;
 	    $swpsmtp_options[ 'allowed_domains' ]	 = base64_encode( sanitize_text_field( $_POST[ 'swpsmtp_allowed_domains' ] ) );
@@ -153,6 +165,19 @@ function swpsmtp_settings() {
 	if ( ! empty( $swpsmtp_to ) ) {
 	    $test_res = swpsmtp_test_mail( $swpsmtp_to, $swpsmtp_subject, $swpsmtp_message );
 	}
+    }
+
+    //check if server meets encryption requirements
+    $enc_req_met	 = true;
+    $enc_req_err	 = '';
+    if ( ! extension_loaded( 'openssl' ) ) {
+	$enc_req_err	 .= __( "PHP OpenSSL extension is not installed on the server. It is required for encryption to work properly. Please contact your server administrator or hosting provider and ask them to install it.", 'easy-wp-smtp' ) . '<br />';
+	$enc_req_met	 = false;
+    }
+    if ( version_compare( PHP_VERSION, '5.3.0' ) < 0 ) {
+	$enc_req_err	 = ! empty( $enc_req_err ) ? $enc_req_err	 .= '<br />' : '';
+	$enc_req_err	 .= sprintf( __( 'Your PHP version is %s, encryption function requires PHP version 5.3.0 or higher.', 'easy-wp-smtp' ), PHP_VERSION );
+	$enc_req_met	 = false;
     }
     ?>
     <style>
@@ -346,6 +371,17 @@ function swpsmtp_settings() {
     					<label><input type="checkbox" id="swpsmtp_block_all_emails" name="swpsmtp_block_all_emails" value="1"<?php echo (isset( $swpsmtp_options[ 'block_all_emails' ] ) && ($swpsmtp_options[ 'block_all_emails' ])) ? ' checked' : ''; ?><?php echo (isset( $swpsmtp_options[ 'enable_domain_check' ] ) && ($swpsmtp_options[ 'enable_domain_check' ])) ? '' : ' disabled'; ?>/> <?php _e( 'Block all emails', 'easy-wp-smtp' ); ?></label>
     				    </p>
     				    <p class="description"><?php _e( "When enabled, plugin attempts to block ALL emails from being sent out if domain mismtach." ); ?></p>
+    				</td>
+    			    </tr>
+    			    <tr valign="top">
+    				<th scope="row"><?php _e( "Encrypt Password", 'easy-wp-smtp' ); ?></th>
+    				<td>
+					<?php if ( $enc_req_met ) { ?>
+					    <input id="swpsmtp_encrypt_pass" type="checkbox" name="swpsmtp_encrypt_pass" value="1" <?php echo (isset( $swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ] ) && ($swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ])) ? 'checked' : ''; ?>/>
+					    <p class="description"><?php _e( "When enabled, your SMTP password is stored in the database using AES-256 encryption.", 'easy-wp-smtp' ); ?></p>
+					<?php } else { ?>
+					    <p style="color: red;"><?php echo $enc_req_err; ?></p>
+					<?php } ?>
     				</td>
     			    </tr>
     			    <tr valign="top">

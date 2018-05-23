@@ -12,11 +12,7 @@
 
 //Prefix/Slug - swpsmtp
 
-use ioncube\phpOpensslCryptor\Cryptor;
-
 include_once('easy-wp-smtp-admin-menu.php');
-
-require_once('inc/Cryptor.php');
 
 /**
  * Add action links on plugin page in to Plugin Name block
@@ -315,30 +311,22 @@ if ( ! function_exists( 'swpsmtp_test_mail' ) ) {
 
 }
 
-function swpsmtp_get_key() {
-    $key = get_option( 'swpsmtp_enc_key', false );
-    if ( empty( $key ) ) {
-	$key = wp_salt();
-	update_option( 'swpsmtp_enc_key', $key );
-    }
-    return $key;
-}
-
 function swpsmtp_encrypt_password( $pass ) {
     if ( $pass === '' ) {
 	return '';
     }
 
-    if ( ! extension_loaded( 'openssl' ) ) {
+    $swpsmtp_options = get_option( 'swpsmtp_options' );
+
+    if ( empty( $swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ] ) || ! extension_loaded( 'openssl' ) ) {
 	// no openssl extension loaded - we can't encrypt the password
 	$password = base64_encode( $pass );
-
 	update_option( 'swpsmtp_pass_encrypted', false );
     } else {
 	// let's encrypt password
-	$key		 = swpsmtp_get_key();
-	$password	 = Cryptor::Encrypt( $pass, $key );
-
+	require_once('easy-wp-smtp-utils.php');
+	$cryptor	 = SWPSMTPUtils::get_instance();
+	$password	 = $cryptor->encrypt_password( $pass );
 	update_option( 'swpsmtp_pass_encrypted', true );
     }
     return $password;
@@ -356,10 +344,16 @@ if ( ! function_exists( 'swpsmtp_get_password' ) ) {
 
 	if ( get_option( 'swpsmtp_pass_encrypted' ) ) {
 	    //this is encrypted password
-	    $key		 = swpsmtp_get_key();
-	    $decrypted	 = Cryptor::Decrypt( $temp_password, $key );
-
-	    return stripslashes( $decrypted );
+	    require_once('easy-wp-smtp-utils.php');
+	    $cryptor	 = SWPSMTPUtils::get_instance();
+	    $decrypted	 = $cryptor->decrypt_password( $temp_password );
+	    //check if encryption option is disabled
+	    if ( empty( $swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ] ) ) {
+		//it is. let's save decrypted password
+		$swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( addslashes( $decrypted ) );
+		update_option( 'swpsmtp_options', $swpsmtp_options );
+	    }
+	    return $decrypted;
 	}
 
 	$password	 = "";
