@@ -17,7 +17,8 @@ class EasyWPSMTMAdmin {
 	$translation_array = array(
 	    'clear_log'	 => __( 'Are you sure want to clear log?', 'easy-wp-smtp' ),
 	    'log_cleared'	 => __( 'Log cleared.', 'easy-wp-smtp' ),
-	    'error_occured'	 => __( 'Error occured:', 'easy-wp-smtp' )
+	    'error_occured'	 => __( 'Error occured:', 'easy-wp-smtp' ),
+	    'sending'	 => __( 'Sending...', 'easy-wp-smtp' )
 	);
 	wp_localize_script( 'swpsmtp_admin_js', 'easywpsmtpstr', $translation_array );
 	wp_enqueue_script( 'swpsmtp_admin_js' );
@@ -463,6 +464,7 @@ function swpsmtp_settings() {
     			    <input type="submit" id="test-email-form-submit" class="button-primary" value="<?php _e( 'Send Test Email', 'easy-wp-smtp' ) ?>" />
     			    <input type="hidden" name="swpsmtp_test_submit" value="submit" />
 				<?php wp_nonce_field( plugin_basename( __FILE__ ), 'swpsmtp_test_nonce_name' ); ?>
+    			    <span id="swpsmtp-spinner" class="spinner"></span>
     			</p>
     		    </form>
     		</div><!-- end of inside -->

@@ -24,6 +24,10 @@ textarea#swpsmtp_message{
 div.swpsmtp-tab-container, #swpsmtp-save-settings-notice {
     display: none;
 }
+#swpsmtp-spinner {
+    float: none;
+    vertical-align: top;
+}
 div.swpsmtp-tab-container {
     padding-top: 10px;
 }

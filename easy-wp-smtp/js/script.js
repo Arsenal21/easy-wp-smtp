@@ -75,4 +75,12 @@ jQuery(function ($) {
 	    });
 	}
     });
+
+    $('#test-email-form-submit').click(function () {
+	$(this).val(easywpsmtpstr.sending);
+	$(this).prop('disabled', true);
+	$('#swpsmtp-spinner').addClass('is-active');
+	$('#swpsmtp_settings_test_email_form').submit();
+	return true;
+    });
 });
