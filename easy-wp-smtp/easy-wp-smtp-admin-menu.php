@@ -305,7 +305,7 @@ function swpsmtp_settings() {
     				<td>
     				    <input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo ($EasyWPSMTP->get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
     				    <p class="description"><?php _e( "The password to login to your mail server", 'easy-wp-smtp' ); ?></p>
-    				    <p class="description"><b><?php _e( 'Note', 'easy-wp-smtp' ); ?></b>: <?php _e( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ); ?></p>
+    				    <p class="description"><b><?php _ex( 'Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp' ); ?></b> <?php _e( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ); ?></p>
     				</td>
     			    </tr>
     			</table>
@@ -384,7 +384,7 @@ function swpsmtp_settings() {
     	    <div class="postbox">
     		<h3 class="hndle"><label for="title"><?php _e( 'Test Email', 'easy-wp-smtp' ); ?></label></h3>
     		<div class="inside">
-    		    <div id="swpsmtp-save-settings-notice" class="swpsmtp-msg-cont msg-error"><b><?php _e( 'Notice:', 'easy-wp-smtp' ); ?></b> <?php _e( 'You have unsaved settings. In order to send a test email, you need to go back to previous tab and click "Save Changes" button first.', 'easy-wp-smtp' ); ?></div>
+    		    <div id="swpsmtp-save-settings-notice" class="swpsmtp-msg-cont msg-error"><b><?php _ex( 'Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp' ); ?></b> <?php _e( 'You have unsaved settings. In order to send a test email, you need to go back to previous tab and click "Save Changes" button first.', 'easy-wp-smtp' ); ?></div>
 
 			<?php
 			if ( isset( $test_res ) && is_array( $test_res ) ) {
@@ -476,7 +476,7 @@ function swpsmtp_settings() {
     	<div class="postbox" style="min-width: inherit;">
     	    <h3 class="hndle"><label for="title"><?php _e( "Documentation", 'easy-wp-smtp' ); ?></label></h3>
     	    <div class="inside">
-		    <?php _ex( sprintf( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ), '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ); ?>
+		    <?php sprintf( _ex( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ), '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ); ?>
     	    </div>
     	</div>
     	<div class="postbox" style="min-width: inherit;">
