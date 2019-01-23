@@ -79,7 +79,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.8 =
+* Set reasonable timeout for SMTP server connection attempt. This prevents admin area from being locked up for too long if your SMTP server refuses connections.
+* Added spinner to indicate that test email is being sent.
 * "Send Test Email" button is now disabled if there are unsaved settings changes.
+* Minor settings page adjustments.
 
 = 1.3.7 =
 * Renamed SSL and TLS to what they actually are.
