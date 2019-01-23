@@ -17,7 +17,7 @@ class EasyWPSMTMAdmin {
 	$translation_array = array(
 	    'clear_log'	 => __( 'Are you sure want to clear log?', 'easy-wp-smtp' ),
 	    'log_cleared'	 => __( 'Log cleared.', 'easy-wp-smtp' ),
-	    'error_occured'	 => __( 'Error occured:', 'easy-wp-smtp' ),
+	    'error_occured'	 => __( 'Error occurred:', 'easy-wp-smtp' ),
 	    'sending'	 => __( 'Sending...', 'easy-wp-smtp' )
 	);
 	wp_localize_script( 'swpsmtp_admin_js', 'easywpsmtpstr', $translation_array );
@@ -390,10 +390,10 @@ function swpsmtp_settings() {
 			if ( isset( $test_res ) && is_array( $test_res ) ) {
 			    if ( isset( $test_res[ 'error' ] ) ) {
 				$errmsg_class	 = ' msg-error';
-				$errmsg_text	 = '<b>' . __( 'Following error occured when attempting to send test email:', 'easy-wp-smtp' ) . '</b><br />' . $test_res[ 'error' ];
+				$errmsg_text	 = '<b>' . __( 'Following error occurred when attempting to send test email:', 'easy-wp-smtp' ) . '</b><br />' . $test_res[ 'error' ];
 			    } else {
 				$errmsg_class	 = ' msg-success';
-				$errmsg_text	 = '<b>' . __( 'Test email was successfully sent. No errors occured during the process.', 'easy-wp-smtp' ) . '</b>';
+				$errmsg_text	 = '<b>' . __( 'Test email was successfully sent. No errors occurred during the process.', 'easy-wp-smtp' ) . '</b>';
 			    }
 			    ?>
 
