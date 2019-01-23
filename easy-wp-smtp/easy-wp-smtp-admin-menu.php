@@ -12,8 +12,8 @@ class EasyWPSMTMAdmin {
 	if ( $hook != 'settings_page_swpsmtp_settings' ) {
 	    return;
 	}
-	wp_enqueue_style( 'swpsmtp_admin_css', plugins_url( 'css/style.min.css', __FILE__ ) );
-	wp_register_script( 'swpsmtp_admin_js', plugins_url( 'js/script.min.js', __FILE__ ) );
+	wp_enqueue_style( 'swpsmtp_admin_css', plugins_url( 'css/style.css', __FILE__ ) );
+	wp_register_script( 'swpsmtp_admin_js', plugins_url( 'js/script.js', __FILE__ ) );
 	$translation_array = array(
 	    'clear_log'	 => __( 'Are you sure want to clear log?', 'easy-wp-smtp' ),
 	    'log_cleared'	 => __( 'Log cleared.', 'easy-wp-smtp' ),
