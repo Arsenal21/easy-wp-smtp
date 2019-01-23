@@ -157,10 +157,10 @@ class EasyWPSMTP {
 	    $phpmailer->Debugoutput = function($str, $level) {
 		$this->log( $str );
 	    };
-	    $phpmailer->SMTPDebug	 = 1;
-	    //set reasonable timeout
-	    $phpmailer->Timeout	 = 10;
+	    $phpmailer->SMTPDebug = 1;
 	}
+	//set reasonable timeout
+	$phpmailer->Timeout = 10;
     }
 
     function test_mail( $to_email, $subject, $message ) {
