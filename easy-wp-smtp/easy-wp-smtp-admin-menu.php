@@ -2,8 +2,6 @@
 
 class EasyWPSMTMAdmin {
 
-    var $openSSLLoaded = false;
-
     function __construct() {
 	add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	add_action( 'admin_menu', array( $this, 'admin_menu' ) );
@@ -144,13 +142,13 @@ function swpsmtp_settings() {
 
 	$smtp_password = $_POST[ 'swpsmtp_smtp_password' ];
 	if ( $smtp_password !== $gag_password ) {
-	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = swpsmtp_encrypt_password( $smtp_password );
+	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ] = $EasyWPSMTP->encrypt_password( $smtp_password );
 	}
 
 	if ( $swpsmtp_options[ 'smtp_settings' ][ 'encrypt_pass' ] && ! get_option( 'swpsmtp_pass_encrypted', false ) ) {
 	    update_option( 'swpsmtp_options', $swpsmtp_options );
-	    $pass							 = swpsmtp_get_password();
-	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ]	 = swpsmtp_encrypt_password( $pass );
+	    $pass							 = $EasyWPSMTP->get_password();
+	    $swpsmtp_options[ 'smtp_settings' ][ 'password' ]	 = $EasyWPSMTP->encrypt_password( $pass );
 	    update_option( 'swpsmtp_options', $swpsmtp_options );
 	}
 
@@ -305,7 +303,7 @@ function swpsmtp_settings() {
     			    <tr class="ad_opt swpsmtp_smtp_options">
     				<th><?php _e( 'SMTP Password', 'easy-wp-smtp' ); ?></th>
     				<td>
-    				    <input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo (swpsmtp_get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
+    				    <input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo ($EasyWPSMTP->get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
     				    <p class="description"><?php _e( "The password to login to your mail server", 'easy-wp-smtp' ); ?></p>
     				    <p class="description"><b><?php _e( 'Note', 'easy-wp-smtp' ); ?></b>: <?php _e( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ); ?></p>
     				</td>
@@ -338,7 +336,7 @@ function swpsmtp_settings() {
     				<td>
     				    <input id="swpsmtp_enable_domain_check" type="checkbox" id="swpsmtp_enable_domain_check" name="swpsmtp_enable_domain_check" value="1"<?php echo (isset( $swpsmtp_options[ 'enable_domain_check' ] ) && ($swpsmtp_options[ 'enable_domain_check' ])) ? ' checked' : ''; ?>/>
     				    <p class="description"><?php _e( "This option is usually used by developers only. SMTP settings will be used only if the site is running on following domain(s):", 'easy-wp-smtp' ); ?></p>
-    				    <input id="swpsmtp_allowed_domains" type="text" name="swpsmtp_allowed_domains" value="<?php echo base64_decode_maybe( $swpsmtp_options[ 'allowed_domains' ] ); ?>"<?php echo (isset( $swpsmtp_options[ 'enable_domain_check' ] ) && ($swpsmtp_options[ 'enable_domain_check' ])) ? '' : ' disabled'; ?>/>
+    				    <input id="swpsmtp_allowed_domains" type="text" name="swpsmtp_allowed_domains" value="<?php echo SWPSMTPUtils::base64_decode_maybe( $swpsmtp_options[ 'allowed_domains' ] ); ?>"<?php echo (isset( $swpsmtp_options[ 'enable_domain_check' ] ) && ($swpsmtp_options[ 'enable_domain_check' ])) ? '' : ' disabled'; ?>/>
     				    <p class="description"><?php _e( "Coma-separated domains list. Example: domain1.com, domain2.com", 'easy-wp-smtp' ); ?></p>
     				    <p>
     					<label><input type="checkbox" id="swpsmtp_block_all_emails" name="swpsmtp_block_all_emails" value="1"<?php echo (isset( $swpsmtp_options[ 'block_all_emails' ] ) && ($swpsmtp_options[ 'block_all_emails' ])) ? ' checked' : ''; ?><?php echo (isset( $swpsmtp_options[ 'enable_domain_check' ] ) && ($swpsmtp_options[ 'enable_domain_check' ])) ? '' : ' disabled'; ?>/> <?php _e( 'Block all emails', 'easy-wp-smtp' ); ?></label>
