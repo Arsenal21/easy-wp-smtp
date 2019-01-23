@@ -53,6 +53,7 @@ jQuery(function ($) {
 jQuery(function ($) {
     $('#swpsmtp-mail input').not('.ignore-change').change(function () {
 	$('#swpsmtp-save-settings-notice').show();
+	$('#test-email-form-submit').prop('disabled', true);
     });
     $('#swpsmtp_enable_domain_check').change(function () {
 	$('input[name="swpsmtp_allowed_domains"]').prop('disabled', !$(this).is(':checked'));
