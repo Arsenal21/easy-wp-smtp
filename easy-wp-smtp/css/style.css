@@ -24,6 +24,9 @@ textarea#swpsmtp_message{
 div.swpsmtp-tab-container, #swpsmtp-save-settings-notice {
     display: none;
 }
+div.swpsmtp-tab-container {
+    padding-top: 10px;
+}
 .swpsmtp-stars-container {
     text-align: center;
     margin-top: 10px;
@@ -44,6 +47,7 @@ div.swpsmtp-tab-container, #swpsmtp-save-settings-notice {
 .swpsmtp-settings-sidebar-cont {
     width: 19%;
     float: right;
+    padding-top: 10px;
 }
 
 div.swpsmtp-msg-cont {

@@ -218,9 +218,6 @@ function swpsmtp_settings() {
         <a href="#testemail" data-tab-name="testemail" class="nav-tab"><?php _e( 'Test Email', 'easy-wp-smtp' ); ?></a>
     </div>
 
-    <div class="swpsmtp-yellow-box">
-	<?php _ex( sprintf( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ), '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ); ?>
-    </div>
     <div class="swpsmtp-settings-container">
         <div class="swpsmtp-settings-grid swpsmtp-settings-main-cont">
 
@@ -475,6 +472,12 @@ function swpsmtp_settings() {
         </div>
         <div class="swpsmtp-settings-grid swpsmtp-settings-sidebar-cont">
     	<div class="postbox" style="min-width: inherit;">
+    	    <h3 class="hndle"><label for="title"><?php _e( "Documentation", 'easy-wp-smtp' ); ?></label></h3>
+    	    <div class="inside">
+		    <?php _ex( sprintf( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ), '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ); ?>
+    	    </div>
+    	</div>
+    	<div class="postbox" style="min-width: inherit;">
     	    <h3 class="hndle"><label for="title"><?php _e( "Support", 'easy-wp-smtp' ); ?></label></h3>
     	    <div class="inside">
 		    <?php echo sprintf( _x( "Having issues or difficulties? You can post your issue on the %s", '%s is replaced by "Support Forum" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/easy-wp-smtp/" target="_blank">%s</a>', __( 'Support Forum', 'easy-wp-smtp' ) ) ); ?>
@@ -491,9 +494,6 @@ function swpsmtp_settings() {
     	    </div>
     	</div>
         </div>
-    </div>
-    <div class="swpsmtp-yellow-box">
-	<?php _ex( sprintf( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ), '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ); ?>
     </div>
 
     <?php
