@@ -2,6 +2,8 @@
 
 class EasyWPSMTMAdmin {
 
+    var $openSSLLoaded = false;
+
     function __construct() {
 	add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	add_action( 'admin_menu', array( $this, 'admin_menu' ) );
@@ -74,13 +76,26 @@ function swpsmtp_sanitize_textarea( $str ) {
  * @return void
  */
 function swpsmtp_settings() {
-    $EasyWPSMTP = EasyWPSMTP::get_instance();
+    $EasyWPSMTP	 = EasyWPSMTP::get_instance();
+    $enc_req_met	 = true;
+    $enc_req_err	 = '';
     //check if OpenSSL PHP extension is loaded and display warning if it's not
     if ( ! extension_loaded( 'openssl' ) ) {
-	$class	 = 'notice notice-warning';
-	$message = __( "PHP OpenSSL extension is not installed on the server. It's required by Easy WP SMTP plugin to operate properly. Please contact your server administrator or hosting provider and ask them to install it.", 'easy-wp-smtp' );
+	$class		 = 'notice notice-warning';
+	$message	 = __( "PHP OpenSSL extension is not installed on the server. It's required by Easy WP SMTP plugin to operate properly. Please contact your server administrator or hosting provider and ask them to install it.", 'easy-wp-smtp' );
 	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+	//also show encryption error message
+	$enc_req_err	 .= __( "PHP OpenSSL extension is not installed on the server. It is required for encryption to work properly. Please contact your server administrator or hosting provider and ask them to install it.", 'easy-wp-smtp' ) . '<br />';
+	$enc_req_met	 = false;
     }
+
+    //check if server meets encryption requirements
+    if ( version_compare( PHP_VERSION, '5.3.0' ) < 0 ) {
+	$enc_req_err	 = ! empty( $enc_req_err ) ? $enc_req_err	 .= '<br />' : '';
+	$enc_req_err	 .= sprintf( __( 'Your PHP version is %s, encryption function requires PHP version 5.3.0 or higher.', 'easy-wp-smtp' ), PHP_VERSION );
+	$enc_req_met	 = false;
+    }
+
     echo '<div class="wrap" id="swpsmtp-mail">';
     echo '<h2>' . __( "Easy WP SMTP Settings", 'easy-wp-smtp' ) . '</h2>';
     echo '<div id="poststuff"><div id="post-body">';
@@ -190,19 +205,6 @@ function swpsmtp_settings() {
 	if ( ! empty( $swpsmtp_to ) ) {
 	    $test_res = $EasyWPSMTP->test_mail( $swpsmtp_to, $swpsmtp_subject, $swpsmtp_message );
 	}
-    }
-
-    //check if server meets encryption requirements
-    $enc_req_met	 = true;
-    $enc_req_err	 = '';
-    if ( ! extension_loaded( 'openssl' ) ) {
-	$enc_req_err	 .= __( "PHP OpenSSL extension is not installed on the server. It is required for encryption to work properly. Please contact your server administrator or hosting provider and ask them to install it.", 'easy-wp-smtp' ) . '<br />';
-	$enc_req_met	 = false;
-    }
-    if ( version_compare( PHP_VERSION, '5.3.0' ) < 0 ) {
-	$enc_req_err	 = ! empty( $enc_req_err ) ? $enc_req_err	 .= '<br />' : '';
-	$enc_req_err	 .= sprintf( __( 'Your PHP version is %s, encryption function requires PHP version 5.3.0 or higher.', 'easy-wp-smtp' ), PHP_VERSION );
-	$enc_req_met	 = false;
     }
     ?>
 
