@@ -476,7 +476,7 @@ function swpsmtp_settings() {
     	<div class="postbox" style="min-width: inherit;">
     	    <h3 class="hndle"><label for="title"><?php _e( "Documentation", 'easy-wp-smtp' ); ?></label></h3>
     	    <div class="inside">
-		    <?php sprintf( _ex( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ), '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ); ?>
+		    <?php echo sprintf( _x( "Please visit the %s plugin's documentation page to learn how to use this plugin.", '%s is replaced by <a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>', 'easy-wp-smtp' ), '<a target="_blank" href="https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197">Easy WP SMTP</a>' ); ?>
     	    </div>
     	</div>
     	<div class="postbox" style="min-width: inherit;">
@@ -490,7 +490,7 @@ function swpsmtp_settings() {
     	    <div class="inside">
 		    <?php echo sprintf( _x( 'Like the plugin? Please give us a %s', '%s is replaced by "rating" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/easy-wp-smtp/reviews/#new-post" target="_blank">%s</a>', __( 'rating', 'easy-wp-smtp' ) ) ); ?>
     		<div class="swpsmtp-stars-container">
-    		    <a href="https://wordpress.org/support/plugin/easy-wp-smtp/reviews/#new-post" target="_blank"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
+    		    <a href="https://wordpress.org/support/plugin/easy-wp-smtp/reviews/?filter=5" target="_blank"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
     		    </a>
     		</div>
     	    </div>
