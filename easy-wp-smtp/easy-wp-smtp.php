@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Easy WP SMTP
-  Version: 1.3.8
+  Version: 1.3.8.1
   Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
   Author: wpecommerce, alexanderfoxc
   Author URI: https://wp-ecommerce.net/
@@ -249,7 +249,7 @@ class EasyWPSMTP {
     }
 
     function admin_init() {
-	if ( wp_doing_ajax() ) {
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 	    add_action( 'wp_ajax_swpsmtp_clear_log', array( $this, 'clear_log' ) );
 	}
 //view log file

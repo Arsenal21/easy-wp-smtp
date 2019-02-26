@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 4.3
 Tested up to: 5.1
 Requires PHP: 5.3
-Stable tag: 1.3.8
+Stable tag: 1.3.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= 1.3.8.1 =
+* Fixed incompatability with WP versions older than 4.7.0 (thanks to stevendigital for reporting).
 
 = 1.3.8 =
 * Set reasonable timeout for SMTP server connection attempt. This prevents admin area from being locked up for too long if your SMTP server refuses connections.
