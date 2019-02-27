@@ -79,6 +79,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = WIP 1.3.9 =
+* Added Export\Import settings functionality.
 * Added option to delete all settings and deactivate plugin.
 
 = 1.3.8.1 =

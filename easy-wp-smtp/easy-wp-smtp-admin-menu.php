@@ -397,9 +397,19 @@ function swpsmtp_settings() {
     			<p><?php _e( 'Actions in this section can (and some of them will) erase or mess up your settings. Use it with caution.', 'easy-wp-smtp' ); ?></p>
     			<table class="form-table">
     			    <tr valign="top">
+    				<th scope="row"><?php _e( 'Export\Import Settings', 'easy-wp-smtp' ); ?></th>
+    				<td>
+    				    <button id="swpsmtp_export_settings_btn" type="button" class="button"><?php _e( 'Export Settings', 'easy-wp-smtp' ); ?></button>
+    				    <p class="description"><?php _e( "Use this to export plugin settings to a file.", 'easy-wp-smtp' ); ?></p>
+    				    <p></p>
+    				    <button id="swpsmtp_import_settings_btn" type="button" class="button"><?php _e( 'Import Settings', 'easy-wp-smtp' ); ?></button>
+    				    <p class="description"><?php _e( "Use this to import plugin settings from a file. Note this would replace all your existing settings, so use with caution.", 'easy-wp-smtp' ); ?></p>
+    				</td>
+    			    </tr>
+    			    <tr valign="top">
     				<th scope="row"><?php _e( 'Delete Settings and Deactivate Plugin', 'easy-wp-smtp' ); ?></th>
     				<td>
-    				    <button id="swpsmtp_self_destruct_btn" style="color: red;" type="button" class="button"><?php _e( 'Self-destruct', 'easy-wp-smtp' ); ?></button>
+    				    <button id="swpsmtp_self_destruct_btn" style="color: red;" type="button" class="button button-secondary">>>> <?php _e( 'Self-destruct', 'easy-wp-smtp' ); ?> <<<</button>
     				    <p class="description"><?php _e( "This will remove ALL your settings and deactivate the plugin. Useful when you're uninstalling the plugin and want to completely remove all crucial data stored in the database.", 'easy-wp-smtp' ); ?></p>
     				    <p style="color: red; font-weight: bold;"><?php _e( "Warning! This can't be undone.", 'easy-wp-smtp' ); ?></p>
     				</td>
@@ -409,6 +419,15 @@ function swpsmtp_settings() {
     		</div>
 
     	    </div>
+    	</form>
+
+    	<form id="swpsmtp_export_settings_frm" style="display: none;" method="POST">
+    	    <input type="hidden" name="swpsmtp_export_settings" value="1">
+    	</form>
+
+    	<form id="swpsmtp_import_settings_frm" style="display: none;" method="POST" enctype="multipart/form-data">
+    	    <input type="hidden" name="swpsmtp_import_settings" value="1">
+    	    <input id="swpsmtp_import_settings_select_file" type="file" name="swpsmtp_import_settings_file">
     	</form>
 
     	<div class="swpsmtp-tab-container" data-tab-name="testemail">

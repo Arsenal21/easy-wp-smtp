@@ -253,7 +253,7 @@ class EasyWPSMTP {
 	    add_action( 'wp_ajax_swpsmtp_clear_log', array( $this, 'clear_log' ) );
 	    add_action( 'wp_ajax_swpsmtp_self_destruct', array( $this, 'self_destruct_handler' ) );
 	}
-//view log file
+	//view log file
 	if ( isset( $_GET[ 'swpsmtp_action' ] ) ) {
 	    if ( $_GET[ 'swpsmtp_action' ] === 'view_log' ) {
 		$log_file_name = $this->opts[ 'smtp_settings' ][ 'log_file_name' ];
@@ -271,6 +271,68 @@ class EasyWPSMTP {
 		die;
 	    }
 	}
+
+	//check if this is export settings request
+	$is_export_settings = filter_input( INPUT_POST, 'swpsmtp_export_settings', FILTER_SANITIZE_NUMBER_INT );
+	if ( $is_export_settings ) {
+	    $data					 = array();
+	    $opts					 = get_option( 'swpsmtp_options', array() );
+	    $data[ 'swpsmtp_options' ]		 = $opts;
+	    $swpsmtp_pass_encrypted			 = get_option( 'swpsmtp_pass_encrypted', false );
+	    $data[ 'swpsmtp_pass_encrypted' ]	 = $swpsmtp_pass_encrypted;
+	    if ( $swpsmtp_pass_encrypted ) {
+		$swpsmtp_enc_key		 = get_option( 'swpsmtp_enc_key', false );
+		$data[ 'swpsmtp_enc_key' ]	 = $swpsmtp_enc_key;
+	    }
+	    $smtp_test_mail			 = get_option( 'smtp_test_mail', array() );
+	    $data[ 'smtp_test_mail' ]	 = $smtp_test_mail;
+	    $out				 = array();
+	    $out[ 'data' ]			 = serialize( $data );
+	    $out[ 'ver' ]			 = 1;
+	    $out[ 'checksum' ]		 = md5( $out[ 'data' ] );
+
+	    $filename = 'easy_wp_smtp_settings.txt';
+	    header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+	    header( 'Content-Type: text/plain' );
+	    echo serialize( $out );
+	    exit;
+	}
+
+	$is_import_settings = filter_input( INPUT_POST, 'swpsmtp_import_settings', FILTER_SANITIZE_NUMBER_INT );
+	if ( $is_import_settings ) {
+	    $err_msg = __( 'Error occurred during settings import', 'easy-wp-smtp' );
+	    if ( empty( $_FILES[ 'swpsmtp_import_settings_file' ] ) ) {
+		echo $err_msg;
+		wp_die();
+	    }
+	    $in_raw = file_get_contents( $_FILES[ 'swpsmtp_import_settings_file' ][ 'tmp_name' ] );
+	    try {
+		$in = unserialize( $in_raw );
+		if ( empty( $in[ 'data' ] ) ) {
+		    echo $err_msg;
+		    wp_die();
+		}
+		if ( empty( $in[ 'checksum' ] ) ) {
+		    echo $err_msg;
+		    wp_die();
+		}
+		if ( md5( $in[ 'data' ] ) !== $in[ 'checksum' ] ) {
+		    echo $err_msg;
+		    wp_die();
+		}
+		$data = unserialize( $in[ 'data' ] );
+		foreach ( $data as $key => $value ) {
+		    update_option( $key, $value );
+		}
+		set_transient( 'easy_wp_smtp_settings_import_success', true, 60 * 60 );
+		$url = admin_url() . 'options-general.php?page=swpsmtp_settings';
+		wp_safe_redirect( $url );
+		exit;
+	    } catch ( Exception $ex ) {
+		echo $err_msg;
+		wp_die();
+	    }
+	}
     }
 
     function admin_notices() {
@@ -279,6 +341,16 @@ class EasyWPSMTP {
 	    ?>
 	    <div class="error">
 	        <p><?php printf( __( 'Please configure your SMTP credentials in the <a href="%s">settings menu</a> in order to send email using Easy WP SMTP plugin.', 'easy-wp-smtp' ), esc_url( $settings_url ) ); ?></p>
+	    </div>
+	    <?php
+	}
+
+	$settings_import_notice = get_transient( 'easy_wp_smtp_settings_import_success' );
+	if ( $settings_import_notice ) {
+	    delete_transient( 'easy_wp_smtp_settings_import_success' );
+	    ?>
+	    <div class="updated">
+	        <p><?php _e( 'Settings have been imported successfully.', 'easy-wp-smtp' ); ?></p>
 	    </div>
 	    <?php
 	}
@@ -496,6 +568,7 @@ class EasyWPSMTP {
 	delete_option( 'smtp_test_mail' );
 	delete_site_option( 'swpsmtp_pass_encrypted' );
 	delete_option( 'swpsmtp_pass_encrypted' );
+	delete_option( 'swpsmtp_enc_key' );
 	echo 1;
 	deactivate_plugins( __FILE__ );
 	exit;
