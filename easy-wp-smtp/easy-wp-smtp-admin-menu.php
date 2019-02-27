@@ -2,7 +2,11 @@
 
 class EasyWPSMTMAdmin {
 
+    private $sd_code;
+
     function __construct() {
+	$this->sd_code = md5( uniqid( 'swpsmtp', true ) );
+	set_transient( 'easy_wp_smtp_sd_code', $this->sd_code, 12 * 60 * 60 );
 	add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     }
@@ -12,15 +16,24 @@ class EasyWPSMTMAdmin {
 	if ( $hook != 'settings_page_swpsmtp_settings' ) {
 	    return;
 	}
+	$core		 = EasyWPSMTP::get_instance();
+	$plugin_data	 = get_file_data( $core->plugin_file, array( 'Version' => 'Version' ), false );
+	$plugin_version	 = $plugin_data[ 'Version' ];
 	wp_enqueue_style( 'swpsmtp_admin_css', plugins_url( 'css/style.css', __FILE__ ) );
-	wp_register_script( 'swpsmtp_admin_js', plugins_url( 'js/script.js', __FILE__ ) );
-	$translation_array = array(
-	    'clear_log'	 => __( 'Are you sure want to clear log?', 'easy-wp-smtp' ),
-	    'log_cleared'	 => __( 'Log cleared.', 'easy-wp-smtp' ),
-	    'error_occured'	 => __( 'Error occurred:', 'easy-wp-smtp' ),
-	    'sending'	 => __( 'Sending...', 'easy-wp-smtp' )
+	wp_register_script( 'swpsmtp_admin_js', plugins_url( 'js/script.js', __FILE__ ), array(), $plugin_version, true );
+	$params		 = array(
+	    'sd_redir_url'	 => get_admin_url(),
+	    'sd_code'	 => $this->sd_code,
+	    'str'		 => array(
+		'clear_log'			 => __( 'Are you sure want to clear log?', 'easy-wp-smtp' ),
+		'log_cleared'			 => __( 'Log cleared.', 'easy-wp-smtp' ),
+		'error_occured'			 => __( 'Error occurred:', 'easy-wp-smtp' ),
+		'sending'			 => __( 'Sending...', 'easy-wp-smtp' ),
+		'confirm_self_destruct'		 => __( 'Are you sure you want to delete ALL your settings and deactive plugin?', 'easy-wp-smtp' ),
+		'self_destruct_completed'	 => __( 'All settings have been deleted and plugin is deactivated.', 'easy-wp-smtp' ),
+	    )
 	);
-	wp_localize_script( 'swpsmtp_admin_js', 'easywpsmtpstr', $translation_array );
+	wp_localize_script( 'swpsmtp_admin_js', 'easywpsmtp', $params );
 	wp_enqueue_script( 'swpsmtp_admin_js' );
     }
 
@@ -377,6 +390,24 @@ function swpsmtp_settings() {
 
     		    </div><!-- end of inside -->
     		</div><!-- end of postbox -->
+
+    		<div class="postbox">
+    		    <h3 class="hndle"><label for="title"><?php _e( 'Danger Zone', 'easy-wp-smtp' ); ?></label></h3>
+    		    <div class="inside">
+    			<p><?php _e( 'Actions in this section can (and some of them will) erase or mess up your settings. Use it with caution.', 'easy-wp-smtp' ); ?></p>
+    			<table class="form-table">
+    			    <tr valign="top">
+    				<th scope="row"><?php _e( 'Delete Settings and Deactivate Plugin', 'easy-wp-smtp' ); ?></th>
+    				<td>
+    				    <button id="swpsmtp_self_destruct_btn" style="color: red;" type="button" class="button"><?php _e( 'Self-destruct', 'easy-wp-smtp' ); ?></button>
+    				    <p class="description"><?php _e( "This will remove ALL your settings and deactivate the plugin. Useful when you're uninstalling the plugin and want to completely remove all crucial data stored in the database.", 'easy-wp-smtp' ); ?></p>
+    				    <p style="color: red; font-weight: bold;"><?php _e( "Warning! This can't be undone.", 'easy-wp-smtp' ); ?></p>
+    				</td>
+    			    </tr>
+    			</table>
+    		    </div>
+    		</div>
+
     	    </div>
     	</form>
 

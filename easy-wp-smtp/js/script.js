@@ -61,7 +61,7 @@ jQuery(function ($) {
     });
     $('#swpsmtp_clear_log_btn').click(function (e) {
 	e.preventDefault();
-	if (confirm(easywpsmtpstr.clear_log)) {
+	if (confirm(easywpsmtp.str.clear_log)) {
 	    var req = jQuery.ajax({
 		url: ajaxurl,
 		type: "post",
@@ -69,16 +69,38 @@ jQuery(function ($) {
 	    });
 	    req.done(function (data) {
 		if (data === '1') {
-		    alert(easywpsmtpstr.log_cleared);
+		    alert(easywpsmtp.str.log_cleared);
 		} else {
-		    alert(easywpsmtpstr.error_occured + ' ' + data);
+		    alert(easywpsmtp.str.error_occured + ' ' + data);
 		}
 	    });
 	}
     });
 
+    $('#swpsmtp_self_destruct_btn').click(function (e) {
+	e.preventDefault();
+	if (confirm(easywpsmtp.str.confirm_self_destruct)) {
+	    var req = jQuery.ajax({
+		url: ajaxurl,
+		type: "post",
+		data: {action: "swpsmtp_self_destruct", sd_code: easywpsmtp.sd_code}
+	    });
+	    req.done(function (data) {
+		if (data === '1') {
+		    alert(easywpsmtp.str.self_destruct_completed);
+		    window.location.href = easywpsmtp.sd_redir_url;
+		} else {
+		    alert(easywpsmtp.str.error_occured + ' ' + data);
+		}
+	    });
+	    req.fail(function (err) {
+		alert(easywpsmtp.str.error_occured + ' ' + err.status + ' (' + err.statusText + ')');
+	    });
+	}
+    });
+
     $('#test-email-form-submit').click(function () {
-	$(this).val(easywpsmtpstr.sending);
+	$(this).val(easywpsmtp.str.sending);
 	$(this).prop('disabled', true);
 	$('#swpsmtp-spinner').addClass('is-active');
 	$('#swpsmtp_settings_test_email_form').submit();
