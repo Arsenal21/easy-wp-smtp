@@ -230,6 +230,7 @@ function swpsmtp_settings() {
         <a href="#smtp" data-tab-name="smtp" class="nav-tab"><?php _e( 'SMTP Settings', 'easy-wp-smtp' ); ?></a>
         <a href="#additional" data-tab-name="additional" class="nav-tab"><?php _e( 'Additional Settings', 'easy-wp-smtp' ); ?></a>
         <a href="#testemail" data-tab-name="testemail" class="nav-tab"><?php _e( 'Test Email', 'easy-wp-smtp' ); ?></a>
+	<?php do_action( 'easy_wp_smtp_admin_settings_tabs_menu' ); ?>
     </div>
 
     <div class="swpsmtp-settings-container">
@@ -521,6 +522,7 @@ function swpsmtp_settings() {
     	    </div><!-- end of postbox -->
 
     	</div>
+	    <?php do_action( 'easy_wp_smtp_admin_settings_tabs_content' ); ?>
         </div>
         <div class="swpsmtp-settings-grid swpsmtp-settings-sidebar-cont">
     	<div class="postbox" style="min-width: inherit;">

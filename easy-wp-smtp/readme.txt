@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 4.3
 Tested up to: 5.1
 Requires PHP: 5.3
-Stable tag: 1.3.9t1
+Stable tag: 1.4.0t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
