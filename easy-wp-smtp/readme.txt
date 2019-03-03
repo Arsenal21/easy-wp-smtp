@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 4.3
 Tested up to: 5.1
 Requires PHP: 5.3
-Stable tag: 1.3.9t1
+Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,7 +78,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= WIP 1.3.9 =
+= 1.3.9 =
 * Added Export\Import settings functionality.
 * Added option to delete all settings and deactivate plugin.
 
