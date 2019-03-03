@@ -64,7 +64,10 @@ class EasyWPSMTP_AddonsHelper {
     }
 
     function add_settings_tab() {
-	printf( '<a href = "#%1$s" data-tab-name = "%1$s" class = "nav-tab">%2$s</a>', $this->addon->SETTINGS_TAB_NAME, $this->addon->ADDON_SHORT_NAME );
+	if ( isset( $this->addon->tab_notify ) ) {
+	    $notify = sprintf( '<span class="ewpsmtp-tab-notify">%d</span>', $this->addon->tab_notify );
+	}
+	printf( '<a href = "#%1$s" data-tab-name = "%1$s" class = "nav-tab">%2$s %3$s</a>', $this->addon->SETTINGS_TAB_NAME, $this->addon->ADDON_SHORT_NAME, $notify );
     }
 
     function load_text_domain() {
