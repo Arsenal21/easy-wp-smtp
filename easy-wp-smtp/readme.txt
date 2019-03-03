@@ -23,6 +23,7 @@ Easy WP SMTP allows you to configure and send all outgoing emails via a SMTP ser
 * Securely deliver emails to your recipients.
 * Option to enable debug logging to see if the emails are getting sent out successfully or not.
 * Ability to specify a Reply-to email address.
+* Option to Export and Import the SMTP settings.
 
 = Easy WP SMTP Plugin Usage =
 
