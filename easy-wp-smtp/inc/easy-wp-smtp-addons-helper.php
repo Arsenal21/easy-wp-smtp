@@ -2,8 +2,9 @@
 
 class EasyWPSMTP_AddonsHelper {
 
-    var $addon	 = null;
-    var $opts	 = array();
+    var $addon		 = null;
+    var $opts		 = array();
+    private $admin_notices	 = array();
 
     function __construct( $addon ) {
 	$this->addon	 = $addon;
@@ -24,6 +25,7 @@ class EasyWPSMTP_AddonsHelper {
 	    }
 	    $this->check_updates();
 	    add_action( 'admin_init', array( $this, 'admin_init' ) );
+	    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
     }
 
@@ -33,6 +35,18 @@ class EasyWPSMTP_AddonsHelper {
 	    $post_opts	 = filter_input( INPUT_POST, 'ewpsmtp_opts_' . $this->addon->SETTINGS_TAB_NAME, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 	    $this->post_opts = $post_opts;
 	    do_action( 'easy_wp_smtp_' . $this->addon->SETTINGS_TAB_NAME . '_settings_saved' );
+	}
+    }
+
+    function add_admin_notice( $msg, $class = "updated fade" ) {
+	$this->admin_notices[] = array( 'msg' => $msg, 'class' => $class );
+    }
+
+    function admin_notices() {
+	if ( ! empty( $this->admin_notices ) ) {
+	    foreach ( $this->admin_notices as $notice ) {
+		printf( '<div class="%s"><p>%s</p></div>', $notice[ 'class' ], $notice[ 'msg' ] );
+	    }
 	}
     }
 
@@ -99,7 +113,10 @@ class EasyWPSMTP_AddonsHelper {
     }
 
     function get_post_option( $opt, $filter = FILTER_UNSAFE_RAW ) {
-	$val = filter_var( $this->post_opts[ $opt ], $filter );
+	$val = false;
+	if ( isset( $this->post_opts[ $opt ] ) ) {
+	    $val = filter_var( $this->post_opts[ $opt ], $filter );
+	}
 	return $val;
     }
 
