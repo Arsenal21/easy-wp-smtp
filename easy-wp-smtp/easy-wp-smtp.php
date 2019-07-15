@@ -287,7 +287,7 @@ class EasyWPSMTP
 			//check if this is export settings request
 			$is_export_settings = filter_input(INPUT_POST, 'swpsmtp_export_settings', FILTER_SANITIZE_NUMBER_INT);
 			if ($is_export_settings) {
-				check_admin_referer( 'easy_wp_smtp_export_settings', 'easy_wp_smtp_export_settings_nonce' );
+				check_admin_referer('easy_wp_smtp_export_settings', 'easy_wp_smtp_export_settings_nonce');
 				$data					 = array();
 				$opts					 = get_option('swpsmtp_options', array());
 				$data['swpsmtp_options']		 = $opts;
@@ -300,20 +300,20 @@ class EasyWPSMTP
 				$smtp_test_mail			 = get_option('smtp_test_mail', array());
 				$data['smtp_test_mail']	 = $smtp_test_mail;
 				$out				 = array();
-				$out['data']			 = serialize($data);
-				$out['ver']			 = 1;
+				$out['data']			 = json_encode($data);
+				$out['ver']			 = 2;
 				$out['checksum']		 = md5($out['data']);
 
-				$filename = 'easy_wp_smtp_settings.txt';
+				$filename = 'easy_wp_smtp_settings.json';
 				header('Content-Disposition: attachment; filename="' . $filename . '"');
-				header('Content-Type: text/plain');
-				echo serialize($out);
+				header('Content-Type: application/json');
+				echo json_encode($out);
 				exit;
 			}
 
 			$is_import_settings = filter_input(INPUT_POST, 'swpsmtp_import_settings', FILTER_SANITIZE_NUMBER_INT);
 			if ($is_import_settings) {
-				check_admin_referer( 'easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce' );
+				check_admin_referer('easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce');
 				$err_msg = __('Error occurred during settings import', 'easy-wp-smtp');
 				if (empty($_FILES['swpsmtp_import_settings_file'])) {
 					echo $err_msg;
@@ -321,7 +321,10 @@ class EasyWPSMTP
 				}
 				$in_raw = file_get_contents($_FILES['swpsmtp_import_settings_file']['tmp_name']);
 				try {
-					$in = unserialize($in_raw);
+					$in = json_decode($in_raw, true);
+					if (json_last_error() !== 0) {
+						$in = unserialize($in_raw);
+					}
 					if (empty($in['data'])) {
 						echo $err_msg;
 						wp_die();
@@ -334,7 +337,10 @@ class EasyWPSMTP
 						echo $err_msg;
 						wp_die();
 					}
-					$data = unserialize($in['data']);
+					$data = json_decode($in['data'], true);
+					if (json_last_error() !== 0) {
+						$data = unserialize($in['data']);
+					}
 					update_option('swpsmtp_options', $data['swpsmtp_options']);
 					update_option('swpsmtp_pass_encrypted', $data['swpsmtp_pass_encrypted']);
 					if ($data['swpsmtp_pass_encrypted']) {
