@@ -27,6 +27,7 @@ class EasyWPSMTMAdmin
 		$params		 = array(
 			'sd_redir_url'	 => get_admin_url(),
 			'sd_code'	 => $this->sd_code,
+			'clear_log_nonce' =>  wp_create_nonce("easy-wp-smtp-clear-log"),
 			'str'		 => array(
 				'clear_log'			 => __('Are you sure want to clear log?', 'easy-wp-smtp'),
 				'log_cleared'			 => __('Log cleared.', 'easy-wp-smtp'),
@@ -427,11 +428,13 @@ function swpsmtp_settings()
 
 			<form id="swpsmtp_export_settings_frm" style="display: none;" method="POST">
 				<input type="hidden" name="swpsmtp_export_settings" value="1">
+				<?php wp_nonce_field('easy_wp_smtp_export_settings', 'easy_wp_smtp_export_settings_nonce') ?>
 			</form>
 
 			<form id="swpsmtp_import_settings_frm" style="display: none;" method="POST" enctype="multipart/form-data">
 				<input type="hidden" name="swpsmtp_import_settings" value="1">
 				<input id="swpsmtp_import_settings_select_file" type="file" name="swpsmtp_import_settings_file">
+				<?php wp_nonce_field('easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce') ?>
 			</form>
 
 			<div class="swpsmtp-tab-container" data-tab-name="testemail">

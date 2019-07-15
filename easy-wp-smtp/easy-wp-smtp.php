@@ -287,6 +287,7 @@ class EasyWPSMTP
 			//check if this is export settings request
 			$is_export_settings = filter_input(INPUT_POST, 'swpsmtp_export_settings', FILTER_SANITIZE_NUMBER_INT);
 			if ($is_export_settings) {
+				check_admin_referer( 'easy_wp_smtp_export_settings', 'easy_wp_smtp_export_settings_nonce' );
 				$data					 = array();
 				$opts					 = get_option('swpsmtp_options', array());
 				$data['swpsmtp_options']		 = $opts;
@@ -312,6 +313,7 @@ class EasyWPSMTP
 
 			$is_import_settings = filter_input(INPUT_POST, 'swpsmtp_import_settings', FILTER_SANITIZE_NUMBER_INT);
 			if ($is_import_settings) {
+				check_admin_referer( 'easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce' );
 				$err_msg = __('Error occurred during settings import', 'easy-wp-smtp');
 				if (empty($_FILES['swpsmtp_import_settings_file'])) {
 					echo $err_msg;
@@ -375,6 +377,10 @@ class EasyWPSMTP
 
 function clear_log()
 {
+	if (!check_ajax_referer('easy-wp-smtp-clear-log', 'nonce', false)) {
+		echo __('Nonce check failed.', 'easy-wp-smtp');
+		exit;
+	};
 	if ($this->log("Easy WP SMTP debug log file\r\n\r\n", true) !== false) {
 		echo '1';
 	} else {

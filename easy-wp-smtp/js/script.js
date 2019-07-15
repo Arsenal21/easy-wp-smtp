@@ -65,7 +65,7 @@ jQuery(function ($) {
 			var req = jQuery.ajax({
 				url: ajaxurl,
 				type: "post",
-				data: { action: "swpsmtp_clear_log" }
+				data: { action: "swpsmtp_clear_log", nonce: easywpsmtp.clear_log_nonce }
 			});
 			req.done(function (data) {
 				if (data === '1') {
