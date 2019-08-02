@@ -171,6 +171,7 @@ class EasyWPSMTP
 		}
 		//set reasonable timeout
 		$phpmailer->Timeout = 10;
+		$phpmailer = apply_filters('easy_wp_smtp_phpmailer_init_completed', $phpmailer);
 	}
 
 	function test_mail($to_email, $subject, $message)
@@ -182,6 +183,8 @@ class EasyWPSMTP
 
 		require_once(ABSPATH . WPINC . '/class-phpmailer.php');
 		$mail = new PHPMailer(true);
+
+		$mail = apply_filters('easy_wp_smtp_phpmailer_init_started', $mail);
 
 		try {
 
@@ -229,7 +232,7 @@ class EasyWPSMTP
 			if (!empty($this->opts['reply_to_email'])) {
 				$mail->AddReplyTo($this->opts['reply_to_email'], $from_name);
 			}
-			$mail->SetFrom($from_email, $from_name);
+			$mail->SetFrom($from_email, $from_name, false);
 			//This should set Return-Path header for servers that are not properly handling it, but needs testing first
 			//$mail->Sender		 = $mail->From;
 			$mail->Subject		 = $subject;
@@ -244,6 +247,8 @@ class EasyWPSMTP
 			$mail->SMTPDebug = 1;
 			//set reasonable timeout
 			$mail->Timeout	 = 10;
+
+			$mail = apply_filters('easy_wp_smtp_phpmailer_init_completed', $mail);
 
 			/* Send mail and return result */
 			$mail->Send();

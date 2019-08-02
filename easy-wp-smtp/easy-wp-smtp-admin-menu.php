@@ -190,6 +190,8 @@ function swpsmtp_settings()
 			}
 		}
 
+		$swpsmtp_options = apply_filters('easy_wp_smtp_options_before_update', $swpsmtp_options);
+
 		/* Update settings in the database */
 		if (empty($error)) {
 			update_option('swpsmtp_options', $swpsmtp_options);
@@ -307,26 +309,32 @@ function swpsmtp_settings()
 								<tr class="ad_opt swpsmtp_smtp_options">
 									<th><?php _e('SMTP Authentication', 'easy-wp-smtp'); ?></th>
 									<td>
-										<label for="swpsmtp_smtp_autentication"><input type="radio" id="swpsmtp_smtp_autentication_1" name="swpsmtp_smtp_autentication" value='no' <?php if (isset($swpsmtp_options['smtp_settings']['autentication']) && 'no' == $swpsmtp_options['smtp_settings']['autentication']) echo 'checked="checked"'; ?> /> <?php _e('No', 'easy-wp-smtp'); ?></label>
-										<label for="swpsmtp_smtp_autentication"><input type="radio" id="swpsmtp_smtp_autentication_2" name="swpsmtp_smtp_autentication" value='yes' <?php if (isset($swpsmtp_options['smtp_settings']['autentication']) && 'yes' == $swpsmtp_options['smtp_settings']['autentication']) echo 'checked="checked"'; ?> /> <?php _e('Yes', 'easy-wp-smtp'); ?></label><br />
+										<div id="easy-wp-smtp-auth-inputs-cont">
+											<label for="swpsmtp_smtp_autentication_1"><input type="radio" id="swpsmtp_smtp_autentication_1" name="swpsmtp_smtp_autentication" value='no' <?php if (isset($swpsmtp_options['smtp_settings']['autentication']) && 'no' == $swpsmtp_options['smtp_settings']['autentication']) echo ' checked'; ?>> <?php _e('No', 'easy-wp-smtp'); ?></label>
+											<label for="swpsmtp_smtp_autentication_2"><input type="radio" id="swpsmtp_smtp_autentication_2" name="swpsmtp_smtp_autentication" value='yes' <?php if (isset($swpsmtp_options['smtp_settings']['autentication']) && 'yes' == $swpsmtp_options['smtp_settings']['autentication']) echo ' checked'; ?>> <?php _e('Yes', 'easy-wp-smtp'); ?></label>
+											<?php do_action('easy_wp_smtp_auth_inputs_cont') ?>
+										</div>
 										<p class="description"><?php _e("This options should always be checked 'Yes'", 'easy-wp-smtp'); ?></p>
 									</td>
 								</tr>
-								<tr class="ad_opt swpsmtp_smtp_options">
-									<th><?php _e('SMTP Username', 'easy-wp-smtp'); ?></th>
-									<td>
-										<input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset($swpsmtp_options['smtp_settings']['username']) ? esc_attr($swpsmtp_options['smtp_settings']['username']) : ''; ?>' /><br />
-										<p class="description"><?php _e("The username to login to your mail server", 'easy-wp-smtp'); ?></p>
-									</td>
-								</tr>
-								<tr class="ad_opt swpsmtp_smtp_options">
-									<th><?php _e('SMTP Password', 'easy-wp-smtp'); ?></th>
-									<td>
-										<input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo ($EasyWPSMTP->get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
-										<p class="description"><?php _e("The password to login to your mail server", 'easy-wp-smtp'); ?></p>
-										<p class="description"><b><?php _ex('Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp'); ?></b> <?php _e('when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp'); ?></p>
-									</td>
-								</tr>
+								<?php do_action('easy_wp_smtp_before_email_credentials_inputs_cont') ?>
+								<div id="easy-wp-smtp-email-credentials-inputs-cont">
+									<tr class="ad_opt swpsmtp_smtp_options">
+										<th><?php _e('SMTP Username', 'easy-wp-smtp'); ?></th>
+										<td>
+											<input id='swpsmtp_smtp_username' type='text' name='swpsmtp_smtp_username' value='<?php echo isset($swpsmtp_options['smtp_settings']['username']) ? esc_attr($swpsmtp_options['smtp_settings']['username']) : ''; ?>' /><br />
+											<p class="description"><?php _e("The username to login to your mail server", 'easy-wp-smtp'); ?></p>
+										</td>
+									</tr>
+									<tr class="ad_opt swpsmtp_smtp_options">
+										<th><?php _e('SMTP Password', 'easy-wp-smtp'); ?></th>
+										<td>
+											<input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo ($EasyWPSMTP->get_password() !== '' ? $gag_password : ''); ?>' autocomplete='new-password' /><br />
+											<p class="description"><?php _e("The password to login to your mail server", 'easy-wp-smtp'); ?></p>
+											<p class="description"><b><?php _ex('Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp'); ?></b> <?php _e('when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp'); ?></p>
+										</td>
+									</tr>
+								</div>
 							</table>
 							<p class="submit">
 								<input type="submit" id="settings-form-submit" class="button-primary" value="<?php _e('Save Changes', 'easy-wp-smtp') ?>" />
