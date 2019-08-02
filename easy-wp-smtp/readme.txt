@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 4.3
 Tested up to: 5.2
 Requires PHP: 5.3
-Stable tag: 1.4.0
+Stable tag: 1.3.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,9 +79,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= 1.4.0 =
+= 1.3.9.2 =
 * Added additional CSRF protection to some actions on Settings page.
-* Settings are exported in JSON format now. 
+* Settings are exported in JSON format now.
+* Regenerated .pot file.
 
 = 1.3.9.1 =
 * Fixed potential vulnerability in import\export settings.
@@ -240,4 +241,4 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 * First commit of the plugin
 
 == Upgrade Notice ==
-Upgrade to 1.4.0 is highly recommended as it adds additional CSRF protection for some admin-side functions.
+Upgrade to 1.3.9.2 is highly recommended as it adds additional CSRF protection for some admin-side functions.
