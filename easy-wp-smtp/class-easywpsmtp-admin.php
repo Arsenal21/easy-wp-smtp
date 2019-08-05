@@ -46,42 +46,6 @@ class EasyWPSMTP_Admin {
 new EasyWPSMTP_Admin();
 
 /**
- * Sanitizes textarea. Tries to use wp sanitize_textarea_field() function. If that's not available, uses its own methods
- * @return string
- */
-function swpsmtp_sanitize_textarea( $str ) {
-	if ( function_exists( 'sanitize_textarea_field' ) ) {
-		return sanitize_textarea_field( $str );
-	}
-	$filtered = wp_check_invalid_utf8( $str );
-
-	if ( strpos( $filtered, '<' ) !== false ) {
-		$filtered = wp_pre_kses_less_than( $filtered );
-		// This will strip extra whitespace for us.
-		$filtered = wp_strip_all_tags( $filtered, false );
-
-		// Use html entities in a special case to make sure no later
-		// newline stripping stage could lead to a functional tag
-		$filtered = str_replace( "<\n", "&lt;\n", $filtered );
-	}
-
-	$filtered = trim( $filtered );
-
-	$found = false;
-	while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {
-		$filtered = str_replace( $match[0], '', $filtered );
-		$found    = true;
-	}
-
-	if ( $found ) {
-		// Strip out the whitespace that may now exist after removing the octets.
-		$filtered = trim( preg_replace( '/ +/', ' ', $filtered ) );
-	}
-
-	return $filtered;
-}
-
-/**
  * Renders the admin settings menu of the plugin.
  * @return void
  */
@@ -209,7 +173,7 @@ function swpsmtp_settings() {
 			}
 		}
 		$swpsmtp_subject = isset( $_POST['swpsmtp_subject'] ) ? sanitize_text_field( $_POST['swpsmtp_subject'] ) : '';
-		$swpsmtp_message = isset( $_POST['swpsmtp_message'] ) ? swpsmtp_sanitize_textarea( $_POST['swpsmtp_message'] ) : '';
+		$swpsmtp_message = isset( $_POST['swpsmtp_message'] ) ? EasyWPSMTP_Utils::sanitize_textarea( $_POST['swpsmtp_message'] ) : '';
 
 		//Save the test mail details so it doesn't need to be filled in everytime.
 		$smtp_test_mail['swpsmtp_to']      = $swpsmtp_to;
@@ -345,7 +309,7 @@ function swpsmtp_settings() {
 								<tr class="ad_opt swpsmtp_smtp_options">
 									<th><?php esc_html_e( 'SMTP Password', 'easy-wp-smtp' ); ?></th>
 									<td>
-										<input id='swpsmtp_smtp_password' type='password' name='swpsmtp_smtp_password' value='<?php echo esc_attr( ( $easy_wp_smtp->get_password() !== '' ? $gag_password : '' ) ); ?>' autocomplete='new-password' /><br />
+										<input id="swpsmtp_smtp_password" type="password" name="swpsmtp_smtp_password" value="<?php echo esc_attr( ( $easy_wp_smtp->get_password() !== '' ? $gag_password : '' ) ); ?>" autocomplete="new-password" /><br />
 										<p class="description"><?php echo esc_html( __( 'The password to login to your mail server', 'easy-wp-smtp' ) ); ?></p>
 										<p class="description"><b><?php echo esc_html( _x( 'Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp' ) ); ?></b> <?php echo esc_html( __( 'when you click "Save Changes", your actual password is stored in the database and then used to send emails. This field is replaced with a gag (#easywpsmtpgagpass#). This is done to prevent someone with the access to Settings page from seeing your password (using password fields unmasking programs, for example).', 'easy-wp-smtp' ) ); ?></p>
 									</td>
@@ -470,15 +434,15 @@ function swpsmtp_settings() {
 						if ( isset( $test_res ) && is_array( $test_res ) ) {
 							if ( isset( $test_res['error'] ) ) {
 								$errmsg_class = ' msg-error';
-								$errmsg_text  = '<b>' . __( 'Following error occurred when attempting to send test email:', 'easy-wp-smtp' ) . '</b><br />' . $test_res['error'];
+								$errmsg_text  = '<b>' . esc_html__( 'Following error occurred when attempting to send test email:', 'easy-wp-smtp' ) . '</b><br />' . esc_html( $test_res['error'] );
 							} else {
 								$errmsg_class = ' msg-success';
-								$errmsg_text  = '<b>' . __( 'Test email was successfully sent. No errors occurred during the process.', 'easy-wp-smtp' ) . '</b>';
+								$errmsg_text  = '<b>' . esc_html__( 'Test email was successfully sent. No errors occurred during the process.', 'easy-wp-smtp' ) . '</b>';
 							}
 							?>
 
 							<div class="swpsmtp-msg-cont<?php echo esc_attr( $errmsg_class ); ?>">
-								<?php echo esc_html( $errmsg_text ); ?>
+								<?php echo $errmsg_text; //phpcs:ignore?>
 
 								<?php
 								if ( isset( $test_res['debug_log'] ) ) {
@@ -492,9 +456,9 @@ function swpsmtp_settings() {
 												e.preventDefault();
 												var logCont = $('#swpsmtp-debug-log-cont');
 												if (logCont.is(':visible')) {
-													$(this).html('<?php echo esc_attr( __( 'Show Debug Log', 'easy-wp-smtp' ) ); ?>');
+													$(this).html('<?php esc_attr_e( 'Show Debug Log', 'easy-wp-smtp' ); ?>');
 												} else {
-													$(this).html('<?php echo esc_attr( __( 'Hide Debug Log', 'easy-wp-smtp' ) ); ?>');
+													$(this).html('<?php esc_attr_e( 'Hide Debug Log', 'easy-wp-smtp' ); ?>');
 												}
 												logCont.toggle();
 											});
