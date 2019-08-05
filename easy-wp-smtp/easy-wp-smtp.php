@@ -22,7 +22,7 @@ class EasyWPSMTP {
 		$this->opts        = get_option( 'swpsmtp_options' );
 		$this->opts        = ! is_array( $this->opts ) ? array() : $this->opts;
 		$this->plugin_file = __FILE__;
-		require_once 'easy-wp-smtp-utils.php';
+		require_once 'class-easywpsmtp-utils.php';
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_handler' ) );
 		add_filter( 'wp_mail', array( $this, 'wp_mail' ), 2147483647 );
@@ -30,7 +30,7 @@ class EasyWPSMTP {
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 
 		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			require_once 'easy-wp-smtp-admin-menu.php';
+			require_once 'class-easywpsmtp-admin.php';
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
 			register_uninstall_hook( __FILE__, 'swpsmtp_uninstall' );
 			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
@@ -48,7 +48,7 @@ class EasyWPSMTP {
 
 	public function wp_mail( $args ) {
 		$domain = $this->is_domain_blocked();
-		if ( $domain !== false && ( isset( $this->opts['block_all_emails'] ) && $this->opts['block_all_emails'] === 1 ) ) {
+		if ( false !== $domain && ( isset( $this->opts['block_all_emails'] ) && 1 === $this->opts['block_all_emails'] ) ) {
 			$this->log(
 				"\r\n------------------------------------------------------------------------------------------------------\r\n" .
 					'Domain check failed: website domain (' . $domain . ") is not in allowed domains list.\r\n" .
@@ -70,9 +70,10 @@ class EasyWPSMTP {
 		if ( false !== $domain ) {
 			//domain check failed
 			//let's check if we have block all emails option enabled
-			if ( isset( $this->opts['block_all_emails'] ) && $this->opts['block_all_emails'] === 1 ) {
+			if ( isset( $this->opts['block_all_emails'] ) && 1 === $this->opts['block_all_emails'] ) {
 				// it's enabled. Let's use gag mailer class that would prevent emails from being sent out.
-				$phpmailer = new swpsmtp_gag_mailer();
+				require_once 'class-easywpsmtp-gag-mailer.php';
+				$phpmailer = new EasyWPSMTP_Gag_Mailer();
 			} else {
 				// it's disabled. Let's write some info to the log
 				$this->log(
@@ -87,7 +88,7 @@ class EasyWPSMTP {
 
 		/* Set the mailer type as per config above, this overrides the already called isMail method */
 		$phpmailer->IsSMTP();
-		if ( isset( $this->opts['force_from_name_replace'] ) && $this->opts['force_from_name_replace'] === 1 ) {
+		if ( isset( $this->opts['force_from_name_replace'] ) && 1 === $this->opts['force_from_name_replace'] ) {
 			$from_name = $this->opts['from_name_field'];
 		} else {
 			$from_name = ! empty( $phpmailer->FromName ) ? $phpmailer->FromName : $this->opts['from_name_field'];
@@ -100,14 +101,7 @@ class EasyWPSMTP {
 		}
 		// let's see if we have email ignore list populated
 		if ( isset( $this->opts['email_ignore_list'] ) && ! empty( $this->opts['email_ignore_list'] ) ) {
-			$emails_arr = explode( ',', $this->opts['email_ignore_list'] );
-			if ( is_array( $emails_arr ) && ! empty( $emails_arr ) ) {
-				//we have coma-separated list
-			} else {
-				//it's single email
-				unset( $emails_arr );
-				$emails_arr = array( $this->opts['email_ignore_list'] );
-			}
+			$emails_arr  = explode( ',', $this->opts['email_ignore_list'] );
 			$from        = $phpmailer->From;
 			$match_found = false;
 			foreach ( $emails_arr as $email ) {
@@ -227,11 +221,11 @@ class EasyWPSMTP {
 			$mail->Subject = $subject;
 			$mail->Body    = $message;
 			$mail->AddAddress( $to_email );
-			global $debugMSG;
-			$debugMSG          = '';
+			global $debug_msg;
+			$debug_msg         = '';
 			$mail->Debugoutput = function ( $str, $level ) {
-				global $debugMSG;
-				$debugMSG .= $str;
+				global $debug_msg;
+				$debug_msg .= $str;
 			};
 			$mail->SMTPDebug   = 1;
 			//set reasonable timeout
@@ -245,7 +239,7 @@ class EasyWPSMTP {
 			$ret['error'] = $mail->ErrorInfo;
 		}
 
-		$ret['debug_log'] = $debugMSG;
+		$ret['debug_log'] = $debug_msg;
 
 		return $ret;
 	}
@@ -262,10 +256,10 @@ class EasyWPSMTP {
 					$log_file_name = $this->opts['smtp_settings']['log_file_name'];
 					if ( ! file_exists( plugin_dir_path( __FILE__ ) . $log_file_name ) ) {
 						if ( $this->log( "Easy WP SMTP debug log file\r\n\r\n" ) === false ) {
-							wp_die( 'Can\'t write to log file. Check if plugin directory  (' . plugin_dir_path( __FILE__ ) . ') is writeable.' );
+							wp_die( esc_html( sprintf( 'Can\'t write to log file. Check if plugin directory (%s) is writeable.', plugin_dir_path( __FILE__ ) ) ) );
 						};
 					}
-					$logfile = fopen( plugin_dir_path( __FILE__ ) . $log_file_name, 'rb' );
+					$logfile = fopen( plugin_dir_path( __FILE__ ) . $log_file_name, 'rb' ); //phpcs:ignore
 					if ( ! $logfile ) {
 						wp_die( 'Can\'t open log file.' );
 					}
@@ -291,7 +285,7 @@ class EasyWPSMTP {
 				$smtp_test_mail         = get_option( 'smtp_test_mail', array() );
 				$data['smtp_test_mail'] = $smtp_test_mail;
 				$out                    = array();
-				$out['data']            = json_encode( $data );
+				$out['data']            = wp_json_encode( $data );
 				$out['ver']             = 2;
 				$out['checksum']        = md5( $out['data'] );
 
@@ -307,30 +301,30 @@ class EasyWPSMTP {
 				check_admin_referer( 'easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce' );
 				$err_msg = __( 'Error occurred during settings import', 'easy-wp-smtp' );
 				if ( empty( $_FILES['swpsmtp_import_settings_file'] ) ) {
-					echo $err_msg;
+					echo esc_html( $err_msg );
 					wp_die();
 				}
-				$in_raw = file_get_contents( $_FILES['swpsmtp_import_settings_file']['tmp_name'] );
+				$in_raw = file_get_contents( $_FILES['swpsmtp_import_settings_file']['tmp_name'] ); //phpcs:ignore
 				try {
 					$in = json_decode( $in_raw, true );
 					if ( json_last_error() !== 0 ) {
-						$in = unserialize( $in_raw );
+						$in = unserialize( $in_raw ); //phpcs:ignore
 					}
 					if ( empty( $in['data'] ) ) {
-						echo $err_msg;
+						echo esc_html( $err_msg );
 						wp_die();
 					}
 					if ( empty( $in['checksum'] ) ) {
-						echo $err_msg;
+						echo esc_html( $err_msg );
 						wp_die();
 					}
 					if ( md5( $in['data'] ) !== $in['checksum'] ) {
-						echo $err_msg;
+						echo esc_html( $err_msg );
 						wp_die();
 					}
 					$data = json_decode( $in['data'], true );
 					if ( json_last_error() !== 0 ) {
-						$data = unserialize( $in['data'] );
+						$data = unserialize( $in['data'] ); //phpcs:ignore
 					}
 					update_option( 'swpsmtp_options', $data['swpsmtp_options'] );
 					update_option( 'swpsmtp_pass_encrypted', $data['swpsmtp_pass_encrypted'] );
@@ -359,7 +353,7 @@ class EasyWPSMTP {
 			<?php
 			printf(
 				esc_html(
-					// translators: %s is URL to settings page
+					// translators: %s is replaced by settings page URL
 						__(
 							'Please configure your SMTP credentials in the <a href="%s">settings menu</a> in order to send email using Easy WP SMTP plugin.',
 							'easy-wp-smtp'
@@ -378,7 +372,7 @@ class EasyWPSMTP {
 			delete_transient( 'easy_wp_smtp_settings_import_success' );
 			?>
 		<div class="updated">
-			<p><?php esc_html( __( 'Settings have been imported successfully.', 'easy-wp-smtp' ) ); ?></p>
+			<p><?php echo esc_html( __( 'Settings have been imported successfully.', 'easy-wp-smtp' ) ); ?></p>
 		</div>
 			<?php
 		}
@@ -392,7 +386,7 @@ class EasyWPSMTP {
 		if ( $this->log( "Easy WP SMTP debug log file\r\n\r\n", true ) !== false ) {
 			echo '1';
 		} else {
-			echo 'Can\'t clear log - log file is not writeable.';
+			echo esc_html( __( "Can't clear log - file is not writeable.", 'easy-wp-smtp' ) );
 		}
 		die;
 	}
@@ -405,9 +399,9 @@ class EasyWPSMTP {
 			$log_file_name                                = uniqid() . '_debug_log.txt';
 			$this->opts['smtp_settings']['log_file_name'] = $log_file_name;
 			update_option( 'swpsmtp_options', $this->opts );
-			file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n" );
+			file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n" ); //phpcs:ignore
 		}
-		return ( file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, $str, ( ! $overwrite ? FILE_APPEND : 0 ) ) );
+		return ( file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, $str, ( ! $overwrite ? FILE_APPEND : 0 ) ) ); //phpcs:ignore
 	}
 
 	public function plugin_action_links( $links, $file ) {
@@ -434,17 +428,11 @@ class EasyWPSMTP {
 		if ( isset( $this->opts['enable_domain_check'] ) && $this->opts['enable_domain_check'] ) {
 			//check if allowed domains list is not blank
 			if ( isset( $this->opts['allowed_domains'] ) && ! empty( $this->opts['allowed_domains'] ) ) {
-				$this->opts['allowed_domains'] = SWPSMTPUtils::base64_decode_maybe( $this->opts['allowed_domains'] );
+				$this->opts['allowed_domains'] = EasyWPSMTP_Utils::base64_decode_maybe( $this->opts['allowed_domains'] );
 				//let's see if we have one domain or coma-separated domains
 				$domains_arr = explode( ',', $this->opts['allowed_domains'] );
-				if ( is_array( $domains_arr ) && ! empty( $domains_arr ) ) {
-					//we have coma-separated list
-				} else {
-					//it's single domain
-					unset( $domains_arr );
-					$domains_arr = array( $this->opts['allowed_domains'] );
-				}
-				$site_domain = wp_parse_url( get_site_url(), PHP_URL_HOST );
+				//TODO: Change parse_url() to wp_parse_url() and bump required WP version to 4.4.0
+				$site_domain = parse_url( get_site_url(), PHP_URL_HOST ); //phpcs:ignore
 				$match_found = false;
 				foreach ( $domains_arr as $domain ) {
 					if ( strtolower( trim( $domain ) ) === strtolower( trim( $site_domain ) ) ) {
@@ -470,7 +458,7 @@ class EasyWPSMTP {
 
 			if ( get_option( 'swpsmtp_pass_encrypted' ) ) {
 				//this is encrypted password
-				$cryptor   = SWPSMTPUtils::get_instance();
+				$cryptor   = EasyWPSMTP_Utils::get_instance();
 				$decrypted = $cryptor->decrypt_password( $temp_password );
 				//check if encryption option is disabled
 				if ( empty( $this->opts['smtp_settings']['encrypt_pass'] ) ) {
@@ -516,7 +504,7 @@ class EasyWPSMTP {
 			update_option( 'swpsmtp_pass_encrypted', false );
 		} else {
 			// let's encrypt password
-			$cryptor  = SWPSMTPUtils::get_instance();
+			$cryptor  = EasyWPSMTP_Utils::get_instance();
 			$password = $cryptor->encrypt_password( $pass );
 			update_option( 'swpsmtp_pass_encrypted', true );
 		}
@@ -557,14 +545,15 @@ class EasyWPSMTP {
 		update_option( 'swpsmtp_options', $this->opts, 'yes' );
 		//add current domain to allowed domains list
 		if ( ! isset( $this->opts['allowed_domains'] ) ) {
-			$domain = wp_parse_url( get_site_url(), PHP_URL_HOST );
+			//TODO: Change parse_url() to wp_parse_url() and bump required WP version to 4.4.0
+			$domain = parse_url( get_site_url(), PHP_URL_HOST ); //phpcs:ignore
 			if ( $domain ) {
 				$this->opts['allowed_domains'] = base64_encode( $domain ); //phpcs:ignore
 				update_option( 'swpsmtp_options', $this->opts );
 			}
 		} else { // let's check if existing value should be base64 encoded
 			if ( ! empty( $this->opts['allowed_domains'] ) ) {
-				if ( SWPSMTPUtils::base64_decode_maybe( $this->opts['allowed_domains'] ) === $this->opts['allowed_domains'] ) {
+				if ( EasyWPSMTP_Utils::base64_decode_maybe( $this->opts['allowed_domains'] ) === $this->opts['allowed_domains'] ) {
 					$this->opts['allowed_domains'] = base64_encode( $this->opts['allowed_domains'] ); //phpcs:ignore
 					update_option( 'swpsmtp_options', $this->opts );
 				}
@@ -573,7 +562,7 @@ class EasyWPSMTP {
 		// Encrypt password if needed
 		if ( ! get_option( 'swpsmtp_pass_encrypted' ) ) {
 			if ( extension_loaded( 'openssl' ) ) {
-				if ( $this->opts['smtp_settings']['password'] !== '' ) {
+				if ( '' !== $this->opts['smtp_settings']['password'] ) {
 					$this->opts['smtp_settings']['password'] = $this->encrypt_password( $this->get_password() );
 					update_option( 'swpsmtp_options', $this->opts );
 				}
@@ -612,11 +601,4 @@ function swpsmtp_uninstall() {
 	// Don't delete plugin options. It is better to retain the options so if someone accidentally deactivates, the configuration is not lost.
 	//delete_site_option('swpsmtp_options');
 	//delete_option('swpsmtp_options');
-}
-
-class swpsmtp_gag_mailer extends stdClass { //phpcs:ignore
-
-	public function Send() {
-		return true;
-	}
 }
