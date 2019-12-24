@@ -350,19 +350,10 @@ class EasyWPSMTP {
 			?>
 		<div class="error">
 			<p>
-			<?php
-			printf(
-				esc_html(
-					// translators: %s is replaced by settings page URL
-						__(
-							'Please configure your SMTP credentials in the <a href="%s">settings menu</a> in order to send email using Easy WP SMTP plugin.',
-							'easy-wp-smtp'
-						)
-				),
-				esc_url( $settings_url )
-			);
-			?>
-				</p>
+                            <?php
+                            printf( __( 'Please configure your SMTP credentials in the <a href="%s">settings menu</a> in order to send email using Easy WP SMTP plugin.', 'easy-wp-smtp' ), esc_url( $settings_url ) );
+                            ?>
+			</p>
 		</div>
 			<?php
 		}
