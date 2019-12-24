@@ -80,8 +80,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = 1.3.9.2 =
-* Added additional CSRF protection to some actions on Settings page.
 * Settings are exported in JSON format now.
+* Added additional sanitization to some actions on the settings page.
 * Regenerated .pot file.
 
 = 1.3.9.1 =
