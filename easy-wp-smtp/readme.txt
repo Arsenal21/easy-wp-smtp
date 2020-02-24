@@ -79,6 +79,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= WIP 2.3.9.3 =
+* Removed the warning: Undefined index log_file_name
+
 = 1.3.9.2 =
 * Settings are exported in JSON format now.
 * Added additional sanitization to some actions on the settings page.

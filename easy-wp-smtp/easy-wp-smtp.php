@@ -253,7 +253,13 @@ class EasyWPSMTP {
 			//view log file
 			if ( isset( $_GET['swpsmtp_action'] ) ) {
 				if ( 'view_log' === $_GET['swpsmtp_action'] ) {
-					$log_file_name = $this->opts['smtp_settings']['log_file_name'];
+					$log_file_name = isset($this->opts['smtp_settings']['log_file_name'])? $this->opts['smtp_settings']['log_file_name'] : '';
+
+                                        if ( empty ($log_file_name) ){
+                                            //Nothing in the log file yet so nothing to show.
+                                            wp_die( 'Nothing in the log file yet.' );
+                                        }
+
 					if ( ! file_exists( plugin_dir_path( __FILE__ ) . $log_file_name ) ) {
 						if ( $this->log( "Easy WP SMTP debug log file\r\n\r\n" ) === false ) {
 							wp_die( esc_html( sprintf( 'Can\'t write to log file. Check if plugin directory (%s) is writeable.', plugin_dir_path( __FILE__ ) ) ) );
