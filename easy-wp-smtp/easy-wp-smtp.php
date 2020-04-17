@@ -97,7 +97,24 @@ class EasyWPSMTP {
 		//set ReplyTo option if needed
 		//this should be set before SetFrom, otherwise might be ignored
 		if ( ! empty( $this->opts['reply_to_email'] ) ) {
-			$phpmailer->AddReplyTo( $this->opts['reply_to_email'], $from_name );
+            if ( isset( $this->opts['sub_mode'] ) && 1 === $this->opts['sub_mode'] ) {
+                if ( sizeof( $phpmailer->getReplyToAddresses() ) >= 1 ) {
+                    // Substitute from_email_field with reply_to_email
+                   if ( array_key_exists( $this->opts['from_email_field'], $phpmailer->getReplyToAddresses() ) ) {
+                       $reply_to_emails = $phpmailer->getReplyToAddresses();
+                       unset( $reply_to_emails[ $this->opts['from_email_field' ] ] );
+                       $phpmailer->clearReplyTos();
+                       foreach ( $reply_to_emails as $reply_to_email => $reply_to_name ) {
+                           $phpmailer->AddReplyTo( $reply_to_email , $reply_to_name );
+                       }
+                       $phpmailer->AddReplyTo( $this->opts['reply_to_email'], $from_name );
+                   }
+                } else { // Reply-to array is empty so add reply_to_email
+                   $phpmailer->AddReplyTo( $this->opts['reply_to_email'], $from_name );
+               }
+            } else { // Default behaviour
+                $phpmailer->AddReplyTo( $this->opts['reply_to_email'], $from_name );
+            }
 		}
 		// let's see if we have email ignore list populated
 		if ( isset( $this->opts['email_ignore_list'] ) && ! empty( $this->opts['email_ignore_list'] ) ) {
@@ -524,6 +541,7 @@ class EasyWPSMTP {
 			'from_email_field'        => '',
 			'from_name_field'         => '',
 			'force_from_name_replace' => 0,
+            'sub_mode'                => 0,
 			'smtp_settings'           => array(
 				'host'            => 'smtp.example.com',
 				'type_encryption' => 'none',
