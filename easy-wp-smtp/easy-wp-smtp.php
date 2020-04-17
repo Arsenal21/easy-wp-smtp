@@ -98,7 +98,7 @@ class EasyWPSMTP {
 		//this should be set before SetFrom, otherwise might be ignored
 		if ( ! empty( $this->opts['reply_to_email'] ) ) {
             if ( isset( $this->opts['sub_mode'] ) && 1 === $this->opts['sub_mode'] ) {
-                if ( sizeof( $phpmailer->getReplyToAddresses() ) >= 1 ) {
+                if ( count( $phpmailer->getReplyToAddresses() ) >= 1 ) {
                     // Substitute from_email_field with reply_to_email
                    if ( array_key_exists( $this->opts['from_email_field'], $phpmailer->getReplyToAddresses() ) ) {
                        $reply_to_emails = $phpmailer->getReplyToAddresses();
