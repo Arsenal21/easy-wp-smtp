@@ -97,7 +97,7 @@ function swpsmtp_settings() {
 		/* Update settings */
 		$swpsmtp_options['from_name_field']         = isset( $_POST['swpsmtp_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['swpsmtp_from_name'] ) ) : '';
 		$swpsmtp_options['force_from_name_replace'] = isset( $_POST['swpsmtp_force_from_name_replace'] ) ? 1 : false;
-        $swpsmtp_options['sub_mode'] = isset( $_POST['swpsmtp_sub_mode'] ) ? 1 : false;
+		$swpsmtp_options['sub_mode']                = isset( $_POST['swpsmtp_sub_mode'] ) ? 1 : false;
 
 		if ( isset( $_POST['swpsmtp_from_email'] ) ) {
 			if ( is_email( $_POST['swpsmtp_from_email'] ) ) {
@@ -242,11 +242,11 @@ function swpsmtp_settings() {
 									<td>
 										<input id="swpsmtp_reply_to_email" type="email" name="swpsmtp_reply_to_email" value="<?php echo isset( $swpsmtp_options['reply_to_email'] ) ? esc_attr( $swpsmtp_options['reply_to_email'] ) : ''; ?>" /><br />
 										<p class="description"><?php esc_html_e( "Optional. This email address will be used in the 'Reply-To' field of the email. Leave it blank to use 'From' email as the reply-to value.", 'easy-wp-smtp' ); ?></p>
-                                        <p>
+										<p>
 											<label><input type="checkbox" id="swpsmtp_sub_mode" name="swpsmtp_sub_mode" value="1" <?php echo ( isset( $swpsmtp_options['sub_mode'] ) && ( $swpsmtp_options['sub_mode'] ) ) ? ' checked' : ''; ?> /> <?php esc_html_e( 'Substitute Mode', 'easy-wp-smtp' ); ?></label>
 										</p>
-                                        <p class="description"><?php esc_html_e( "When enabled, the plugin will substitute occurances of the above From Email with the Reply-To Email address. The Reply-To Email will still be used if no other Reply-To Email is present. This option prevents conflicts with other plugins that specify reply-to email addresses but still replaces the From Email with the Reply-To Email.", 'easy-wp-smtp' ); ?></p>
-                                        <p>
+										<p class="description"><?php esc_html_e( 'When enabled, the plugin will substitute occurances of the above From Email with the Reply-To Email address. The Reply-To Email will still be used if no other Reply-To Email is present. This option prevents conflicts with other plugins that specify reply-to email addresses but still replaces the From Email with the Reply-To Email.', 'easy-wp-smtp' ); ?></p>
+										<p>
 									</td>
 								</tr>
 								<tr class="ad_opt swpsmtp_smtp_options">
