@@ -4,8 +4,8 @@ Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
 Tested up to: 5.4
-Requires PHP: 5.3
-Stable tag: 1.3.9.2
+Requires PHP: 5.6
+Stable tag: 1.3.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,8 +79,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= WIP 2.3.9.3 =
+= 1.3.9.3 =
 * Removed the warning: Undefined index log_file_name
+* Added "substitute mode" option for the "Reply-To" field. Thanks to @idave2012
 
 = 1.3.9.2 =
 * Settings are exported in JSON format now.
