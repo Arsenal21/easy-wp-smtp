@@ -2,11 +2,7 @@
 
 class EasyWPSMTP_Admin {
 
-	private $sd_code;
-
 	public function __construct() {
-		$this->sd_code = md5( uniqid( 'swpsmtp', true ) );
-		set_transient( 'easy_wp_smtp_sd_code', $this->sd_code, 12 * 60 * 60 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
@@ -16,6 +12,11 @@ class EasyWPSMTP_Admin {
 		if ( 'settings_page_swpsmtp_settings' !== $hook ) {
 			return;
 		}
+
+		//generate secret code for self-destruct function
+		$sd_code = md5( uniqid( 'swpsmtp', true ) );
+		set_transient( 'easy_wp_smtp_sd_code', $sd_code, 12 * 60 * 60 );
+
 		$core           = EasyWPSMTP::get_instance();
 		$plugin_data    = get_file_data( $core->plugin_file, array( 'Version' => 'Version' ), false );
 		$plugin_version = $plugin_data['Version'];
@@ -23,7 +24,7 @@ class EasyWPSMTP_Admin {
 		wp_register_script( 'swpsmtp_admin_js', plugins_url( 'js/script.js', __FILE__ ), array(), $plugin_version, true );
 		$params = array(
 			'sd_redir_url'    => get_admin_url(),
-			'sd_code'         => $this->sd_code,
+			'sd_code'         => $sd_code,
 			'clear_log_nonce' => wp_create_nonce( 'easy-wp-smtp-clear-log' ),
 			'str'             => array(
 				'clear_log'               => __( 'Are you sure want to clear log?', 'easy-wp-smtp' ),
