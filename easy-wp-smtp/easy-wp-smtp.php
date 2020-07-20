@@ -1,4 +1,6 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 /*
 Plugin Name: Easy WP SMTP
 Version: 1.3.9.4
@@ -183,7 +185,16 @@ class EasyWPSMTP {
 			return false;
 		}
 
-		require_once ABSPATH . WPINC . '/class-phpmailer.php';
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '5.4' ) > 0 ) {
+			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+			require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+		} else {
+			require_once ABSPATH . WPINC . '/class-phpmailer.php';
+		}
+
 		$mail = new PHPMailer( true );
 
 		try {
