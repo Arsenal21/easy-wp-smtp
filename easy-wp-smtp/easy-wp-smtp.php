@@ -187,15 +187,14 @@ class EasyWPSMTP {
 
 		global $wp_version;
 
-		if ( version_compare( $wp_version, '5.4' ) > 0 ) {
+		if ( version_compare( $wp_version, '5.4.99' ) > 0 ) {
 			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-			require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+			$mail = new PHPMailer( true );
 		} else {
 			require_once ABSPATH . WPINC . '/class-phpmailer.php';
+			$mail = new \PHPMailer( true );
 		}
-
-		$mail = new PHPMailer( true );
 
 		try {
 
