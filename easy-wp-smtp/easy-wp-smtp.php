@@ -262,7 +262,9 @@ class EasyWPSMTP {
 			$mail->Send();
 			$mail->ClearAddresses();
 			$mail->ClearAllRecipients();
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
+			$ret['error'] = $mail->ErrorInfo;
+		} catch ( \Throwable $e ) {
 			$ret['error'] = $mail->ErrorInfo;
 		}
 
