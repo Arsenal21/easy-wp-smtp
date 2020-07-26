@@ -7,6 +7,15 @@ class EasyWPSMTP_Admin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
+	public function remove_conflicting_scripts() {
+		$html = ob_get_clean();
+		if ( defined( 'CLICKY_PLUGIN_DIR_URL' ) ) {
+			$expr = '/^(.*)' . preg_quote( CLICKY_PLUGIN_DIR_URL, '/' ) . '(.*)$/m';
+			$html = preg_replace( $expr, '', $html );
+		}
+		echo $html;
+	}
+
 	public function admin_enqueue_scripts( $hook ) {
 		// Load only on ?page=swpsmtp_settings
 		if ( 'settings_page_swpsmtp_settings' !== $hook ) {
@@ -37,6 +46,13 @@ class EasyWPSMTP_Admin {
 		);
 		wp_localize_script( 'swpsmtp_admin_js', 'easywpsmtp', $params );
 		wp_enqueue_script( 'swpsmtp_admin_js' );
+
+		// `Clicky by Yoast` plugin's admin-side scripts should be removed from settings page to prevent JS errors
+		// https://wordpress.org/support/topic/plugin-causing-conflicts-on-admin-side/
+		if ( class_exists( 'Clicky_Admin' ) ) {
+			ob_start();
+			add_action( 'admin_print_scripts', array( $this, 'remove_conflicting_scripts' ), 10000 );
+		}
 	}
 
 	public function admin_menu() {
