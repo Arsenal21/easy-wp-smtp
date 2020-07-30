@@ -81,6 +81,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 = 1.4.0 =
 * Added compatibility with WordPress 5.5 (regarding changes to PHPMailer in WordPress Core).
+* Fixed a conflict with the Clicky for WordPress plugin's user interface.
 
 = 1.3.9.4 =
 * Removed unnecessary SQL queries execution on every admin page (thanks to @r33d3m33r for reporting).
