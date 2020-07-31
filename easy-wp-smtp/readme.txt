@@ -79,6 +79,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= WIP 1.4.1 =
+* Added an option to specify BCC email address for the outgoing emails.
+
 = 1.4.0 =
 * Added compatibility with WordPress 5.5 (regarding changes to PHPMailer in WordPress Core).
 * Fixed a conflict with the Clicky for WordPress plugin's user interface.
