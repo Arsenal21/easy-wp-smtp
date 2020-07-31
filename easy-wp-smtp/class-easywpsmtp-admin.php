@@ -126,6 +126,9 @@ function swpsmtp_settings() {
 		if ( isset( $_POST['swpsmtp_reply_to_email'] ) ) {
 			$swpsmtp_options['reply_to_email'] = sanitize_email( $_POST['swpsmtp_reply_to_email'] );
 		}
+                if ( isset( $_POST['swpsmtp_bcc_email'] ) ) {
+                        $swpsmtp_options['bcc_email'] = sanitize_text_field( $_POST['swpsmtp_bcc_email'] );//Can contain comma seperated addresses.
+                }
 
 		if ( isset( $_POST['swpsmtp_email_ignore_list'] ) ) {
 			$swpsmtp_options['email_ignore_list'] = sanitize_text_field( $_POST['swpsmtp_email_ignore_list'] );
@@ -266,6 +269,14 @@ function swpsmtp_settings() {
 										<p>
 									</td>
 								</tr>
+                                                                <tr valign="top">
+                                                                        <th scope="row"><?php esc_html_e( 'BCC Email Address', 'easy-wp-smtp' ); ?></th>
+                                                                        <td>
+                                                                                <input id="swpsmtp_bcc_email" type="text" name="swpsmtp_bcc_email" value="<?php echo isset( $swpsmtp_options['bcc_email'] ) ? esc_attr( $swpsmtp_options['bcc_email'] ) : ''; ?>" /><br />
+                                                                                <p class="description"><?php esc_html_e( "Optional. This email address will be used in the 'BCC' field of the email. You can also enter multiple email addresses (comma separated).", 'easy-wp-smtp' ); ?></p>
+                                                                        </td>
+                                                                </tr>
+
 								<tr class="ad_opt swpsmtp_smtp_options">
 									<th><?php esc_html_e( 'SMTP Host', 'easy-wp-smtp' ); ?></th>
 									<td>
