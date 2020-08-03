@@ -273,7 +273,7 @@ function swpsmtp_settings() {
                                                                         <th scope="row"><?php esc_html_e( 'BCC Email Address', 'easy-wp-smtp' ); ?></th>
                                                                         <td>
                                                                                 <input id="swpsmtp_bcc_email" type="text" name="swpsmtp_bcc_email" value="<?php echo isset( $swpsmtp_options['bcc_email'] ) ? esc_attr( $swpsmtp_options['bcc_email'] ) : ''; ?>" /><br />
-                                                                                <p class="description"><?php esc_html_e( "Optional. This email address will be used in the 'BCC' field of the email. You can also enter multiple email addresses (comma separated).", 'easy-wp-smtp' ); ?></p>
+                                                                                <p class="description"><?php esc_html_e( "Optional. This email address will be used in the 'BCC' field of the outgoing emails. Use this option carefully since all your outgoing emails from this site will add this address to the BCC field. You can also enter multiple email addresses (comma separated).", 'easy-wp-smtp' ); ?></p>
                                                                         </td>
                                                                 </tr>
 

@@ -196,7 +196,7 @@ msgid "BCC Email Address"
 msgstr ""
 
 #: class-easywpsmtp-admin.php:276
-msgid "Optional. This email address will be used in the 'BCC' field of the email. You can also enter multiple email addresses (comma separated)."
+msgid "Optional. This email address will be used in the 'BCC' field of the outgoing emails. Use this option carefully since all your outgoing emails from this site will add this address to the BCC field. You can also enter multiple email addresses (comma separated)."
 msgstr ""
 
 #: class-easywpsmtp-admin.php:281
