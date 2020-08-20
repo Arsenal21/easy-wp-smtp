@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 4.3
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 1.4.1
+Stable tag: 1.4.2t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= WIP 1.4.2 =
+* Fixed issues with WP 5.5 on some servers.
 
 = 1.4.1 =
 * Added an option to specify BCC email address for the outgoing emails.
