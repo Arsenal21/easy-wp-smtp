@@ -119,13 +119,13 @@ class EasyWPSMTP {
 			}
 		}
 
-                if ( ! empty( $this->opts['bcc_email'] ) ) {
-                        $bcc_emails = explode(",", $this->opts['bcc_email']);
-                        foreach ( $bcc_emails as $bcc_email ) {
-                                $bcc_email = trim($bcc_email);
-                                $phpmailer->AddBcc( $bcc_email );
-                        }
-                }
+		if ( ! empty( $this->opts['bcc_email'] ) ) {
+				$bcc_emails = explode( ',', $this->opts['bcc_email'] );
+			foreach ( $bcc_emails as $bcc_email ) {
+						$bcc_email = trim( $bcc_email );
+						$phpmailer->AddBcc( $bcc_email );
+			}
+		}
 
 		// let's see if we have email ignore list populated
 		if ( isset( $this->opts['email_ignore_list'] ) && ! empty( $this->opts['email_ignore_list'] ) ) {
@@ -249,19 +249,19 @@ class EasyWPSMTP {
 			$mail->Host = $this->opts['smtp_settings']['host'];
 			$mail->Port = $this->opts['smtp_settings']['port'];
 
-                        //Add reply-to if set in settings.
+			//Add reply-to if set in settings.
 			if ( ! empty( $this->opts['reply_to_email'] ) ) {
 				$mail->AddReplyTo( $this->opts['reply_to_email'], $from_name );
 			}
 
-                        //Add BCC if set in settings.
-                        if ( ! empty( $this->opts['bcc_email'] ) ) {
-                                $bcc_emails = explode(",", $this->opts['bcc_email']);
-                                foreach ( $bcc_emails as $bcc_email ) {
-                                        $bcc_email = trim($bcc_email);
-                                        $mail->AddBcc( $bcc_email );
-                                }
-                        }
+			//Add BCC if set in settings.
+			if ( ! empty( $this->opts['bcc_email'] ) ) {
+				$bcc_emails = explode( ',', $this->opts['bcc_email'] );
+				foreach ( $bcc_emails as $bcc_email ) {
+					$bcc_email = trim( $bcc_email );
+					$mail->AddBcc( $bcc_email );
+				}
+			}
 
 			$mail->SetFrom( $from_email, $from_name );
 			//This should set Return-Path header for servers that are not properly handling it, but needs testing first
