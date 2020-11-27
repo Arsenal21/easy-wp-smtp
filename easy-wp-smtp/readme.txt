@@ -80,7 +80,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = WIP 1.4.2 =
-* Fixed issues with WP 5.5 on some servers.
+* Fixed compatibility issues when running WP 5.5 and PHP 5.
 
 = 1.4.1 =
 * Added an option to specify BCC email address for the outgoing emails.
