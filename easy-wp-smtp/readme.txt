@@ -2,10 +2,10 @@
 Contributors: wpecommerce, wp.insider, alexanderfoxc
 Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
-Requires at least: 4.3
-Tested up to: 5.5
+Requires at least: 5.0
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.4.2t1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,8 +79,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= WIP 1.4.2 =
-* Fixed compatibility issues when running WP 5.5 and PHP 5.
+= 1.4.2 =
+* Improved compatibility for sites using older version of PHP and WP5.5+
 
 = 1.4.1 =
 * Added an option to specify BCC email address for the outgoing emails.
