@@ -426,6 +426,10 @@ class EasyWPSMTP {
 		}
 	}
 
+	public function get_log_file_path() {
+		return 'logs' . DIRECTORY_SEPARATOR . '.' . uniqid( '', true ) . '.txt';
+	}
+
 	public function clear_log() {
 		if ( ! check_ajax_referer( 'easy-wp-smtp-clear-log', 'nonce', false ) ) {
 			echo esc_html( __( 'Nonce check failed.', 'easy-wp-smtp' ) );
@@ -440,16 +444,25 @@ class EasyWPSMTP {
 	}
 
 	public function log( $str, $overwrite = false ) {
-		if ( isset( $this->opts['smtp_settings']['log_file_name'] ) ) {
-			$log_file_name = $this->opts['smtp_settings']['log_file_name'];
-		} else {
-			// let's generate log file name
-			$log_file_name                                = uniqid() . '_debug_log.txt';
-			$this->opts['smtp_settings']['log_file_name'] = $log_file_name;
-			update_option( 'swpsmtp_options', $this->opts );
-			file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n" ); //phpcs:ignore
-		}
+		try {
+			$log_file_name = '';
+			if ( isset( $this->opts['smtp_settings']['log_file_name'] ) ) {
+				$log_file_name = $this->opts['smtp_settings']['log_file_name'];
+			}
+			if ( empty( $log_file_name ) || $overwrite ) {
+				if ( ! empty( $log_file_name ) && file_exists( plugin_dir_path( __FILE__ ) . $log_file_name ) ) {
+					unlink( plugin_dir_path( __FILE__ ) . $log_file_name );
+				}
+				$log_file_name = $this->get_log_file_path();
+
+				$this->opts['smtp_settings']['log_file_name'] = $log_file_name;
+				update_option( 'swpsmtp_options', $this->opts );
+				file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n" ); //phpcs:ignore
+			}
 		return ( file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, $str, ( ! $overwrite ? FILE_APPEND : 0 ) ) ); //phpcs:ignore
+		} catch ( \Exception $e ) {
+			return false;
+		}
 	}
 
 	public function plugin_action_links( $links, $file ) {
