@@ -604,6 +604,8 @@ class EasyWPSMTP {
 			$this->opts = $swpsmtp_options_default;
 		}
 		$this->opts = array_merge( $swpsmtp_options_default, $this->opts );
+		// reset log file
+		$this->log( "Easy WP SMTP debug log file\r\n\r\n", true );
 		update_option( 'swpsmtp_options', $this->opts, 'yes' );
 		//add current domain to allowed domains list
 		if ( ! isset( $this->opts['allowed_domains'] ) ) {
