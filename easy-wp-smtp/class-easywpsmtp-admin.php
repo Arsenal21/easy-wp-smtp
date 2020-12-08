@@ -406,7 +406,10 @@ function swpsmtp_settings() {
 									<th scope="row"><?php esc_html_e( 'Enable Debug Log', 'easy-wp-smtp' ); ?></th>
 									<td>
 										<input id="swpsmtp_enable_debug" type="checkbox" name="swpsmtp_enable_debug" value="1" <?php echo ( isset( $swpsmtp_options['smtp_settings']['enable_debug'] ) && ( $swpsmtp_options['smtp_settings']['enable_debug'] ) ) ? 'checked' : ''; ?> />
-										<p class="description"><?php esc_html_e( 'Check this box to enable mail debug log', 'easy-wp-smtp' ); ?></p>
+										<p class="description"><?php esc_html_e( 'Check this box to enable mail debug log', 'easy-wp-smtp' ); ?>
+											<br/>
+											<b><?php echo esc_html( _x( 'Note:', '"Note" as in "Note: keep this in mind"', 'easy-wp-smtp' ) ); ?></b> <?php esc_html_e( 'debug log is reset when the plugin is activated, deactivated or updated.', 'easy-wp-smtp' ); ?>
+										</p>
 										<a href="<?php echo esc_attr( admin_url() ); ?>?swpsmtp_action=view_log" target="_blank"><?php esc_html_e( 'View Log', 'easy-wp-smtp' ); ?></a> | <a style="color: red;" id="swpsmtp_clear_log_btn" href="#0"><?php esc_html_e( 'Clear Log', 'easy-wp-smtp' ); ?></a>
 									</td>
 								</tr>
