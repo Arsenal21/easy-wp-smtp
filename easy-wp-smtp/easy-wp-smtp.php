@@ -427,7 +427,9 @@ class EasyWPSMTP {
 	}
 
 	public function get_log_file_path() {
-		return 'logs' . DIRECTORY_SEPARATOR . '.' . uniqid( '', true ) . '.txt';
+		$log_file_name = 'logs' . DIRECTORY_SEPARATOR . '.' . uniqid( '', true ) . '.txt';
+		$log_file_name = apply_filters( 'swpsmtp_log_file_path_override', $log_file_name );
+		return $log_file_name;
 	}
 
 	public function clear_log() {
