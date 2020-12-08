@@ -18,7 +18,8 @@ class EasyWPSMTP {
 
 	public $opts;
 	public $plugin_file;
-	protected static $instance = null;
+	protected static $instance   = null;
+	public static $reset_log_str = "Easy WP SMTP debug log file\r\n\r\n";
 
 	public function __construct() {
 		$this->opts        = get_option( 'swpsmtp_options' );
@@ -312,7 +313,7 @@ class EasyWPSMTP {
 					}
 
 					if ( ! file_exists( plugin_dir_path( __FILE__ ) . $log_file_name ) ) {
-						if ( $this->log( "Easy WP SMTP debug log file\r\n\r\n" ) === false ) {
+						if ( $this->log( self::$reset_log_str ) === false ) {
 							wp_die( esc_html( sprintf( 'Can\'t write to log file. Check if plugin directory (%s) is writeable.', plugin_dir_path( __FILE__ ) ) ) );
 						};
 					}
@@ -437,7 +438,7 @@ class EasyWPSMTP {
 			echo esc_html( __( 'Nonce check failed.', 'easy-wp-smtp' ) );
 			exit;
 		};
-		if ( $this->log( "Easy WP SMTP debug log file\r\n\r\n", true ) !== false ) {
+		if ( $this->log( self::$reset_log_str, true ) !== false ) {
 			echo '1';
 		} else {
 			echo esc_html( __( "Can't clear log - file is not writeable.", 'easy-wp-smtp' ) );
@@ -459,7 +460,7 @@ class EasyWPSMTP {
 
 				$this->opts['smtp_settings']['log_file_name'] = $log_file_name;
 				update_option( 'swpsmtp_options', $this->opts );
-				file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, "Easy WP SMTP debug log file\r\n\r\n" ); //phpcs:ignore
+				file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, self::$reset_log_str ); //phpcs:ignore
 			}
 		return ( file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, $str, ( ! $overwrite ? FILE_APPEND : 0 ) ) ); //phpcs:ignore
 		} catch ( \Exception $e ) {
@@ -607,7 +608,7 @@ class EasyWPSMTP {
 		}
 		$this->opts = array_merge( $swpsmtp_options_default, $this->opts );
 		// reset log file
-		$this->log( "Easy WP SMTP debug log file\r\n\r\n", true );
+		$this->log( self::$reset_log_str, true );
 		update_option( 'swpsmtp_options', $this->opts, 'yes' );
 		//add current domain to allowed domains list
 		if ( ! isset( $this->opts['allowed_domains'] ) ) {
