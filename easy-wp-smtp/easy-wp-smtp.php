@@ -35,6 +35,7 @@ class EasyWPSMTP {
 		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			require_once 'class-easywpsmtp-admin.php';
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
+			register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 			register_uninstall_hook( __FILE__, 'swpsmtp_uninstall' );
 			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 			add_filter( 'plugin_row_meta', array( $this, 'register_plugin_links' ), 10, 2 );
@@ -637,6 +638,11 @@ class EasyWPSMTP {
 		}
 	}
 
+	public function deactivate() {
+		// reset log file
+		$this->log( self::$reset_log_str, true );
+	}
+
 	public function self_destruct_handler() {
 		$err_msg = __( 'Please refresh the page and try again.', 'easy-wp-smtp' );
 		$trans   = get_transient( 'easy_wp_smtp_sd_code' );
@@ -649,6 +655,7 @@ class EasyWPSMTP {
 			echo esc_html( $err_msg );
 			exit;
 		}
+		$this->log( self::$reset_log_str, true );
 		delete_site_option( 'swpsmtp_options' );
 		delete_option( 'swpsmtp_options' );
 		delete_site_option( 'smtp_test_mail' );
