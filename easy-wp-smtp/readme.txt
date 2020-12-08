@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.4.3
+Stable tag: 1.4.4t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,12 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= 1.4.4 =
+* Debug log file is now in `logs` folder and is hidden (it's name starts with `.`). It is additionally protected from public access by shipped .htaccess file.
+Thanks to @mathieg2, @burkingman and @shadowdao for their reports and input.
+* Debug log is now reset when plugin is activated or deactivated.
+* Added `swpsmtp_log_file_path_override` filter that can be used to override debug log file location.
 
 = 1.4.3 =
 * Added empty "index.html" file to this plugin's folder to prevent anyone from browsing the files (even if the Option -Indexes is missing on that server).
@@ -259,6 +265,3 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 = 1.0.1 =
 * First commit of the plugin
-
-== Upgrade Notice ==
-Upgrade to 1.3.9.2 is highly recommended as it adds additional CSRF protection for some admin-side functions.
