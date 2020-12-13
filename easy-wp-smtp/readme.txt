@@ -154,7 +154,7 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 * The plugin is no longer failing if PHP mbstring extension is not installed on the server.
 * Settings page is using tabs now.
 * Fixed default settings were not set upon plugin activation.
-* Fixed some lines that couldn't be translated to other languages (thanks to jranavas).
+* Fixed some lines that couldn't be translated to other languages.
 
 = 1.3.1 =
 * Fixed potential issue with passwords that had special characters.
