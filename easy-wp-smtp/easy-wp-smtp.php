@@ -32,6 +32,10 @@ class EasyWPSMTP {
 		add_action( 'phpmailer_init', array( $this, 'init_smtp' ), 999 );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 
+		if ( ! empty( $this->opts['smtp_settings']['enable_debug'] ) ) {
+			add_action( 'wp_mail_failed', array( $this, 'wp_mail_failed' ) );
+		}
+
 		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			require_once 'class-easywpsmtp-admin.php';
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
@@ -60,8 +64,26 @@ class EasyWPSMTP {
 					'To: ' . $args['to'] . '; Subject: ' . $args['subject'] . "\r\n" .
 					"------------------------------------------------------------------------------------------------------\r\n\r\n"
 			);
+			return $args;
 		}
+
+		if ( ! empty( $this->opts['smtp_settings']['enable_debug'] ) ) {
+			$line = sprintf(
+				'Headers: %s, To: %s, Subject: %s',
+				! empty( $args['headers'] && is_array( $args['headers'] ) ) ? implode( ' | ', $args['headers'] ) : '',
+				! empty( $args['to'] ) ? $args['to'] : '',
+				! empty( $args['subject'] ) ? $args['subject'] : ''
+			);
+			$this->log( $line . "\r\n" );
+		}
+
 		return $args;
+	}
+
+	public function wp_mail_failed( $wp_error ) {
+		if ( ! empty( $wp_error->errors ) && ! empty( $wp_error->errors['wp_mail_failed'] ) && is_array( $wp_error->errors['wp_mail_failed'] ) ) {
+			$this->log( '*** ' . implode( ' | ', $wp_error->errors['wp_mail_failed'] ) . " ***\r\n" );
+		}
 	}
 
 	public function init_smtp( &$phpmailer ) {
@@ -180,12 +202,6 @@ class EasyWPSMTP {
 			);
 		}
 
-		if ( isset( $this->opts['smtp_settings']['enable_debug'] ) && $this->opts['smtp_settings']['enable_debug'] ) {
-			$phpmailer->Debugoutput = function ( $str, $level ) {
-				$this->log( $str );
-			};
-			$phpmailer->SMTPDebug   = 1;
-		}
 		//set reasonable timeout
 		$phpmailer->Timeout = 10;
 	}
