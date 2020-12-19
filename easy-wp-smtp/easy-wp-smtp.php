@@ -3,7 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 /*
 Plugin Name: Easy WP SMTP
-Version: 1.4.4
+Version: 1.4.5
 Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Author: wpecommerce, alexanderfoxc
 Author URI: https://wp-ecommerce.net/

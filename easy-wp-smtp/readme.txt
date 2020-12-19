@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 
 == Changelog ==
+
+= 1.4.5 =
+* Made another change to the debug logging functionality to only output the email header (instead of the full email).
+* We understand that having the full email in the log file (when debug logging is enabled) to do troubleshooting is helpful but some users can forget to disable the logging feature afterwards. This change was necessary to ensure that sensitive info cannot be exposed unintentionally in the future.
 
 = 1.4.4 =
 * Debug log is now reset when plugin is activated or deactivated.
