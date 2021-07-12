@@ -79,6 +79,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= WIP 1.4.7 =
+* A timestamp is added to the debug log file output.
+
 = 1.4.6 =
 * Fixed a typo in the description of a settings option.
 

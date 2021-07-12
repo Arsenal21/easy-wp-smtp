@@ -479,7 +479,10 @@ class EasyWPSMTP {
 				update_option( 'swpsmtp_options', $this->opts );
 				file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, self::$reset_log_str ); //phpcs:ignore
 			}
-		return ( file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, $str, ( ! $overwrite ? FILE_APPEND : 0 ) ) ); //phpcs:ignore
+                        //Timestamp the log output
+                        $str = '[' . date( 'm/d/Y g:i:s A' ) . '] - ' . $str;
+                        //Write to the log file
+                        return ( file_put_contents( plugin_dir_path( __FILE__ ) . $log_file_name, $str, ( ! $overwrite ? FILE_APPEND : 0 ) ) ); //phpcs:ignore
 		} catch ( \Exception $e ) {
 			return false;
 		}
