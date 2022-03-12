@@ -3,7 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 /*
 Plugin Name: Easy WP SMTP
-Version: 1.4.7
+Version: 1.4.8
 Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Author: wpecommerce, alexanderfoxc
 Author URI: https://wp-ecommerce.net/
@@ -68,10 +68,16 @@ class EasyWPSMTP {
 		}
 
 		if ( ! empty( $this->opts['smtp_settings']['enable_debug'] ) ) {
+                        //Check if the "to" field has multiple emails in an array.
+                        $to_address = "";
+                        if ( !empty( $args['to'] ) ) {
+                            $to_address = is_array( $args['to'] ) ? implode( ' ; ', $args['to'] ) : $args['to'];
+                        }
+                        //Prepare the debug logging line
 			$line = sprintf(
 				'Headers: %s, To: %s, Subject: %s',
 				! empty( $args['headers'] && is_array( $args['headers'] ) ) ? implode( ' | ', $args['headers'] ) : '',
-				! empty( $args['to'] ) ? $args['to'] : '',
+				! empty( $args['to'] ) ? $to_address : '',
 				! empty( $args['subject'] ) ? $args['subject'] : ''
 			);
 			$this->log( $line . "\r\n" );
