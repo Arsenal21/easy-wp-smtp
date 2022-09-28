@@ -189,6 +189,7 @@ class EasyWPSMTP {
 		$phpmailer->Port = $this->opts['smtp_settings']['port'];
 
 		/* If we're using smtp auth, set the username & password */
+		$phpmailer->SMTPAuth = false;
 		if ( 'yes' === $this->opts['smtp_settings']['autentication'] ) {
 			$phpmailer->SMTPAuth = true;
 			$phpmailer->Username = $this->opts['smtp_settings']['username'];
