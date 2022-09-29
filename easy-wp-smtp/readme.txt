@@ -80,7 +80,8 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 == Changelog ==
 
 = WIP =
-* Two new action hooks regarding settings menu tabs for addon support
+* Two new action hooks regarding settings menu tabs for addon support.
+* Fix error on SMTP with no AUTH.
 
 = 1.4.8 =
 * Debug option can now handle multiple "to" email addresses in an array.
