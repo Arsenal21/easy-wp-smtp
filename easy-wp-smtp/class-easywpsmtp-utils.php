@@ -87,4 +87,23 @@ class EasyWPSMTP_Utils {
 		return $filtered;
 	}
 
+	//checks the imported json file
+	//for any malicious or suspected input
+	public static function safe_unserialize($json_string)
+	{
+
+			//if a object is passed in json, check and return false, as plugin do not encode objects while exporting.
+			//since all object start with O:
+			$is_object= strpos($json_string,"O:");
+
+			if($is_object!==false)
+			{
+				$error  = new WP_Error();
+				$error->add(1002, __("A malicious import file is passed. Aborting import!",'easy-wp-smtp'));
+				return $error;
+			}
+
+		return unserialize($json_string);	
+	}
+
 }
