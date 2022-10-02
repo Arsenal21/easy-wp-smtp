@@ -68,20 +68,20 @@ class EasyWPSMTP {
 		}
 
 		if ( ! empty( $this->opts['smtp_settings']['enable_debug'] ) ) {
-                        //Check if the "to" field has multiple emails in an array.
-                        $to_address = "";
-                        if ( !empty( $args['to'] ) ) {
-                            $to_address = is_array( $args['to'] ) ? implode( ' ; ', $args['to'] ) : $args['to'];
-                        }
-                        //Prepare the debug logging line
-			$line = sprintf(
-				'Headers: %s, To: %s, Subject: %s',
-				! empty( $args['headers'] && is_array( $args['headers'] ) ) ? implode( ' | ', $args['headers'] ) : '',
-				! empty( $args['to'] ) ? $to_address : '',
-				! empty( $args['subject'] ) ? $args['subject'] : ''
-			);
-			$this->log( $line . "\r\n" );
-		}
+			//Check if the "to" field has multiple emails in an array.
+			$to_address = "";
+			if ( !empty( $args['to'] ) ) {
+				$to_address = is_array( $args['to'] ) ? implode( ' ; ', $args['to'] ) : $args['to'];
+			}
+			//Prepare the debug logging line
+	$line = sprintf(
+	'Headers: %s, To: %s, Subject: %s',
+	! empty( $args['headers'] && is_array( $args['headers'] ) ) ? implode( ' | ', $args['headers'] ) : '',
+	! empty( $args['to'] ) ? $to_address : '',
+	! empty( $args['subject'] ) ? $args['subject'] : ''
+);
+$this->log( $line . "\r\n" );
+}
 
 		return $args;
 	}
@@ -387,10 +387,21 @@ class EasyWPSMTP {
 					wp_die();
 				}
 				$in_raw = file_get_contents( $_FILES['swpsmtp_import_settings_file']['tmp_name'] ); //phpcs:ignore
+
+				
 				try {
+					
 					$in = json_decode( $in_raw, true );
+					
+					//if json_decode has errors. try unserialize if serialized json is passed					
 					if ( json_last_error() !== 0 ) {
-						$in = unserialize( $in_raw ); //phpcs:ignore
+
+						$in = EasyWPSMTP_Utils::safe_unserialize($in_raw);		
+						if(is_wp_error($in))
+						{
+							echo $in->get_error_message();
+							wp_die();
+						}
 					}
 					if ( empty( $in['data'] ) ) {
 						echo esc_html( $err_msg );
@@ -405,9 +416,18 @@ class EasyWPSMTP {
 						wp_die();
 					}
 					$data = json_decode( $in['data'], true );
+
+					//if json_decode has errors, try unserializing to check if serialized json is passed 
 					if ( json_last_error() !== 0 ) {
-						$data = unserialize( $in['data'] ); //phpcs:ignore
+						$data = EasyWPSMTP_Utils::safe_unserialize($in['data']);		
+
+						if(is_wp_error($in))
+						{
+							echo $data->get_error_message();
+							wp_die();
+						}
 					}
+
 					update_option( 'swpsmtp_options', $data['swpsmtp_options'] );
 					update_option( 'swpsmtp_pass_encrypted', $data['swpsmtp_pass_encrypted'] );
 					if ( $data['swpsmtp_pass_encrypted'] ) {
