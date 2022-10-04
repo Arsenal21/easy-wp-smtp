@@ -393,15 +393,11 @@ $this->log( $line . "\r\n" );
 					
 					$in = json_decode( $in_raw, true );
 					
-					//if json_decode has errors. try unserialize if serialized json is passed					
+					//if json_decode has errors
 					if ( json_last_error() !== 0 ) {
 
-						$in = EasyWPSMTP_Utils::safe_unserialize($in_raw);		
-						if(is_wp_error($in))
-						{
-							echo $in->get_error_message();
-							wp_die();
-						}
+						echo __("Error importing settings file. Please re-export the file",'easy-wp-smtp');
+						wp_die();
 					}
 					if ( empty( $in['data'] ) ) {
 						echo esc_html( $err_msg );
@@ -417,15 +413,10 @@ $this->log( $line . "\r\n" );
 					}
 					$data = json_decode( $in['data'], true );
 
-					//if json_decode has errors, try unserializing to check if serialized json is passed 
+					//if json_decode has errors
 					if ( json_last_error() !== 0 ) {
-						$data = EasyWPSMTP_Utils::safe_unserialize($in['data']);		
-
-						if(is_wp_error($in))
-						{
-							echo $data->get_error_message();
-							wp_die();
-						}
+						echo __("Error importing settings file. Please re-export the file",'easy-wp-smtp');
+						wp_die();
 					}
 
 					update_option( 'swpsmtp_options', $data['swpsmtp_options'] );
