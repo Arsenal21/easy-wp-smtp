@@ -3,7 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 /*
 Plugin Name: Easy WP SMTP
-Version: 1.4.9
+Version: 1.5.0
 Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Author: wpecommerce, alexanderfoxc
 Author URI: https://wp-ecommerce.net/
@@ -396,7 +396,7 @@ $this->log( $line . "\r\n" );
 					//if json_decode has errors
 					if ( json_last_error() !== 0 ) {
 
-						echo __("Error importing settings file. Please re-export the file",'easy-wp-smtp');
+						echo __("Error importing the settings file. Please re-export the file",'easy-wp-smtp');
 						wp_die();
 					}
 					if ( empty( $in['data'] ) ) {
@@ -415,7 +415,7 @@ $this->log( $line . "\r\n" );
 
 					//if json_decode has errors
 					if ( json_last_error() !== 0 ) {
-						echo __("Error importing settings file. Please re-export the file",'easy-wp-smtp');
+						echo __("Error importing the settings file. Please re-export the file",'easy-wp-smtp');
 						wp_die();
 					}
 
