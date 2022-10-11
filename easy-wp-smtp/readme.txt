@@ -79,6 +79,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= WIP 1.5.1 =
+* Removed the use of deprecated FILTER_SANITIZE_STRING.
+
 = 1.5.0 =
 * Removed the usage of serialize() / unserialize() functions. Replaced it with json_encode() and json_decode() where applicable.
 

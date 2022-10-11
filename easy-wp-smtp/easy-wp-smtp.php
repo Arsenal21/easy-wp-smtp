@@ -687,7 +687,7 @@ $this->log( $line . "\r\n" );
 			echo esc_html( $err_msg );
 			exit;
 		}
-		$sd_code = filter_input( INPUT_POST, 'sd_code', FILTER_SANITIZE_STRING );
+                $sd_code = isset( $_POST['sd_code'] ) ? sanitize_text_field( stripslashes ( $_POST['sd_code'] ) ) : '';
 		if ( $trans !== $sd_code ) {
 			echo esc_html( $err_msg );
 			exit;
