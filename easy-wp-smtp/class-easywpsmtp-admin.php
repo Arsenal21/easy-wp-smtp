@@ -7,15 +7,6 @@ class EasyWPSMTP_Admin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
-	public function remove_conflicting_scripts() {
-		$html = ob_get_clean();
-		if ( defined( 'CLICKY_PLUGIN_DIR_URL' ) ) {
-			$expr = '/^(.*)' . preg_quote( CLICKY_PLUGIN_DIR_URL, '/' ) . '(.*)$/m';
-			$html = preg_replace( $expr, '', $html );
-		}
-		echo $html;
-	}
-
 	public function admin_enqueue_scripts( $hook ) {
 		// Load only on ?page=swpsmtp_settings
 		if ( 'settings_page_swpsmtp_settings' !== $hook ) {
@@ -46,13 +37,6 @@ class EasyWPSMTP_Admin {
 		);
 		wp_localize_script( 'swpsmtp_admin_js', 'easywpsmtp', $params );
 		wp_enqueue_script( 'swpsmtp_admin_js' );
-
-		// `Clicky by Yoast` plugin's admin-side scripts should be removed from settings page to prevent JS errors
-		// https://wordpress.org/support/topic/plugin-causing-conflicts-on-admin-side/
-		if ( class_exists( 'Clicky_Admin' ) ) {
-			ob_start();
-			add_action( 'admin_print_scripts', array( $this, 'remove_conflicting_scripts' ), 10000 );
-		}
 	}
 
 	public function admin_menu() {
@@ -134,16 +118,16 @@ function swpsmtp_settings() {
 			$swpsmtp_options['email_ignore_list'] = sanitize_text_field( $_POST['swpsmtp_email_ignore_list'] );
 		}
 
-		$swpsmtp_options['smtp_settings']['host']            = stripslashes( $_POST['swpsmtp_smtp_host'] );
+		$swpsmtp_options['smtp_settings']['host']            = sanitize_text_field( stripslashes( $_POST['swpsmtp_smtp_host'] ) );
 		$swpsmtp_options['smtp_settings']['type_encryption'] = ( isset( $_POST['swpsmtp_smtp_type_encryption'] ) ) ? sanitize_text_field( $_POST['swpsmtp_smtp_type_encryption'] ) : 'none';
 		$swpsmtp_options['smtp_settings']['autentication']   = ( isset( $_POST['swpsmtp_smtp_autentication'] ) ) ? sanitize_text_field( $_POST['swpsmtp_smtp_autentication'] ) : 'yes';
-		$swpsmtp_options['smtp_settings']['username']        = stripslashes( $_POST['swpsmtp_smtp_username'] );
+		$swpsmtp_options['smtp_settings']['username']        = sanitize_text_field( stripslashes( $_POST['swpsmtp_smtp_username'] ) );
 
 		$swpsmtp_options['smtp_settings']['enable_debug'] = isset( $_POST['swpsmtp_enable_debug'] ) ? 1 : false;
 		$swpsmtp_options['smtp_settings']['insecure_ssl'] = isset( $_POST['swpsmtp_insecure_ssl'] ) ? 1 : false;
 		$swpsmtp_options['smtp_settings']['encrypt_pass'] = isset( $_POST['swpsmtp_encrypt_pass'] ) ? 1 : false;
 
-		$smtp_password = $_POST['swpsmtp_smtp_password'];
+		$smtp_password = sanitize_text_field( $_POST['swpsmtp_smtp_password'] );
 		if ( $smtp_password !== $gag_password ) {
 			$swpsmtp_options['smtp_settings']['password'] = $easy_wp_smtp->encrypt_password( $smtp_password );
 		}
@@ -165,7 +149,7 @@ function swpsmtp_settings() {
 
 		/* Check value from "SMTP port" option */
 		if ( isset( $_POST['swpsmtp_smtp_port'] ) ) {
-			if ( empty( $_POST['swpsmtp_smtp_port'] ) || 1 > intval( $_POST['swpsmtp_smtp_port'] ) || ( ! preg_match( '/^\d+$/', $_POST['swpsmtp_smtp_port'] ) ) ) {
+			if ( empty( $_POST['swpsmtp_smtp_port'] ) || 1 > intval( $_POST['swpsmtp_smtp_port'] ) || ( ! preg_match( '/^\d+$/', intval($_POST['swpsmtp_smtp_port'] ) ) ) ) {
 				$swpsmtp_options['smtp_settings']['port'] = '25';
 				$error                                   .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'easy-wp-smtp' );
 			} else {

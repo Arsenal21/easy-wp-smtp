@@ -5,7 +5,7 @@ Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mai
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,8 +79,10 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
-= WIP 1.5.1 =
+= 1.5.1 =
+* Removed the special Clicky plugin compatibility code as it is no longer necessary.
 * Removed the use of deprecated FILTER_SANITIZE_STRING.
+* Added sanitization to input fields(that were missing it).
 
 = 1.5.0 =
 * Removed the usage of serialize() / unserialize() functions. Replaced it with json_encode() and json_decode() where applicable.
