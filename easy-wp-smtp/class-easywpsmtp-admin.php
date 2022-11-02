@@ -4,7 +4,7 @@ class EasyWPSMTP_Admin {
 
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );		
 	}
 
 	public function admin_enqueue_scripts( $hook ) {
@@ -411,16 +411,10 @@ function swpsmtp_settings() {
 						<div class="inside">
 							<p><?php esc_html_e( 'Actions in this section can (and some of them will) erase or mess up your settings. Use it with caution.', 'easy-wp-smtp' ); ?></p>
 							<table class="form-table">
-								<tr valign="top">
-									<th scope="row"><?php esc_html_e( 'Export\Import Settings', 'easy-wp-smtp' ); ?></th>
-									<td>
-										<button id="swpsmtp_export_settings_btn" type="button" class="button"><?php esc_html_e( 'Export Settings', 'easy-wp-smtp' ); ?></button>
-										<p class="description"><?php esc_html_e( 'Use this to export plugin settings to a file.', 'easy-wp-smtp' ); ?></p>
-										<p></p>
-										<button id="swpsmtp_import_settings_btn" type="button" class="button"><?php esc_html_e( 'Import Settings', 'easy-wp-smtp' ); ?></button>
-										<p class="description"><?php esc_html_e( 'Use this to import plugin settings from a file. Note this would replace all your existing settings, so use with caution.', 'easy-wp-smtp' ); ?></p>
-									</td>
-								</tr>
+								
+								<!-- Requires plugin: easy-wp-smtp-export-import-settings -->
+								<?php do_action("easy_wp_smtp_export_import_settings"); ?>
+
 								<tr valign="top">
 									<th scope="row"><?php esc_html_e( 'Delete Settings and Deactivate Plugin', 'easy-wp-smtp' ); ?></th>
 									<td>
@@ -435,16 +429,8 @@ function swpsmtp_settings() {
 				</div>
 			</form>
 
-			<form id="swpsmtp_export_settings_frm" style="display: none;" method="POST">
-				<input type="hidden" name="swpsmtp_export_settings" value="1">
-				<?php wp_nonce_field( 'easy_wp_smtp_export_settings', 'easy_wp_smtp_export_settings_nonce' ); ?>
-			</form>
-
-			<form id="swpsmtp_import_settings_frm" style="display: none;" method="POST" enctype="multipart/form-data">
-				<input type="hidden" name="swpsmtp_import_settings" value="1">
-				<input id="swpsmtp_import_settings_select_file" type="file" name="swpsmtp_import_settings_file">
-				<?php wp_nonce_field( 'easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce' ); ?>
-			</form>
+			<!-- Requires plugin: easy-wp-smtp-export-import-settings -->
+			<?php do_action("easy_wp_smtp_export_import_hidden_forms_settings"); ?>
 
 			<div class="swpsmtp-tab-container" data-tab-name="testemail">
 				<div class="postbox">

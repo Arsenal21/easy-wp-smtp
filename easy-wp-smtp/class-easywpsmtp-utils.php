@@ -7,14 +7,15 @@ class EasyWPSMTP_Utils {
 	public $enc_key;
 	protected static $instance = null;
 
-	public function __construct() {
+	public function __construct($addon=null) {
 		require_once 'inc/Cryptor.php';
 		$key = get_option( 'swpsmtp_enc_key', false );
 		if ( empty( $key ) ) {
 			$key = wp_salt();
 			update_option( 'swpsmtp_enc_key', $key );
-		}
+		}		
 		$this->enc_key = $key;
+		$this->addon = $addon;
 	}
 
 	public static function get_instance() {
@@ -87,5 +88,23 @@ class EasyWPSMTP_Utils {
 		return $filtered;
 	}
 
+
+	public function check_ver() {
+
+		
+		if ( $this->addon!=null && version_compare( EasyWPSMTP_PLUGIN_VERSION, $this->addon->MIN_EasyWPSMTP_VER ) < 0 ) {
+			add_action( 'admin_notices', array( $this, 'display_min_version_error' ) );
+			return false;
+		}
+		return true;
+	}
+
+	public function display_min_version_error() {
+		$class = 'notice notice-error';
+		// translators: %1$s - plugin name, %2$s - min core plugin version, %3$s - installed core plugin version
+		$message = sprintf( __( '%1$s requires Easy WP SMTP plugin minimum version to be %2$s (you have version %3$s installed). Please update Easy WP SMTP plugin.', 'easy-wp-smtp' ), $this->addon->ADDON_FULL_NAME, $this->addon->MIN_EasyWPSMTP_VER, EasyWPSMTP_PLUGIN_VERSION );
+
+		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+	}
 
 }
