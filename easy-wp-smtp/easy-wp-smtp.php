@@ -3,7 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 /*
 Plugin Name: Easy WP SMTP
-Version: 1.5.1
+Version: 1.5.2
 Plugin URI: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Author: wpecommerce, alexanderfoxc
 Author URI: https://wp-ecommerce.net/
@@ -13,6 +13,9 @@ Domain Path: /languages
  */
 
 //Prefix/Slug - swpsmtp
+
+define( 'EasyWPSMTP_PLUGIN_VERSION', '1.5.2' );
+define( 'EasyWPSMTP_PLUGIN_FILE', __FILE__ );
 
 class EasyWPSMTP {
 
@@ -351,89 +354,7 @@ $this->log( $line . "\r\n" );
 				}
 			}
 
-			//check if this is export settings request
-			$is_export_settings = filter_input( INPUT_POST, 'swpsmtp_export_settings', FILTER_SANITIZE_NUMBER_INT );
-			if ( $is_export_settings ) {
-				check_admin_referer( 'easy_wp_smtp_export_settings', 'easy_wp_smtp_export_settings_nonce' );
-				$data                           = array();
-				$opts                           = get_option( 'swpsmtp_options', array() );
-				$data['swpsmtp_options']        = $opts;
-				$swpsmtp_pass_encrypted         = get_option( 'swpsmtp_pass_encrypted', false );
-				$data['swpsmtp_pass_encrypted'] = $swpsmtp_pass_encrypted;
-				if ( $swpsmtp_pass_encrypted ) {
-					$swpsmtp_enc_key         = get_option( 'swpsmtp_enc_key', false );
-					$data['swpsmtp_enc_key'] = $swpsmtp_enc_key;
-				}
-				$smtp_test_mail         = get_option( 'smtp_test_mail', array() );
-				$data['smtp_test_mail'] = $smtp_test_mail;
-				$out                    = array();
-				$out['data']            = wp_json_encode( $data );
-				$out['ver']             = 2;
-				$out['checksum']        = md5( $out['data'] );
-
-				$filename = 'easy_wp_smtp_settings.json';
-				header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
-				header( 'Content-Type: application/json' );
-				echo wp_json_encode( $out );
-				exit;
-			}
-
-			$is_import_settings = filter_input( INPUT_POST, 'swpsmtp_import_settings', FILTER_SANITIZE_NUMBER_INT );
-			if ( $is_import_settings ) {
-				check_admin_referer( 'easy_wp_smtp_import_settings', 'easy_wp_smtp_import_settings_nonce' );
-				$err_msg = __( 'Error occurred during settings import', 'easy-wp-smtp' );
-				if ( empty( $_FILES['swpsmtp_import_settings_file'] ) ) {
-					echo esc_html( $err_msg );
-					wp_die();
-				}
-				$in_raw = file_get_contents( $_FILES['swpsmtp_import_settings_file']['tmp_name'] ); //phpcs:ignore
-
-				
-				try {
-					
-					$in = json_decode( $in_raw, true );
-					
-					//if json_decode has errors
-					if ( json_last_error() !== 0 ) {
-
-						echo __("Error importing the settings file. Please re-export the file",'easy-wp-smtp');
-						wp_die();
-					}
-					if ( empty( $in['data'] ) ) {
-						echo esc_html( $err_msg );
-						wp_die();
-					}
-					if ( empty( $in['checksum'] ) ) {
-						echo esc_html( $err_msg );
-						wp_die();
-					}
-					if ( md5( $in['data'] ) !== $in['checksum'] ) {
-						echo esc_html( $err_msg );
-						wp_die();
-					}
-					$data = json_decode( $in['data'], true );
-
-					//if json_decode has errors
-					if ( json_last_error() !== 0 ) {
-						echo __("Error importing the settings file. Please re-export the file",'easy-wp-smtp');
-						wp_die();
-					}
-
-					update_option( 'swpsmtp_options', $data['swpsmtp_options'] );
-					update_option( 'swpsmtp_pass_encrypted', $data['swpsmtp_pass_encrypted'] );
-					if ( $data['swpsmtp_pass_encrypted'] ) {
-						update_option( 'swpsmtp_enc_key', $data['swpsmtp_enc_key'] );
-					}
-					update_option( 'smtp_test_mail', $data['smtp_test_mail'] );
-					set_transient( 'easy_wp_smtp_settings_import_success', true, 60 * 60 );
-					$url = admin_url() . 'options-general.php?page=swpsmtp_settings';
-					wp_safe_redirect( $url );
-					exit;
-				} catch ( Exception $ex ) {
-					echo esc_html( $err_msg );
-					wp_die();
-				}
-			}
+			
 		}
 	}
 
@@ -449,17 +370,7 @@ $this->log( $line . "\r\n" );
 			</p>
 		</div>
 			<?php
-		}
-
-		$settings_import_notice = get_transient( 'easy_wp_smtp_settings_import_success' );
-		if ( $settings_import_notice ) {
-			delete_transient( 'easy_wp_smtp_settings_import_success' );
-			?>
-		<div class="updated">
-			<p><?php echo esc_html( __( 'Settings have been imported successfully.', 'easy-wp-smtp' ) ); ?></p>
-		</div>
-			<?php
-		}
+		}	
 	}
 
 	public function get_log_file_path() {
