@@ -17,6 +17,8 @@ Domain Path: /languages
 define( 'EasyWPSMTP_PLUGIN_VERSION', '1.5.2' );
 define( 'EasyWPSMTP_PLUGIN_FILE', __FILE__ );
 
+include_once( 'class-easywpsmtp-debug-logger.php' );
+
 class EasyWPSMTP {
 
 	public $opts;
@@ -393,6 +395,10 @@ $this->log( $line . "\r\n" );
 	}
 
 	public function log( $str, $overwrite = false ) {
+                /*
+                 * TODO - move to using the following new method then remove this function in the future.
+                 * EASYWPSMTP_Debug_Logger::log_debug_string()
+                 */
 		try {
 			$log_file_name = '';
 			if ( isset( $this->opts['smtp_settings']['log_file_name'] ) ) {
@@ -416,7 +422,7 @@ $this->log( $line . "\r\n" );
 			return false;
 		}
 	}
-
+        
 	public function plugin_action_links( $links, $file ) {
 		if ( plugin_basename( $this->plugin_file ) === $file ) {
 			$settings_link = '<a href="options-general.php?page=swpsmtp_settings">' . __( 'Settings', 'easy-wp-smtp' ) . '</a>';

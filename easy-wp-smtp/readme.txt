@@ -78,6 +78,9 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= WIP 1.5.3 =
+* Added a new debug logging class to handle writing to debug log file.
+
 = 1.5.2 =
 * Removed the export/import settings option. There will be a separate free addon to offer the export/import settings option.
 
